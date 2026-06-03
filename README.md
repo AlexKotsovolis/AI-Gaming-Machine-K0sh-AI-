@@ -29,31 +29,7 @@ An interactive desktop application that merges semantic AI conversation with a c
 
 <img width="598" height="726" alt="image" src="https://github.com/user-attachments/assets/9f77bd00-7ad9-4e8f-b736-1f4d057820c4" />
 
----
-## 🚀 Getting Started
 
-### 1. Clone the Repository
-```bash
-git clone [https://github.com/YOUR_USERNAME/k0sh-ai.git](https://github.com/YOUR_USERNAME/k0sh-ai.git)
-cd k0sh-ai
-2. Install Dependencies
-Make sure you have your virtual environment activated, then install the NLP framework:
-
-Bash
-pip install sentence-transformers torch
-3. Run the Application
-Bash
-python main.py
-Note: On your first startup, the application will take a brief moment to download the lightweight all-MiniLM-L6-v2 model locally.
-
-🎮 How to Play
-Launch the app and chat with K0sh to warm up.
-
-When you are ready, type INT into the chat box to initialize the game loop.
-
-K0sh will lock in a hidden number between 0 and 100.
-
-Submit your numeric guesses. K0sh will guide you with dynamic alerts (Higher!, Lower!) until you strike the winning match!
 
 ---
 #UPDATE LOG
@@ -84,3 +60,30 @@ The update log is basically a file here in github, where I will be updating the 
 
 Next Version: 0.2 (REWORK) --> Coming Soon!
 ---
+
+
+---
+## 🚀 Getting Started
+
+### 1. Clone the Repository
+```bash
+git clone [https://github.com/YOUR_USERNAME/k0sh-ai.git](https://github.com/YOUR_USERNAME/k0sh-ai.git)
+cd k0sh-ai
+2. Install Dependencies
+Make sure you have your virtual environment activated, then install the NLP framework:
+
+Bash
+pip install sentence-transformers torch
+3. Run the Application
+Bash
+python main.py
+Note: On your first startup, the application will take a brief moment to download the lightweight all-MiniLM-L6-v2 model locally.
+
+🎮 How to Play
+Launch the app and chat with K0sh to warm up.
+
+When you are ready, type INT into the chat box to initialize the game loop.
+
+K0sh will lock in a hidden number between 0 and 100.
+
+Submit your numeric guesses. K0sh will guide you with dynamic alerts (Higher!, Lower!) until you strike the winning match!
