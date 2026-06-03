@@ -25,6 +25,11 @@ An interactive desktop application that merges semantic AI conversation with a c
 
 ---
 
+## Screenshot!
+
+<img width="598" height="726" alt="image" src="https://github.com/user-attachments/assets/9f77bd00-7ad9-4e8f-b736-1f4d057820c4" />
+
+---
 ## 🚀 Getting Started
 
 ### 1. Clone the Repository
@@ -49,7 +54,4 @@ When you are ready, type INT into the chat box to initialize the game loop.
 K0sh will lock in a hidden number between 0 and 100.
 
 Submit your numeric guesses. K0sh will guide you with dynamic alerts (Higher!, Lower!) until you strike the winning match!
-
-
-<img width="598" height="726" alt="image" src="https://github.com/user-attachments/assets/bb976d57-08a6-45b6-9aef-c40e4dbbcd0c" />
 
