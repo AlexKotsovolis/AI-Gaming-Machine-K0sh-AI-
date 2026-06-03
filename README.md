@@ -55,3 +55,32 @@ K0sh will lock in a hidden number between 0 and 100.
 
 Submit your numeric guesses. K0sh will guide you with dynamic alerts (Higher!, Lower!) until you strike the winning match!
 
+---
+#UPDATE LOG
+---
+#What is the update log?
+---
+
+The update log is basically a file here in github, where I will be updating the text of the file, whenever a new version of K0sh or even of minor fixes/updates are posted. So, starting from now, 03/06/2026 i am releasing this log.
+
+---
+
+#VERSION 0.1 (RELEASE)
+
+---
+
+  --> Released K0sh AI.
+  --> Simple "Guess the number" and "Chat".
+  --> Simple GUI.
+  --> Kinda boring... :(
+
+---
+
+# What's coming in the next version(s):
+
+  >New GUI
+  >New Games
+
+
+Next Version: 0.2 (REWORK) --> Coming Soon!
+---
