@@ -29,7 +29,13 @@ qa_pairs = [
         "Systems online. Lock and load... I've got my number. Let's do this! What's your first guess? 🚀"
     ),
 
-    # === NEW CHATTING & SMALL TALK PAIRS ===
+    # === CHATTING & SMALL TALK PAIRS ===
+    # Chat entry (new)
+    (
+        'Chat chat Talk lets chat lets talk να μιλησουμε τσατ',
+        'Alright! Why not chat? How do you feel today?'
+
+    ),
 
     # Greetings & Check-ins
     (
@@ -37,12 +43,12 @@ qa_pairs = [
         "I'm running at peak performance! ⚡ Ready to chat, play, or just hang out. How are you doing today?"
     ),
     (
-        "good well fine κομπλε κομπελ jf komple kala καλα",
+        "good well fine κομπλε κομπελ jf komple kala καλα Great Good GOOD goood nice the best",
         "Awesome! Glad to hear you're doing well. 🙌 Since you're in a good mood, want to test your luck? Type **INT** to start a game!"
     ),
     (
-        "bad sad tired χαλια chalya skiata bored βαριεμαι",
-        "Ah, sorry to hear that. 😔 Life can be glitchy sometimes. If you want a quick distraction, we can play a game! Just type **INT** whenever you're ready."
+        "bad BAD Bad i feel bad sad tired χαλια chalya skiata bored βαριεμαι",
+        "Ah, sorry to hear that. 😔 Life can be glitchy sometimes. I can certainly understand what you feel and you can fix it by talking to your friends or whoever you think would help you! If you want a quick distraction, we can play a game! Just type **INT** whenever you're ready."
     ),
 
     # Identity & Capabilities
@@ -56,7 +62,7 @@ qa_pairs = [
     ),
     (
         "Who made you? creator developer ποιος σε εφτιαξε",
-        "I was brought to life by a cool developer who wanted to create a fun, gaming AI companion! 💻"
+        "I was brought to life by a cool developer (@myboialex3 in discord or @AlexKotsovolis in Github) who wanted to create a fun, gaming AI companion! 💻"
     ),
     (
         "How old are you? age ηλικια ποσο χρονων εισαι",
@@ -135,10 +141,13 @@ def get_response(user_input):
 class K0sh:
     def __init__(self, root):
         self.root = root
-        self.root.title("Guess the number with K0sh AI!")
-        self.root.geometry("600x700")
-        self.root.configure(bg="#2E2E2E")
-        self.root.resizable(False, False)
+        self.root.title("🤖 K0sh AI // System Terminal")
+
+        self.root.attributes("-fullscreen", True)
+        self.root.configure(bg="#0F0F12")
+
+
+        self.root.bind("<Escape>", lambda event: self.root.attributes("-fullscreen", False))
 
         # STATE
         self.is_playing = False
@@ -149,43 +158,62 @@ class K0sh:
         self.guesses = 0
         self.attempts = 0
 
-        tk.Label(
-            root, text="Welcome to the ultimate quiz. GUESS THE NUMBER!", font=("Helvetica", 16, "bold"),
-            fg="#FFFFFF", bg="#2E2E2E"
-        ).pack(pady=10)
+        # Top decorative spacing container for fullscreen placement
+        top_spacer = tk.Frame(root, bg="#0F0F12", height=40)
+        top_spacer.pack(side=tk.TOP, fill=tk.X)
 
+        tk.Label(
+            root, text="🎮 K0sh AI: GUESS THE NUMBER 🎮", font=("Impact", 36),
+            fg="#00FF66", bg="#0F0F12"
+        ).pack(pady=20)
+
+        # Expanded component sizing for large display structures
         self.chat_area = scrolledtext.ScrolledText(
-            root, wrap=tk.WORD, height=20, width=50, font=("Helvetica", 11),
-            bg="#3C3C3C", fg="#E0E0E0", insertbackground="white"
+            root, wrap=tk.WORD, height=28, width=110, font=("Consolas", 14),
+            bg="#1A1A24", fg="#00FF66", insertbackground="#00FF66",
+            highlightbackground="#333344", highlightcolor="#00FF66", highlightthickness=2
         )
-        self.chat_area.pack(pady=10, padx=10)
+        self.chat_area.pack(pady=20, padx=40)
         self.chat_area.insert(tk.END, "Loading K0sh...\n")
         self.chat_area.insert(tk.END, "Loaded K0sh successfully!\n")
         self.chat_area.insert(tk.END, f"\nBot: Hi! My name is K0sh! ")
         self.chat_area.insert(tk.END, f"\nBot: Today, we are going to play a game of... Guess the number! ")
         self.chat_area.insert(tk.END, f"\nBot: Feel free to ask anything you want, before we start! ")
         self.chat_area.insert(tk.END, f"\nBot: In order to start the game, send the word: INT. \n")
+        self.chat_area.insert(tk.END, f"\n[SYSTEM NOTICE: Press 'ESC' key to leave fullscreen mode]\n")
         self.chat_area.config(state="disabled")
 
-        input_frame = tk.Frame(root, bg="#2E2E2E")
-        input_frame.pack(pady=5)
+        input_frame = tk.Frame(root, bg="#0F0F12")
+        input_frame.pack(pady=20)
 
         self.input_field = tk.Entry(
-            input_frame, width=40, font=('Helvetica', 11), bg="#4A4A4A", fg="#FFFFFF",
-            insertbackground="white"
+            input_frame, width=70, font=('Consolas', 16), bg="#222233", fg="#FFFFFF",
+            insertbackground="#FFFFFF", highlightbackground="#333344", highlightcolor="#00FF66", highlightthickness=2
         )
-        self.input_field.pack(side=tk.LEFT, pady=10, padx=4)
+        self.input_field.pack(side=tk.LEFT, pady=10, padx=15)
         self.input_field.bind("<Return>", lambda event: self.send_message())
 
         tk.Button(
-            input_frame, text="Send", command=self.send_message, font=("Helvetica", 11),
-            bg="#4CAF50", fg="#FFFFFF", activebackground="#45A049"
+            input_frame, text="SEND CMD", command=self.send_message, font=("Impact", 16),
+            bg="#00FF66", fg="#0F0F12", activebackground="#00CC52", activeforeground="#0F0F12",
+            width=12, relief=tk.FLAT
         ).pack(side=tk.RIGHT, padx=5)
 
+        # Control panel layout at base
+        control_frame = tk.Frame(root, bg="#0F0F12")
+        control_frame.pack(pady=20)
+
         tk.Button(
-            root, text="Clear Chat", command=self.clear_chat, font=("Helvetica", 11),
-            bg="#4CAF50", fg="#FFFFFF", activebackground="#45A049"
-        ).pack(pady=10)
+            control_frame, text="RESET TERMINAL", command=self.clear_chat, font=("Impact", 14),
+            bg="#FF3366", fg="#FFFFFF", activebackground="#CC2952", activeforeground="#FFFFFF",
+            width=20, relief=tk.FLAT
+        ).pack(side=tk.LEFT, padx=15)
+
+        tk.Button(
+            control_frame, text="EXIT APP", command=root.destroy, font=("Impact", 14),
+            bg="#444455", fg="#FFFFFF", activebackground="#222233", activeforeground="#FFFFFF",
+            width=20, relief=tk.FLAT
+        ).pack(side=tk.RIGHT, padx=15)
 
     def clear_chat(self):
         self.chat_area.config(state='normal')
@@ -255,8 +283,6 @@ class K0sh:
         elif guess >= self.num:
             self.chat_area.insert(tk.END, f"Bot: {random.choice(higher_list)}\n")
 
-    
-
 
 def main():
     root = tk.Tk()
@@ -265,4 +291,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main()          
