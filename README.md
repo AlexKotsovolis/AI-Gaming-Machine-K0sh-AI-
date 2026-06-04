@@ -57,9 +57,18 @@ The update log is basically a file here in github, where I will be updating the 
   >New GUI
   >New Games
 
-
-Next Version: 0.2 (REWORK) --> Coming Soon!
 ---
+# Next Version: 0.2 : "ARCADE"
+---
+  --> Reworked chat messages!
+  --> Cool UI and design!  (Feel free to make suggestions if you want!)
+  --> NOTICE: Hey everyone! I have decided (from now on) to keep every version here in github, if anyone would like to use previous versions (with of course more coming soon). I think it is really cool, so next update, you can choose which version you like the most!
+---
+
+# Next Version: 0.3 : "One.. More.. Game!"
+-Stay tuned for next update!
+--- 
+
 
 
 ---
