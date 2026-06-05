@@ -75,6 +75,9 @@ The update log is basically a file here in github, where I will be updating the 
   --> New messages.
 
   --> Next update is gonna be FIRE
+
+  --> Kept old version's code, as promised.
+
 ---
 # Next Version: 0.4: "Wait.. I know you!"
 -Sneak peak: Name, Simplified message
