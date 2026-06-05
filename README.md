@@ -24,11 +24,26 @@ An interactive desktop application that merges semantic AI conversation with a c
 * **Tkinter** (Built-in Python GUI library)
 ---
 
-## LICENCE
+## LICENSE
 
-This project is licensed under the MIT License. You are free to use, modify, distribute, and commercialize this software provided that the original copyright notice and license are included.
+K0sh AI is licensed under the **K0sh AI Personal Use License v1.0**.
 
-© 2026 Alex Kotsovolis
+### What you may do
+
+* Use the software for personal, non-commercial purposes.
+* Modify the software for personal, non-commercial purposes.
+
+### What you may NOT do
+
+* Commercialize, sell, or monetize the software.
+* Distribute, redistribute, publish, or share the software or modified versions.
+* Incorporate the software into distributed or commercial projects.
+* Remove copyright notices or author attribution.
+
+For full terms, see the LICENSE file included in this repository.
+
+© 2026 Alex Kotsovolis. All rights reserved.
+
 ---
 
 ## Screenshot!
