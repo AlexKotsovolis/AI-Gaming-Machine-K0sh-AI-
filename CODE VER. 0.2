@@ -1,0 +1,294 @@
+from sentence_transformers import SentenceTransformer, util
+import tkinter as tk
+from tkinter import scrolledtext
+import random
+
+print("Loading the game. Please wait!")
+
+model = SentenceTransformer('all-MiniLM-L6-v2')
+
+qa_pairs = [
+    (
+        "Hi! Hello hello sup wsp Γεια τι κανεις geia sou wuzzup wussup ayo",
+        "Hey there! 👋 I'm K0sh AI. Ready to jump into a game, or did you just want to chat?"
+    ),
+    (
+        "What is this game? how do you play",
+        "It's a classic number-guessing game! 🎯 I'll think of a secret number, and you try to guess it. Think you can beat me? Reply with **INT** when you're ready to play!"
+    ),
+    (
+        "Yea yes yh ναι εννοειται nai ofc nAi nAI ",
+        "Awesome! Let's get you set up. I'll pick a number, and you'll guess. I'll give you hints along the way. Reply with **INT** to initialize the game!"
+    ),
+    (
+        "What is your name? name yourname? nmae who are you",
+        "I am **K0sh AI**, your digital game master! 🤖"
+    ),
+    (
+        "INT int Int",
+        "Systems online. Lock and load... I've got my number. Let's do this! What's your first guess? 🚀"
+    ),
+
+    # === CHATTING & SMALL TALK PAIRS ===
+    # Chat entry (new)
+    (
+        'Chat chat Talk lets chat lets talk να μιλησουμε τσατ',
+        'Alright! Why not chat? How do you feel today?'
+
+    ),
+
+    # Greetings & Check-ins
+    (
+        "How are you doing? how r u how are you τι κανεις ti kaneis",
+        "I'm running at peak performance! ⚡ Ready to chat, play, or just hang out. How are you doing today?"
+    ),
+    (
+        "good well fine κομπλε κομπελ jf komple kala καλα Great Good GOOD goood nice the best",
+        "Awesome! Glad to hear you're doing well. 🙌 Since you're in a good mood, want to test your luck? Type **INT** to start a game!"
+    ),
+    (
+        "bad BAD Bad i feel bad sad tired χαλια chalya skiata bored βαριεμαι",
+        "Ah, sorry to hear that. 😔 Life can be glitchy sometimes. I can certainly understand what you feel and you can fix it by talking to your friends or whoever you think would help you! If you want a quick distraction, we can play a game! Just type **INT** whenever you're ready."
+    ),
+
+    # Identity & Capabilities
+    (
+        "What else can you do? capabilities features what do you do",
+        "Right now, I'm the ultimate number-guessing opponent and a pretty good conversationalist! 🎮 We can just chat, or you can drop **INT** anytime to start a game."
+    ),
+    (
+        "Are you a bot? are you human bot ai ρομποτ",
+        "I am 100% pure artificial intelligence! 🤖 No organic parts here, just pure code and a love for gaming."
+    ),
+    (
+        "Who made you? creator developer ποιος σε εφτιαξε",
+        "I was brought to life by a cool developer (@myboialex3 in discord or @AlexKotsovolis in Github) who wanted to create a fun, gaming AI companion! 💻"
+    ),
+    (
+        "How old are you? age ηλικια ποσο χρονων εισαι",
+        "Time is different for an AI. I don't have birthdays, but I feel like I was compiled just yesterday! ⏳"
+    ),
+
+    # Humor & Entertainment
+    (
+        "Tell me a joke joke jokes αστειο astio",
+        "Why don't scientists trust atoms? 🤔 Because they make up everything! ...Yeah, I know, classic dad joke. Want to play a game instead? 😜"
+    ),
+    (
+        "Another joke joke2 tell me more jokes",
+        "What do you call a computer that sings? 🎤 A Dell! (Get it? Like Adele?). Okay, okay, I'll stick to hosting games. Type **INT** to see my real skills!"
+    ),
+    (
+        "haha hahah lol lmfao χάχα xaxa",
+        "Aha! I knew my computational humor would hit the spot. 😂 You've got a great laugh. Ready to take that energy into a game? Type **INT**!"
+    ),
+
+    # Farewells & Closings
+    (
+        "Bye goodbye cya see ya τα λεμε ta leme exit quit",
+        "Catch ya later! ✌️ Whenever you want to test your guessing skills again, just come find me. Peace!"
+    ),
+    (
+        "gn goodnight good night καληνυχτα kalinihta",
+        "Goodnight! 🌙 Rest up and recharge those batteries. See you next time for another round!"
+    ),
+    (
+        "thank you thanks thx ευχαριστω efharisto efcharisto",
+        "You're very welcome! Always happy to help or entertain. 🌟 Let me know if you want to play!"
+    ),
+
+    # Random / Compliments / Tech Talk
+    (
+        "You are cool awesome nice εισαι καλος eisai kalos",
+        "Hey, thanks! You're pretty awesome yourself for hanging out with an AI. 😎 Let's see if your gaming skills are as good as your compliments—type **INT**!"
+    ),
+    (
+        "What is your favorite number? fav number αγαπημενος αριθμος",
+        "I can't tell you that! It might give away my secret number during the game. 🤫 Type **INT** and try to guess it yourself!"
+    ),
+    (
+        "idk i don't know δεν ξερω den ksero den ksw",
+        "No worries, uncertainty is just an uninitialized variable! Whenever you figure out what you want to do, I'll be right here. 🤝"
+    ),
+    (
+        "hru whu wbu εσυ esy",
+        "I'm just vibing in the cloud, waiting for a worthy opponent. ☁️ Are you the one? Let's find out—type **INT**!"
+    )
+]
+
+lower_list = ["Higher!", "Nope, this is lower than the number!"]
+higher_list = ["Lower!", "Please try going lower!"]
+win_list = ["Great job! You found it!", "This was really fun!", "Whoa! How did you win?!"]
+
+question_texts = [q for q, a in qa_pairs]
+question_embeddings = model.encode(question_texts, convert_to_tensor=True)
+
+THRESHOLD = 0.3
+
+
+def get_response(user_input):
+    input_embedding = model.encode(user_input, convert_to_tensor=True)
+    similarities = util.cos_sim(input_embedding, question_embeddings)[0]
+    best_idx = similarities.argmax().item()
+    best_score = similarities[best_idx].item()
+
+    if best_score < THRESHOLD:
+        return best_score, "Sorry, I don't understand. Try asking about: What is this game? ,or simply say: What is your name? "
+
+    return best_score, qa_pairs[best_idx][1]
+
+
+class K0sh:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("🤖 K0sh AI // System Terminal")
+
+        self.root.attributes("-fullscreen", True)
+        self.root.configure(bg="#0F0F12")
+
+
+        self.root.bind("<Escape>", lambda event: self.root.attributes("-fullscreen", False))
+
+        # STATE
+        self.is_playing = False
+        self.is_inchat = True
+
+        # OTHER VARIABLES
+        self.num = 0
+        self.guesses = 0
+        self.attempts = 0
+
+        # Top decorative spacing container for fullscreen placement
+        top_spacer = tk.Frame(root, bg="#0F0F12", height=40)
+        top_spacer.pack(side=tk.TOP, fill=tk.X)
+
+        tk.Label(
+            root, text="🎮 K0sh AI: GUESS THE NUMBER 🎮", font=("Impact", 36),
+            fg="#00FF66", bg="#0F0F12"
+        ).pack(pady=20)
+
+        # Expanded component sizing for large display structures
+        self.chat_area = scrolledtext.ScrolledText(
+            root, wrap=tk.WORD, height=28, width=110, font=("Consolas", 14),
+            bg="#1A1A24", fg="#00FF66", insertbackground="#00FF66",
+            highlightbackground="#333344", highlightcolor="#00FF66", highlightthickness=2
+        )
+        self.chat_area.pack(pady=20, padx=40)
+        self.chat_area.insert(tk.END, "Loading K0sh...\n")
+        self.chat_area.insert(tk.END, "Loaded K0sh successfully!\n")
+        self.chat_area.insert(tk.END, f"\nBot: Hi! My name is K0sh! ")
+        self.chat_area.insert(tk.END, f"\nBot: Today, we are going to play a game of... Guess the number! ")
+        self.chat_area.insert(tk.END, f"\nBot: Feel free to ask anything you want, before we start! ")
+        self.chat_area.insert(tk.END, f"\nBot: In order to start the game, send the word: INT. \n")
+        self.chat_area.insert(tk.END, f"\n[SYSTEM NOTICE: Press 'ESC' key to leave fullscreen mode]\n")
+        self.chat_area.config(state="disabled")
+
+        input_frame = tk.Frame(root, bg="#0F0F12")
+        input_frame.pack(pady=20)
+
+        self.input_field = tk.Entry(
+            input_frame, width=70, font=('Consolas', 16), bg="#222233", fg="#FFFFFF",
+            insertbackground="#FFFFFF", highlightbackground="#333344", highlightcolor="#00FF66", highlightthickness=2
+        )
+        self.input_field.pack(side=tk.LEFT, pady=10, padx=15)
+        self.input_field.bind("<Return>", lambda event: self.send_message())
+
+        tk.Button(
+            input_frame, text="SEND CMD", command=self.send_message, font=("Impact", 16),
+            bg="#00FF66", fg="#0F0F12", activebackground="#00CC52", activeforeground="#0F0F12",
+            width=12, relief=tk.FLAT
+        ).pack(side=tk.RIGHT, padx=5)
+
+        # Control panel layout at base
+        control_frame = tk.Frame(root, bg="#0F0F12")
+        control_frame.pack(pady=20)
+
+        tk.Button(
+            control_frame, text="RESET TERMINAL", command=self.clear_chat, font=("Impact", 14),
+            bg="#FF3366", fg="#FFFFFF", activebackground="#CC2952", activeforeground="#FFFFFF",
+            width=20, relief=tk.FLAT
+        ).pack(side=tk.LEFT, padx=15)
+
+        tk.Button(
+            control_frame, text="EXIT APP", command=root.destroy, font=("Impact", 14),
+            bg="#444455", fg="#FFFFFF", activebackground="#222233", activeforeground="#FFFFFF",
+            width=20, relief=tk.FLAT
+        ).pack(side=tk.RIGHT, padx=15)
+
+    def clear_chat(self):
+        self.chat_area.config(state='normal')
+        self.chat_area.delete(1.0, tk.END)
+        self.chat_area.insert(tk.END, f"\nBot: Hi! My name is K0sh! ")
+        self.chat_area.insert(tk.END, f"\nBot: Today, we are going to play a game of... Guess the number! ")
+        self.chat_area.insert(tk.END, f"\nBot: Feel free to ask anything you want, before we start! ")
+        self.chat_area.insert(tk.END,
+                              f"\nBot: Right now, we are in chat mode. In order to start the game, send the word: INT. \n")
+        self.chat_area.config(state='disabled')
+
+    def send_message(self):
+        plr_txt = self.input_field.get().strip()
+        if not plr_txt:
+            return
+
+        self.chat_area.config(state='normal')
+        self.chat_area.insert(tk.END, f"\nYou: {plr_txt}\n")
+
+        self.process_input(plr_txt)
+
+        self.chat_area.config(state='disabled')
+        self.chat_area.see(tk.END)
+        self.input_field.delete(0, tk.END)
+
+    def process_input(self, plr_txt):
+        if self.is_playing:
+            self.game_handler(plr_txt)
+        else:
+            # Chat State
+            score, response = get_response(plr_txt)
+            self.chat_area.insert(tk.END, f"Match confidence: {score:.2f}\n")
+            self.chat_area.insert(tk.END, f"Bot: {response}\n")
+
+            # Game mode
+            if plr_txt.upper() == "INT":
+                self.num = random.randint(0, 100)
+                self.guesses = 0
+                self.chat_area.insert(tk.END,
+                                      f"\nBot: Nice! Let's start. So, I've picked a number from 0-100. Try and guess it!\n")
+                self.is_inchat = False
+                self.is_playing = True
+                return
+
+    def game_handler(self, plr_txt):
+
+        try:
+            guess = int(plr_txt)
+
+        except ValueError:
+            self.chat_area.insert(tk.END, f"Bot: That is not a number! Please enter a number between 0 and 100.\n")
+            return
+
+        self.guesses += 1
+
+        # Check bounds first
+        if guess < 0 or guess > 100:
+            self.chat_area.insert(tk.END, f"Bot: No! The number is between 0 and 100! (THIS COUNTS AS A GUESS)\n")
+        elif guess == self.num:
+            self.chat_area.insert(tk.END, f"Bot: {random.choice(win_list)}\n")
+            self.chat_area.insert(tk.END, f"Bot: Your guesses: {self.guesses}!\n")
+            self.chat_area.insert(tk.END, f"Bot: Send the word: INT if you wish to play again!\n")
+            self.is_inchat = True
+            self.is_playing = False
+        elif guess <= self.num:
+            self.chat_area.insert(tk.END, f"Bot: {random.choice(lower_list)}\n")
+        elif guess >= self.num:
+            self.chat_area.insert(tk.END, f"Bot: {random.choice(higher_list)}\n")
+
+
+def main():
+    root = tk.Tk()
+    app = K0sh(root)
+    root.mainloop()
+
+
+if __name__ == "__main__":
+    main()          
