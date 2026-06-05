@@ -27,7 +27,8 @@ An interactive desktop application that merges semantic AI conversation with a c
 
 ## Screenshot!
 
-<img width="598" height="726" alt="image" src="https://github.com/user-attachments/assets/9f77bd00-7ad9-4e8f-b736-1f4d057820c4" />
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/ef45107b-a5a5-48ac-98d4-dd4567e09a21" />
+
 
 
 
