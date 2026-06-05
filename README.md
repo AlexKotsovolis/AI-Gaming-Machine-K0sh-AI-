@@ -22,7 +22,13 @@ An interactive desktop application that merges semantic AI conversation with a c
 * **Sentence-Transformers** (Semantic search engine)
 * **PyTorch** (Underlying tensor computations)
 * **Tkinter** (Built-in Python GUI library)
+---
 
+## LICENCE
+
+This project is licensed under the MIT License. You are free to use, modify, distribute, and commercialize this software provided that the original copyright notice and license are included.
+
+© 2026 Alex Kotsovolis
 ---
 
 ## Screenshot!
