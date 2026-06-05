@@ -1,6 +1,6 @@
 # K0sh AI - Semantic Chat & Number Guessing Game 🤖🎮
 
-> **K0sh AI:** A casual, NLP-powered conversational chatbot and number-guessing game built with `SentenceTransformers` and `Tkinter`.
+> **K0sh AI:** A casual, NLP-powered conversational chatbot and number-guessing game, and rock-paper-scissors game, built with `SentenceTransformers` and `Tkinter`.
 
 An interactive desktop application that merges semantic AI conversation with a classic number-guessing game. Powered by a local natural language processing (NLP) model and packaged inside a clean, dark-themed GUI, K0sh understands user intent regardless of spelling, slang, or language variations (including Greek and Greeklish!).
 
@@ -46,16 +46,12 @@ The update log is basically a file here in github, where I will be updating the 
 ---
 
   --> Released K0sh AI.
+  
   --> Simple "Guess the number" and "Chat".
+  
   --> Simple GUI.
+  
   --> Kinda boring... :(
-
----
-
-# What's coming in the next version(s):
-
-  >New GUI
-  >New Games
 
 ---
 # Next Version: 0.2 : "ARCADE"
@@ -69,14 +65,21 @@ The update log is basically a file here in github, where I will be updating the 
   --> NOTICE: Hey everyone! I have decided (from now on) to keep every version here in github, if anyone would like to use previous versions (with of course more coming soon). I think it is really cool, so next update, you can choose which version you like the most!
   
 ---
-
-# Next Version: 0.3 : "One.. More.. Game!"
--Stay tuned for next update!
+# Version: 0.3 : "One.. More.. Game!"
 --- 
 
+  --> Introducing... Rock-Paper-Scissors!    (NEW GAME MODE)
 
+  --> Really simple, maybe buggy.
 
+  --> New messages.
+
+  --> Next update is gonna be FIRE
 ---
+# Next Version: 0.4: "Wait.. I know you!"
+-Sneak peak: Name, Simplified message
+---
+
 ## 🚀 Getting Started
 
 ### 1. Clone the Repository
