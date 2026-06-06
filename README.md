@@ -63,7 +63,7 @@ The update log is basically a file here in github, where I will be updating the 
 
 ---
 
-#VERSION 0.1 (RELEASE)
+## Version 0.1 (RELEASE)
 
 ---
 
@@ -76,7 +76,6 @@ The update log is basically a file here in github, where I will be updating the 
   --> Kinda boring... :(
 
 ---
-# Next Version: 0.2 : "ARCADE"
 ---
 
 
@@ -87,7 +86,7 @@ The update log is basically a file here in github, where I will be updating the 
   --> NOTICE: Hey everyone! I have decided (from now on) to keep every version here in github, if anyone would like to use previous versions (with of course more coming soon). I think it is really cool, so next update, you can choose which version you like the most!
   
 ---
-# Version: 0.3 : "One.. More.. Game!"
+## Version: 0.3 : "One.. More.. Game!"
 --- 
 
   --> Introducing... Rock-Paper-Scissors!    (NEW GAME MODE)
@@ -101,8 +100,25 @@ The update log is basically a file here in github, where I will be updating the 
   --> Kept old version's code, as promised.
 
 ---
-# Next Version: 0.4: "Wait.. I know you!"
--Sneak peak: Name, Simplified message
+## Version: 0.4: "Wait.. I know you!" (what even are these names really)
+---
+
+  --> Introducing our new feature... LOG-IN / PLAYER DATA!
+
+  --> New Point system!
+
+  --> New messages.
+
+  --> I have a headache...
+
+  --> Kept old version's code, as promised.
+
+  --> How it works: Make a new account (with a json which is already being made in the code), play, leave, rejoin, say your name and K0sh is going to know you know!
+
+---
+# Next Version: 0.5 "Another One."
+- I think you know what I am talking about. Also, I need to mention that this game is going to be kinda hard to code, and whilst having exams, this is going to take me a little long (sorry) !
+- 
 ---
 
 ## 🚀 Getting Started
