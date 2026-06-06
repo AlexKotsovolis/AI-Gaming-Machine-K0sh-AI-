@@ -61,9 +61,9 @@ For full terms, see the LICENSE file included in this repository.
 
 
 ---
-#UPDATE LOG
+## UPDATE LOG
 ---
-#What is the update log?
+## What is the update log?
 ---
 
 The update log is basically a file here in github, where I will be updating the text of the file, whenever a new version of K0sh or even of minor fixes/updates are posted. So, starting from now, 03/06/2026 i am releasing this log.
