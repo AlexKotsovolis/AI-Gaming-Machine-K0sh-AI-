@@ -83,8 +83,8 @@ The update log is basically a file here in github, where I will be updating the 
   --> Kinda boring... :(
 
 ---
+## Version 0.2: (REWORK)
 ---
-
 
   --> Reworked chat messages!
   
