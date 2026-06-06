@@ -1,6 +1,6 @@
 # K0sh AI - Semantic Chat & Gaming Machine! 🤖🎮
 
-> **K0sh AI:** A casual, NLP-powered conversational chatbot and number-guessing game, and rock-paper-scissors game, built with `SentenceTransformers`, `Tkinter` as well as `JSON`
+> **K0sh AI:** A casual, NLP-powered conversational chatbot and number-guessing game, and rock-paper-scissors game, built with `SentenceTransformers`, `Tkinter` as well as `JSON` and `Threading` (soon)
 
 An interactive desktop application that merges semantic AI conversation with a classic number-guessing game. Powered by a local natural language processing (NLP) model and packaged inside a clean, dark-themed GUI, K0sh understands user intent regardless of spelling, slang, or language variations (including Greek and Greeklish!).
 
@@ -127,7 +127,7 @@ The update log is basically a file here in github, where I will be updating the 
 ---
 # Next Version: 0.5 "Another One."
 - I think you know what I am talking about. Also, I need to mention that this game is going to be kinda hard to code, and whilst having exams, this is going to take me a little long (sorry) !
-- 
+- Threading
 ---
 
 ## 🚀 Getting Started
