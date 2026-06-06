@@ -126,8 +126,8 @@ The update log is basically a file here in github, where I will be updating the 
 
 ---
 # Next Version: 0.5 "Another One."
-- I think you know what I am talking about. Also, I need to mention that this game is going to be kinda hard to code, and whilst having exams, this is going to take me a little long (sorry) !
-- Threading
+- New game mode, will take some time.
+- Threading!
 ---
 
 ## 🚀 Getting Started
