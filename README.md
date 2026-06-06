@@ -48,7 +48,14 @@ For full terms, see the LICENSE file included in this repository.
 
 ## Screenshot!
 
+-> From VER. 0.3 & 0.2
+
 <img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/ef45107b-a5a5-48ac-98d4-dd4567e09a21" />
+
+
+-> From VER. 0.4: 
+
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/6fe7a8c8-7c8e-4e24-954d-babfdfa0c392" />
 
 
 
@@ -110,6 +117,8 @@ The update log is basically a file here in github, where I will be updating the 
   --> New messages.
 
   --> I have a headache...
+
+  --> New GUI, more professional-like and some gaming vibes! (It is going to change anytime soon, the GUI will never stay the same!)
 
   --> Kept old version's code, as promised.
 
