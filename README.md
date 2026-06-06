@@ -1,4 +1,4 @@
-# K0sh AI - Semantic Chat & Number Guessing Game 🤖🎮
+# K0sh AI - Semantic Chat & Gaming Machine! 🤖🎮
 
 > **K0sh AI:** A casual, NLP-powered conversational chatbot and number-guessing game, and rock-paper-scissors game, built with `SentenceTransformers` and `Tkinter`.
 
