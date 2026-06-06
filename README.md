@@ -123,11 +123,19 @@ The update log is basically a file here in github, where I will be updating the 
   --> Kept old version's code, as promised.
 
   --> How it works: Make a new account (with a json which is already being made in the code), play, leave, rejoin, say your name and K0sh is going to know you know!
+---
+## Version 0.4.1 : "Threading"
+---
 
+  --> Added threading, for a better experience.
+
+  --> Lagging? Not anymore! Threading is here.
+
+  --> Really small update, before version 0.5. 
+  
 ---
 # Next Version: 0.5 "Another One."
 - New game mode, will take some time.
-- Threading!
 ---
 
 ## 🚀 Getting Started
