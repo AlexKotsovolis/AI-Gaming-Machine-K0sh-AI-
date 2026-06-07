@@ -78,84 +78,88 @@ The update log is basically a file here in github, where I will be updating the 
 
 ---
 
-  --> Released K0sh AI.
+  - Released K0sh AI.
   
-  --> Simple "Guess the number" and "Chat".
+  - Simple "Guess the number" and "Chat".
   
-  --> Simple GUI.
+  - Simple GUI.
   
-  --> Kinda boring... :(
+  - Kinda boring... :(
 
 ---
 ## Version 0.2: (REWORK)
 ---
 
-  --> Reworked chat messages!
+  - Reworked chat messages!
   
-  --> Cool UI and design!  (Feel free to make suggestions if you want!)
+  - Cool UI and design!  (Feel free to make suggestions if you want!)
   
-  --> NOTICE: Hey everyone! I have decided (from now on) to keep every version here in github, if anyone would like to use previous versions (with of course more coming soon). I think it is really cool, so next update, you can choose which version you like the most!
+  - NOTICE: Hey everyone! I have decided (from now on) to keep every version here in github, if anyone would like to use previous versions (with of course more coming soon). I think it is really cool, so next update, you can choose which version you like the most!
   
 ---
 ## Version: 0.3 : "One.. More.. Game!"
 --- 
 
-  --> Introducing... Rock-Paper-Scissors!    (NEW GAME MODE)
+  - Introducing... Rock-Paper-Scissors!    (NEW GAME MODE)
 
-  --> Really simple, maybe buggy.
+  - Really simple, maybe buggy.
 
-  --> New messages.
+  - New messages.
 
-  --> Next update is gonna be FIRE
+  - Next update is gonna be FIRE
 
-  --> Kept old version's code, as promised.
+  - Kept old version's code, as promised.
 
 ---
 ## Version: 0.4: "Wait.. I know you!" (what even are these names really)
 ---
 
-  --> Introducing our new feature... LOG-IN / PLAYER DATA!
+  - Introducing our new feature... LOG-IN / PLAYER DATA!
 
-  --> New Point system!
+  - New Point system!
 
-  --> New messages.
+  - New messages.
 
-  --> I have a headache...
+  - I have a headache...
 
-  --> New GUI, more professional-like and some gaming vibes! (It is going to change anytime soon, the GUI will never stay the same!)
+  - New GUI, more professional-like and some gaming vibes! (It is going to change anytime soon, the GUI will never stay the same!)
 
-  --> Kept old version's code, as promised.
+  - Kept old version's code, as promised.
 
-  --> How it works: Make a new account (with a json which is already being made in the code), play, leave, rejoin, say your name and K0sh is going to know you know!
+  - How it works: Make a new account (with a json which is already being made in the code), play, leave, rejoin, say your name and K0sh is going to know you know!
 ---
 ## Version 0.4.1 : "Threading"
 ---
 
-  --> Added threading, for a better experience.
+  - Added threading, for a better experience.
 
-  --> Lagging? Not anymore! Threading is here.
+  - Lagging? Not anymore! Threading is here.
 
-  --> Really small update, before version 0.5. 
+  - Really small update, before version 0.5. 
   
 ---
 # Version: 0.5 "Another One."
 ---
 
-  --> Changed the GUI! (Scroll up to check the Image I pasted)
+  - Changed the GUI! (Scroll up to check the Image I pasted)
 
-  --> Added "Blackjack" game mode, which activates by sending the word "BLC", or "Blc", or even "blc"
+  - Added "Blackjack" game mode, which activates by sending the word "BLC", or "Blc", or even "blc"
 
-  --> Kept previous version's code, as promised
+  - Kept previous version's code, as promised
 
-  --> PLEASE NOTICE: This new game mode is not meant for MISUING (gambling), it is just for fun, and a way to spend time with your friend K0sh!
+  - PLEASE NOTICE: This new game mode is not meant for MISUING (gambling), it is just for fun, and a way to spend time with your friend K0sh!
 
-  --> I will run out of ideas sometime, so please give me recommendations 🙏
+  - I will run out of ideas sometime, so please give me recommendations 🙏
 
 ---
-# Next Version: 0.5.1 ("V.0.5, but enhanced GUI)
-- Cool animations :)
+# Version: 0.5.1 ("V.0.5, but enhanced GUI)
 ---
 
+  - Really small update, but I added typewriter animations.
+
+  - New message added, now you can ask K0sh for the latest updates.
+
+---
 
 ## 🚀 Getting Started
 
