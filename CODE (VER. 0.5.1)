@@ -555,8 +555,7 @@ class K0sh:
             msg = f"\nBot: You hit and rolled a {self.inter}! Total points: {self.Black_jack_Score}.\n"
 
             if self.Black_jack_Score > self.perfect:
-                self.safe_append_chat(msg)
-                self.evaluate_results()
+                self.evaluate_results(prefix_msg=msg)
                 return
 
             if self.Black_jack_bot_Score < 16:
@@ -565,11 +564,12 @@ class K0sh:
             else:
                 msg += f"Bot: I chose to stand with my current points.\n"
 
-            self.safe_append_chat(msg)
-
             if self.Black_jack_bot_Score > self.perfect:
-                self.evaluate_results()
+                self.evaluate_results(prefix_msg=msg)
                 return
+
+            self.safe_append_chat(msg)
+            return
 
         elif guess3 == "stand":
             msg = f"\nBot: You decided to stay with a score of: {self.Black_jack_Score}\n"
@@ -578,15 +578,14 @@ class K0sh:
                 self.bot_hit()
                 msg += f"Bot: I hit to catch up! I rolled a {self.inter} (Total: {self.Black_jack_bot_Score}).\n"
 
-            self.safe_append_chat(msg)
-            self.evaluate_results()
+            self.evaluate_results(prefix_msg=msg)
             return
         else:
             self.safe_append_chat(f"\nBot: Invalid move! Please type 'hit' or 'stand' to continue playing.\n")
             return
 
-    def evaluate_results(self):
-        msg = f"\nBot: Let's check our final scores! My score: --{self.Black_jack_bot_Score}-- vs Your score: --{self.Black_jack_Score}--.\n"
+    def evaluate_results(self, prefix_msg=""):
+        msg = prefix_msg + f"\nBot: Let's check our final scores! My score: --{self.Black_jack_bot_Score}-- vs Your score: --{self.Black_jack_Score}--.\n"
 
         if self.Black_jack_Score > self.perfect:
             msg += f"Bot: You exceeded 21 and busted! You lost 50 points. 💀\n"
@@ -641,7 +640,6 @@ class K0sh:
             self.chat_area.insert(tk.END, message[index])
             self.chat_area.config(state='disabled')
             self.chat_area.see(tk.END)
-
 
             self.root.after(10, lambda: self._typewriter_stream(message, index + 1))
 
