@@ -57,6 +57,10 @@ For full terms, see the LICENSE file included in this repository.
 
 <img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/6fe7a8c8-7c8e-4e24-954d-babfdfa0c392" />
 
+-> From VER. 0.5:
+
+<img width="1919" height="1078" alt="image" src="https://github.com/user-attachments/assets/f3a56129-3732-4a05-a5eb-18c0804ee4be" />
+
 
 
 
@@ -134,9 +138,24 @@ The update log is basically a file here in github, where I will be updating the 
   --> Really small update, before version 0.5. 
   
 ---
-# Next Version: 0.5 "Another One."
-- New game mode, will take some time.
+# Version: 0.5 "Another One."
 ---
+
+  --> Changed the GUI! (Scroll up to check the Image I pasted)
+
+  --> Added "Blackjack" game mode, which activates by sending the word "BLC", or "Blc", or even "blc"
+
+  --> Kept previous version's code, as promised
+
+  --> PLEASE NOTICE: This new game mode is not meant for MISUING (gambling), it is just for fun, and a way to spend time with your friend K0sh!
+
+  --> I will run out of ideas sometime, so please give me recommendations 🙏
+
+---
+# Next Version: 0.5.1 ("V.0.5, but enhanced GUI)
+- Cool animations :)
+---
+
 
 ## 🚀 Getting Started
 
