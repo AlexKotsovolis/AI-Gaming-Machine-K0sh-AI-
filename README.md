@@ -160,6 +160,8 @@ The update log is basically a file here in github, where I will be updating the 
   - New message added, now you can ask K0sh for the latest updates.
 
 ---
+# Version 0.6: "???"
+---
 
 ## 🚀 Getting Started
 
