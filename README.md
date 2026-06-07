@@ -159,6 +159,10 @@ The update log is basically a file here in github, where I will be updating the 
 
   - New message added, now you can ask K0sh for the latest updates.
 
+  - Fixed Core Bugs on Version 0.5.1, today's version, because the typewriter update is a little buggy.
+
+  - I am really sorry if you find any bugs, I will try to fix them ASAP.
+
 ---
 # Version 0.6: "???"
 ---
