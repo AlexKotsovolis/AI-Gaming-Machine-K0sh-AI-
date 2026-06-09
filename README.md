@@ -53,13 +53,15 @@ For full terms, see the LICENSE file included in this repository.
 <img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/ef45107b-a5a5-48ac-98d4-dd4567e09a21" />
 
 
--> From VER. 0.4: 
+-> From VER. 0.4 + 0.4.1: 
 
 <img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/6fe7a8c8-7c8e-4e24-954d-babfdfa0c392" />
 
--> From VER. 0.5:
+-> From VER. 0.5 + 0.5.1:
 
 <img width="1919" height="1078" alt="image" src="https://github.com/user-attachments/assets/f3a56129-3732-4a05-a5eb-18c0804ee4be" />
+
+-> From VER. 0.5.2
 
 
 
@@ -162,6 +164,16 @@ The update log is basically a file here in github, where I will be updating the 
   - Fixed Core Bugs on Version 0.5.1, today's version, because the typewriter update is a little buggy.
 
   - I am really sorry if you find any bugs, I will try to fix them ASAP.
+
+---
+## Version 0.5.2: "Multilingual"
+---
+
+  - K0sh AI now supports multiple languages! (Depending on which language you talk to him)
+
+  - Please notice that there are still bugs in the program, and I am trying to find a solution for all of them.
+
+  - Next Update coming in 1-2 weeks! (Sorry for the wait)
 
 ---
 # Version 0.6: "???"
