@@ -2,7 +2,7 @@
 
 > **K0sh AI:** A casual, NLP-powered conversational chatbot and number-guessing game, and rock-paper-scissors game, built with `SentenceTransformers`, `Tkinter` as well as `JSON` and `Threading` 
 
-An interactive desktop application that merges semantic AI conversation with a classic number-guessing game. Powered by a local natural language processing (NLP) model and packaged inside a clean, dark-themed GUI, K0sh understands user intent regardless of spelling, slang, or language variations (including Greek and Greeklish!).
+An interactive desktop application that merges semantic AI conversation with a classic number-guessing game. Powered by a local natural language processing (NLP) model and packaged inside a clean, gaming-like and stylish GUI. K0sh understands user intent regardless of spelling, slang, or language variations (including Greek and Greeklish!).
 
 ---
 
