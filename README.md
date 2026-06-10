@@ -57,11 +57,10 @@ For full terms, see the LICENSE file included in this repository.
 
 <img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/6fe7a8c8-7c8e-4e24-954d-babfdfa0c392" />
 
--> From VER. 0.5 + 0.5.1:
+-> From VER. 0.5 + 0.5.1 + 0.5.2 + 0.5.3:
 
 <img width="1919" height="1078" alt="image" src="https://github.com/user-attachments/assets/f3a56129-3732-4a05-a5eb-18c0804ee4be" />
 
--> From VER. 0.5.2
 
 
 
