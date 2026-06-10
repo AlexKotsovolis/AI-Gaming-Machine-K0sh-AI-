@@ -221,3 +221,6 @@ When you are ready, type INT into the chat box to initialize the game loop.
 K0sh will lock in a hidden number between 0 and 100.
 
 Submit your numeric guesses. K0sh will guide you with dynamic alerts (Higher!, Lower!) until you strike the winning match!
+```
+
+LINE COUNTER: 901 (VER. 0.5.3)
