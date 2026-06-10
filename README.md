@@ -165,6 +165,8 @@ The update log is basically a file here in github, where I will be updating the 
 
   - I am really sorry if you find any bugs, I will try to fix them ASAP.
 
+  - - Kept previous version's code, as promised.
+
 ---
 ## Version 0.5.2: "Multilingual"
 ---
@@ -175,6 +177,22 @@ The update log is basically a file here in github, where I will be updating the 
 
   - Next Update coming in 1-2 weeks! (Sorry for the wait)
 
+  - Kept previous version's code, as promised.
+
+---
+## Version 0.5.3: "QOL fixes!"
+---
+
+  - Hey everyone! I recently noticed that there was a massive bug and basically, when K0sh is answering, you could send something, thus breaking the entire answer.
+
+  - For this reason, I decided to fix it, and enhance the q_a pairs, so that you can communicate more efficiently with K0sh.
+
+  - Generally minor QOL changes.
+
+  - Kept previous version's code, as promised.
+
+  - Thanks for starring!
+    
 ---
 # Version 0.6: "???"
 ---
