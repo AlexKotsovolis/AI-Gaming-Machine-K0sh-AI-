@@ -288,7 +288,9 @@ WE FINALLY HIT 1K LINES!
 ---
 ### Next Version: (Coming soon!)
   Plans on what I am going to add in the future:
+  
     - Achievements to users. For example: "You won your first game!". Those will be accessible in the .json file, where your name is and you can see it by asking K0sh for your achievements.
+    
     - More, which I am not saying because I will spoil the next update.
 ---
 
