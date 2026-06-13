@@ -277,5 +277,7 @@ Please notice that there are still bugs in the program, and I am trying to find 
 Sorry for the wait!
 
 ---
+### Next Version: (Coming soon!)
+---
 
 `LINE COUNTER: 1008 (VER. 0.6.0)`
