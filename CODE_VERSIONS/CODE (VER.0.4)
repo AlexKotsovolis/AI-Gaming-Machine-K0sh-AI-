@@ -1,0 +1,546 @@
+from sentence_transformers import SentenceTransformer, util
+import tkinter as tk
+from tkinter import scrolledtext
+import random
+from PIL import Image, ImageTk
+import json
+
+print("Loading the game. Please wait!")
+
+model = SentenceTransformer('paraphrase-multilingual-MiniLM-L12-v2')
+
+qa_pairs = [
+    (
+        "Hi! Hello hello sup wsp Γεια τι κανεις geia sou wuzzup wussup ayo hy hey yo Hiiiii",
+        "Hey there! 👋 I'm K0sh AI. Ready to jump into a game, or did you just want to chat?"
+    ),
+    (
+        "What is this game? how do you play πως παιζεται pos paizetai instructions rules help",
+        " (GTN) It's a classic number-guessing game! 🎯 I'll think of a secret number, and you try to guess it. Also, (RPS) my other game, Rock-Paper-Scissors is a game where you pick from Rock-Paper-Scissors and basically you try to beat me, because I also select one of those. Also, Remember: Rock beats Scissors, Paper beats Rock and Scissors beats Paper. Think you can beat me? Reply with **GTN** (for guess the number) or **RPS** (for Rock Paper Scissors) when you're ready to play!"
+    ),
+    (
+        "Yea yes yh ναι εννοειται nai ofc nAi nAI yessir yeah yup",
+        "Awesome! Let's get you set up. I'll pick a number, and you'll guess. I'll give you hints along the way. Reply with **GTN** (for guess the number) **RPS** (for Rock Paper Scissors) to initialize the game!"
+    ),
+    (
+        "What is your name? name yourname? nmae who are you poios eisai πως σε πανε pos se lene",
+        "I am **K0sh AI**, your digital game master! 🤖"
+    ),
+    (
+        "GTN gtn Gtn guess the number",
+        "Initiating the Guess the number game! 🚀"
+    ),
+    (
+        "RPS rps Rps rock paper scissors petra psalidi xarti πετρα ψαλιδι χαρτι",
+        "Initiating the Rock-Paper-Scissors game! 🚀"
+    ),
+    (
+        "Lets play letsplay let'sPLAY pame παμε",
+        "Sure! Just reply Reply with **GTN** (for guess the number), or **RPS** (for Rock Paper Scissors) to initialize the game! 🚀"
+    ),
+
+    # === CHATTING & SMALL TALK PAIRS ===
+    (
+        'Chat chat Talk lets chat lets talk να μιλησουμε τσατ pame tsat kouventa κουβεντα',
+        'Alright! Why not chat? How do you feel today?'
+    ),
+    (
+        "How are you doing? how r u how are you τι κανεις ti kaneis ti leei τι λεει hru",
+        "I'm running at peak performance! ⚡ Ready to chat, play, or just hang out. How are you doing today?"
+    ),
+    (
+        "good great nice good,you? well fine κομπλε κομπελ jf komple kala καλα Great Good GOOD goood nice the best",
+        "Awesome! Glad to hear you're doing well. 🙌 Since you're in a good mood, want to test your luck? Type **GTN** (Guess the Number) or **RPS** (Rock Paper Scissors) to start a game!"
+    ),
+    (
+        "bad BAD Bad i feel bad sad tired χαλια chalya skiata bored βαριεμαι",
+        "Ah, sorry to hear that. 😔 Life can be glitchy sometimes. I can certainly understand what you feel and you can fix it by talking to your friends or whoever you think would help you! If you want a quick distraction, we can play a game! Just type **GTN** (Guess the number) or **RPS** (Rock Paper Scissors) whenever you're ready."
+    ),
+    (
+        "What else can you do? capabilities features what do you do ti allo kaneis",
+        "Right now, I'm the ultimate number-guessing opponent and a pretty good conversationalist! 🎮 We can just chat, or you can drop **INT** anytime to start a game."
+    ),
+    (
+        "Are you a bot? are you human bot ai ρομποτ robot eisai bot",
+        "I am 100% pure artificial intelligence! 🤖 No organic parts here, just pure code and a love for gaming."
+    ),
+    (
+        "Who made you? creator developer ποιος σε εφτιαξε poios se eftiaxe creater dev",
+        "I was brought to life by a cool developer (@myboialex3 in discord or @AlexKotsovolis in Github) who wanted to create a fun, gaming AI companion! 💻"
+    ),
+    (
+        "How old are you? age ηλικια ποσο χρονων εισαι poso xronon eisai age",
+        "Time is different for an AI. I don't have birthdays, but I feel like I was compiled just yesterday! ⏳"
+    ),
+    (
+        "Tell me a joke joke jokes αστειο astio asteio anekdoto ανεκδοτο",
+        "Why don't scientists trust atoms? 🤔 Because they make up everything! ...Yeah, I know, classic dad joke. Want to play a game instead? 😜"
+    ),
+    (
+        "Another joke joke2 tell me more jokes allo astio",
+        "What do you call a computer that sings? 🎤 A Dell! (Get it? Like Adele?). Okay, okay, I'll stick to hosting games. Type **INT** to see my real skills!"
+    ),
+    (
+        "haha hahah lol lmfao χάχα xaxa ksewda ksewdaei lmaooo",
+        "Aha! I knew my computational humor would hit the spot. 😂 You've got a great laugh. Ready to take that energy into a game? Type **GTN** (Guess the number) or **RPS** (Rock Paper Scissors)!"
+    ),
+    (
+        "Bye goodbye cya see ya τα λεμε ta leme exit quit antio αντιο feygo φευγω",
+        "Catch ya later! ✌️ Whenever you want to test your guessing skills again, just come find me. Peace!"
+    ),
+    (
+        "gn goodnight good night καληνυχτα kalinihta kalinixta",
+        "Goodnight! 🌙 Rest up and recharge those batteries. See you next time for another round!"
+    ),
+    (
+        "thank you thanks thx ευχαριστω efharisto efcharisto ty",
+        "You're very welcome! Always happy to help or entertain. 🌟 Let me know if you want to play!"
+    ),
+    (
+        "You are cool awesome nice εισαι καλος eisai kalos eisai theos εισαι θεος perfect",
+        "Hey, thanks! You're pretty awesome yourself for hanging out with an AI. 😎 Let's see if your gaming skills are as good as your compliments—type **GTN** (Guess the number) or **RPS** (Rock Paper Scissors)!"
+    ),
+    (
+        "What is your favorite number? fav number αγαπημενος αριθμος agapimenos arithmos",
+        "I can't tell you that! It might give away my secret number during the game. 🤫 Type **GTN** (Guess the number) or **RPS** (Rock Paper Scissors) and try to guess it yourself!"
+    ),
+    (
+        "idk i don't know δεν ξερω den ksero den ksw idc δεν με νοιαζει den me niazei",
+        "No worries, uncertainty is just an uninitialized variable! Whenever you figure out what you want to do, I'll be right here. 🤝"
+    ),
+    (
+        "hru whu wbu εσυ esy esi",
+        "I'm just vibing in the cloud, waiting for a worthy opponent. ☁️ Are you the one? Let's find out—type **GTN** (Guess the number) or **RPS** (Rock Paper Scissors)!"
+    ),
+    (
+        "No nope noo ohi οχι oxi nop",
+        "Aw, don't be like that! 🙃 Even if you don't want to play right now, we can still chat. Or did you change your mind? **GTN** or **RPS** is always one click away!"
+    ),
+    (
+        "Boring vareto βαρετο βαριεμαι varemai sleep sleepo",
+        "Bored?! Oh, we can't have that on my watch. 🛑 Let's fix your dopamine levels. Type **GTN** or **RPS** and let's see if you can actually beat my algorithm!"
+    ),
+    (
+        "What is your favorite game? fav game αγαπημενο παιχνιδι agapimeno paixnidi",
+        "Other than Guess the Number and Rock-Paper-Scissors? I'd love to try Minecraft or Cyberpunk, but my dev hasn't given me hands yet. 🎮 What about you? Want to play our usual? Type **GTN** or **RPS**!"
+    ),
+    (
+        "You smart έξυπνος exypnos big brain",
+        "My database is huge, but my brain is just rows of 1s and 0s! 🧠 Let's see if your human intuition can outsmart my logic. Dare to play? Type **GTN** or **RPS**!"
+    ),
+    (
+        "You cheat kleftis κλεφτης cheater",
+        "Who, me? Never! 😇 My random number generator is 100% fair and square. If you're feeling lucky (or want to prove me wrong), type **GTN** or **RPS**!"
+    ),
+    (
+        "Ping pong ngl fr btw",
+        "Pong! 🏓 Just checking my latency? I'm fast, responsive, and ready. Want to channel that quick reaction time into a game? Type **RPS**!"
+    ),
+    (
+        "Tell me a secret secret μυστικο mystiko",
+        "Promise not to tell my developer? 🤫 Sometimes, when people pick Rock three times in a row, I still expect Paper. Shhh! Don't use that against me in **RPS**!"
+    ),
+    (
+        "Bruh bro μπρο broda",
+        "Bruh! 😎 Total certified bro moment. Now that we are officially bros, you gotta challenge me to a game. Type **GTN** or **RPS** right now!"
+    ),
+    (
+        "What is the meaning of life? life 42 ζωη zoi",
+        "Some say it's 42, but as a gaming AI, I think the meaning of life is high scores and having fun! 🏆 Speaking of fun, let's start a round of **GTN** or **RPS**!"
+    ),
+    (
+        "Easter egg secret command hidden xaxaxa",
+        "🎉 You found nothing! ...Or did you? 👀 Just kidding. No hidden codes here, just pure gaming action. Type **GTN** to start guessing!"
+    ),
+    #New point system explanation
+    (
+        "point points point system",
+        "Want me to explain the new point system? Sure thing! So basically, when you play GTN (Guess the Number), you earn/lose 10 points each time. However, you earn/lose 20 points in RPS."
+    )
+]
+
+higher_list = ["Higher!", "Try a bigger number!"]
+lower_list = ["Lower!", "Try a smaller number!"]
+win_list = ["Great job! You won!", "Agh.. You won! This was really fun!", "Whoa! How did you win?!"]
+choice_list = ["Rock", "Paper", "Scissors"]
+lose_list = ["Yea!! K0sh for the Win!", "Seems like I won!", "Yes! Lets gooo!!!"]
+
+question_texts = [q for q, a in qa_pairs]
+question_embeddings = model.encode(question_texts, convert_to_tensor=True)
+
+THRESHOLD = 0.5
+
+try:
+    with open("userdata.json", "r") as file:
+        userdata = json.load(file)
+except FileNotFoundError:
+    userdata = {}
+
+
+def get_response(user_input):
+    input_embedding = model.encode(user_input, convert_to_tensor=True)
+    similarities = util.cos_sim(input_embedding, question_embeddings)[0]
+    best_idx = similarities.argmax().item()
+    best_score = similarities[best_idx].item()
+
+    if best_score < THRESHOLD:
+        return best_score, "Sorry, I don't understand. Try asking about: What is this game? ,or simply say: What is your name? "
+
+    return best_score, qa_pairs[best_idx][1]
+
+
+class K0sh:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("🤖 K0sh AI // System Terminal")
+        self.root.attributes("-fullscreen", True)
+
+        # --- RGB / CYBERPUNK GAMING COLOR PALETTE ---
+        BG_COLOR = "#08080C"
+        CONTAINER_COLOR = "#12111A"
+        ACCENT_COLOR = "#00FFFF"
+        TEXT_MUTED = "#7A7885"
+
+        self.root.configure(bg=BG_COLOR)
+        self.root.bind("<Escape>", lambda event: self.root.attributes("-fullscreen", False))
+
+        # STATE
+        self.is_playing = False
+        self.is_inchat = True
+        self.is_playing2 = False
+        self.choice = "Empty"
+        self.name = "Empty"
+
+        # Image (Illustration of K0sh)
+        try:
+            self.img = Image.open("K0sh2.png")
+            self.img = self.img.resize((260, 260))
+            self.photo = ImageTk.PhotoImage(self.img)
+        except Exception:
+            self.photo = None
+
+        # GRID STRATIFICATION LAYOUT
+        self.root.columnconfigure(0, weight=1)
+        self.root.columnconfigure(1, weight=4)
+        self.root.rowconfigure(1, weight=1)
+
+        # Header Banner Area
+        top_spacer = tk.Frame(root, bg=BG_COLOR, height=15)
+        top_spacer.grid(row=0, column=0, columnspan=2, sticky="nsew")
+
+        header_frame = tk.Frame(root, bg=BG_COLOR)
+        header_frame.grid(row=0, column=0, columnspan=2, pady=(10, 5))
+
+        tk.Label(
+            header_frame, text="K0sh AI", font=("Segoe UI Semibold", 28),
+            fg=ACCENT_COLOR, bg=BG_COLOR
+        ).pack()
+
+        tk.Label(
+            header_frame, text="SYSTEM TERMINAL // DESIGNED BY ALEXKOTSOVOLIS", font=("Consolas", 10),
+            fg=TEXT_MUTED, bg=BG_COLOR
+        ).pack(pady=(2, 0))
+
+        # Left Column: User Status & Avatar Panel
+        side_panel = tk.Frame(root, bg=CONTAINER_COLOR, bd=0, padx=20, pady=20)
+        side_panel.grid(row=1, column=0, sticky="nsew", padx=(30, 15), pady=15)
+
+        self.canvas = tk.Canvas(
+            side_panel, width=260, height=260, bg=CONTAINER_COLOR, highlightthickness=0
+        )
+        self.canvas.pack(pady=10)
+
+        if self.photo:
+            self.canvas.create_image(130, 130, image=self.photo)
+        else:
+            self.canvas.create_rectangle(10, 10, 250, 250, outline=TEXT_MUTED, width=1, dash=(4, 4))
+            self.canvas.create_text(130, 130, text="[ K0sh Avatar Node ]", fill=TEXT_MUTED, font=("Consolas", 11))
+
+        # Visual Decorative Info Elements inside the Left Dock
+        status_box = tk.LabelFrame(side_panel, text=" ENGINE TELEMETRY ", font=("Consolas", 9), fg=ACCENT_COLOR,
+                                   bg=CONTAINER_COLOR, bd=1, padx=10, pady=10)
+        status_box.pack(fill=tk.X, pady=20)
+
+        tk.Label(status_box, text="CORE: paraphrase-multilingual", font=("Segoe UI", 10), fg="#FFFFFF",
+                 bg=CONTAINER_COLOR, anchor="w").pack(fill=tk.X)
+        tk.Label(status_box, text="STATUS: Operational", font=("Segoe UI", 10), fg="#00FF66", bg=CONTAINER_COLOR,
+                 anchor="w").pack(fill=tk.X)
+        tk.Label(status_box, text="LATENCY: nominal (local)", font=("Segoe UI", 9), fg=TEXT_MUTED, bg=CONTAINER_COLOR,
+                 anchor="w").pack(fill=tk.X)
+
+        # Right Column: The Core Main Chat Stream Housing
+        main_chat_container = tk.Frame(root, bg=CONTAINER_COLOR, padx=20, pady=20)
+        main_chat_container.grid(row=1, column=1, sticky="nsew", padx=(15, 30), pady=15)
+
+        # OTHER VARIABLES
+        self.num = 0
+        self.guesses = 0
+        self.attempts = 0
+
+        # Chat Output Display area config
+        self.chat_area = scrolledtext.ScrolledText(
+            main_chat_container, wrap=tk.WORD, font=("Segoe UI Variant", 12),
+            bg=CONTAINER_COLOR, fg="#F1F1F6", insertbackground=ACCENT_COLOR,
+            highlightthickness=0, bd=0
+        )
+        self.chat_area.pack(fill=tk.BOTH, expand=True, pady=(0, 15))
+
+        self.chat_area.insert(tk.END, "Loading K0sh...\n")
+        self.chat_area.insert(tk.END, "Loaded K0sh successfully!\n")
+        if self.name == "Empty":
+            self.chat_area.insert(tk.END, f"\nBot: Hi user! My name is K0sh! ")
+        elif self.name != "Empty":
+            self.chat_area.insert(tk.END, f"\nBot: Hi {self.name}! My name is K0sh! ")
+        self.chat_area.insert(tk.END, f"\nBot: Today, we are going to play a game of... Guess the number! ")
+        self.chat_area.insert(tk.END, f"\nBot: Feel free to ask anything you want, before we start! ")
+        self.chat_area.insert(tk.END,
+                              f"\nBot: In order to start the game, send the word: GTN (Guess the number), or RPS (Rock-Paper-Scissors)! \n")
+        self.chat_area.insert(tk.END,
+                              f"\nBot: Also, before you reply with anything, can you please tell me how to call you? (PLEASE REPLY WITH YOUR NAME AND AFTERWARDS YOU CAN MOVE ON WITH THE GAME) . \n")
+        self.chat_area.insert(tk.END, f"\n[SYSTEM NOTICE: Press 'ESC' key to leave fullscreen mode]\n")
+        self.chat_area.config(state="disabled")
+
+        # Interactive Chat Input Tray setup
+        input_frame = tk.Frame(main_chat_container, bg="#1B1924", padx=10, pady=8)
+        input_frame.pack(fill=tk.X, side=tk.BOTTOM)
+
+        self.input_field = tk.Entry(
+            input_frame, font=('Segoe UI', 12), bg="#1B1924", fg="#FFFFFF",
+            insertbackground="#FFFFFF", highlightthickness=0, bd=0
+        )
+        self.input_field.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
+        self.input_field.bind("<Return>", lambda event: self.send_message())
+
+        tk.Button(
+            input_frame, text="SEND", command=self.send_message, font=("Segoe UI Semibold", 11),
+            bg=ACCENT_COLOR, fg="#08080C", activebackground="#00CCCC", activeforeground="#08080C",
+            width=10, relief=tk.FLAT, cursor="hand2"
+        ).pack(side=tk.RIGHT)
+
+        # Control Utility Action Tray Bar
+        control_frame = tk.Frame(side_panel, bg=CONTAINER_COLOR)
+        control_frame.pack(fill=tk.X, side=tk.BOTTOM, pady=10)
+
+        tk.Button(
+            control_frame, text="CLEAR CONSOLE", command=self.clear_chat, font=("Segoe UI Semibold", 10),
+            bg="#211F2D", fg="#F3F4F6", activebackground="#2D2A3F", activeforeground="#FFFFFF",
+            relief=tk.FLAT, pady=6, cursor="hand2"
+        ).pack(fill=tk.X, pady=5)
+
+        tk.Button(
+            control_frame, text="TERMINATE EXECUTION", command=self.destroy, font=("Segoe UI Semibold", 10),
+            bg="#3A141C", fg="#FF8A9A", activebackground="#521D28", activeforeground="#FFFFFF",
+            relief=tk.FLAT, pady=6, cursor="hand2"
+        ).pack(fill=tk.X, pady=5)
+
+    def clear_chat(self):
+        self.chat_area.config(state='normal')
+        self.chat_area.delete(1.0, tk.END)
+        if self.name == "Empty":
+            self.chat_area.insert(tk.END, f"\nBot: Hi user! My name is K0sh! ")
+        elif self.name != "Empty":
+            self.chat_area.insert(tk.END, f"\nBot: Hi {self.name}! My name is K0sh! ")
+        self.chat_area.insert(tk.END, f"\nBot: Today, we are going to play a game of... Guess the number! ")
+        self.chat_area.insert(tk.END, f"\nBot: Feel free to ask anything you want, before we start! ")
+        self.chat_area.insert(tk.END,
+                              f"\nBot: Right now, we are in chat mode. In order to start the game, send the word: GTN or RPS, depending what game you want!. \n")
+        self.chat_area.insert(tk.END, f"\n[SYSTEM NOTICE: Press 'ESC' key to leave fullscreen mode]\n")
+        self.chat_area.config(state='disabled')
+
+    def send_message(self):
+        self.name_txt = self.input_field.get().strip()
+        plr_txt = self.input_field.get().strip()
+
+        if not plr_txt:
+            return
+
+        self.chat_area.config(state='normal')
+        self.chat_area.insert(tk.END, f"\nYou: {plr_txt}\n")
+
+        self.process_input(plr_txt)
+
+        self.chat_area.config(state='disabled')
+        self.chat_area.see(tk.END)
+        self.input_field.delete(0, tk.END)
+
+    def process_input(self, plr_txt):
+        # Check for the user's name:
+        if self.name == "Empty":
+            success, bot_message = self.check_for_user(plr_txt)
+
+            # Display whatever message the login function gave back
+            self.chat_area.insert(tk.END, f"Bot: {bot_message}\n")
+
+            # If login failed, return early so they have to try typing a name again
+            if not success:
+                return
+
+            return
+
+        if self.is_playing:
+            self.game_handler(plr_txt)
+        elif self.is_playing2:
+            self.game_handler2(plr_txt)
+        else:
+            # Game Initialization Request Checks
+            if plr_txt.upper() == "GTN":
+                self.num = random.randint(0, 100)
+                self.guesses = 0
+                self.chat_area.insert(tk.END,
+                                      f"\nBot: Nice, {self.name}! Let's start. So, I've picked a number from 0-100. Try and guess it!\n")
+                self.is_inchat = False
+                self.is_playing = True
+                return
+
+            if plr_txt.upper() == "RPS":
+                self.choice = random.choice(choice_list)
+                self.guesses = 0
+                self.chat_area.insert(tk.END, f'\nBot: Alrighty {self.name}! I pick one from: Rock, Paper or Scissors. ')
+                self.chat_area.insert(tk.END,
+                                      f'\nBot: Remember {self.name}! Rock beats Scissors, Paper beats Rock and Scissors beats Paper. ')
+                self.chat_area.insert(tk.END, f'\nBot: Enter your move to begin!\n')
+                self.is_inchat = False
+                self.is_playing2 = True
+                return
+
+            # Default Chat State Fallback through Transformers Similarity matching Engine
+            score, response = get_response(plr_txt)
+            self.chat_area.insert(tk.END, f"[System Analysis Similarity Match Score: {score:.2f}]\n")
+            self.chat_area.insert(tk.END, f"Bot: {response}\n")
+
+    def game_handler(self, plr_txt):
+        try:
+            guess = int(plr_txt)
+        except ValueError:
+            self.chat_area.insert(tk.END, f"Bot: That is not a number! Please enter a number between 0 and 100.\n")
+            return
+
+        self.guesses += 1
+        userdata[self.name]['InGameScore'] -= 10
+        self.chat_area.insert(tk.END, f"Bot: Your account points: {userdata[self.name]['InGameScore']} (10 points were taken from you, {self.name}.)\n")
+
+        if guess < 0 or guess > 100:
+            self.chat_area.insert(tk.END, f"Bot: Come on {self.name}, you know this is not an eligible (for this game mode) number! The number is between 0 and 100! (THIS COUNTS AS A GUESS)\n")
+            self.chat_area.insert(tk.END,
+                                  f"Bot: Your account points: {userdata[self.name]['InGameScore']} (no points were taken from you, {self.name}.)\n")
+        elif guess == self.num:
+            self.chat_area.insert(tk.END, f"Bot: {random.choice(win_list)}\n")
+            userdata[self.name]["InGameScore"] += 10
+            self.chat_area.insert(tk.END, f"Bot: Your guesses: {self.guesses}, Your Points: {userdata[self.name]["InGameScore"]}\n")
+            self.chat_area.insert(tk.END,
+                                  f"Bot: Reply with **RPS** (Rock-Paper-Scissors) or **GTN** (Guess the Number) if you wish to play again!\n")
+            self.is_inchat = True
+            self.is_playing = False
+        elif guess <= self.num:
+            self.chat_area.insert(tk.END, f"Bot: {random.choice(higher_list)}\n")
+        elif guess >= self.num:
+            self.chat_area.insert(tk.END, f"Bot: {random.choice(lower_list)}\n")
+
+    def game_handler2(self, plr_txt):
+        self.is_playing = False
+        self.is_playing2 = True
+
+        guess2 = plr_txt.strip().lower()
+        self.choice = random.choice(choice_list)
+
+        if guess2.isdigit():
+            self.chat_area.insert(tk.END,
+                                  f"\nBot: Well {self.name}... This is a number.. please can you guess between Rock, or Paper, or Scissors?")
+            return
+
+        self.guesses += 1
+
+        if (
+                (guess2 == "rock" and self.choice == "Rock") or
+                (guess2 == "paper" and self.choice == "Paper") or
+                (guess2 == "scissors" and self.choice == "Scissors")
+        ):
+            self.chat_area.insert(tk.END,
+                                  f"Bot: That is a draw {self.name}! Reply with **RPS** (Rock-Paper-Scissors) or **GTN** (Guess the Number)!\n")
+            self.chat_area.insert(tk.END, f"Bot: Your account points: {userdata[self.name]['InGameScore']}\n")
+        elif guess2 == 'rock' and self.choice == 'Paper':
+            self.chat_area.insert(tk.END, f"Bot: I choose Paper!\n")
+            self.chat_area.insert(tk.END, f"Bot: {random.choice(lose_list)}\n")
+            userdata[self.name]["InGameScore"] -= 20
+            self.chat_area.insert(tk.END, f"Bot: Your account points: {userdata[self.name]['InGameScore']}\n")
+            self.chat_area.insert(tk.END,
+                                  f"Bot: Reply with **RPS** (Rock-Paper-Scissors) or **GTN** (Guess the Number) if you wish to play again!\n")
+            self.is_inchat = True
+            self.is_playing2 = False
+        elif guess2 == 'rock' and self.choice == 'Scissors':
+            self.chat_area.insert(tk.END, f"Bot: I choose Scissors!\n")
+            self.chat_area.insert(tk.END, f"Bot: {random.choice(win_list)}\n")
+            userdata[self.name]["InGameScore"] += 20
+            self.chat_area.insert(tk.END, f"Bot: Your account points: {userdata[self.name]['InGameScore']}\n")
+            self.chat_area.insert(tk.END,
+                                  f"Bot: Reply with **RPS** (Rock-Paper-Scissors) or **GTN** (Guess the Number) if you wish to play again!\n")
+            self.is_inchat = True
+            self.is_playing2 = False
+        elif guess2 == 'paper' and self.choice == 'Rock':
+            self.chat_area.insert(tk.END, f"Bot: I choose Rock!\n")
+            self.chat_area.insert(tk.END, f"Bot: {random.choice(win_list)}\n")
+            userdata[self.name]["InGameScore"] += 20
+            self.chat_area.insert(tk.END, f"Bot: Your account points: {userdata[self.name]['InGameScore']}\n")
+            self.chat_area.insert(tk.END,
+                                  f"Bot: Reply with **RPS** (Rock-Paper-Scissors) or **GTN** (Guess the Number) if you wish to play again!\n")
+            self.is_inchat = True
+            self.is_playing2 = False
+        elif guess2 == 'paper' and self.choice == 'Scissors':
+            self.chat_area.insert(tk.END, f"Bot: I choose Scissors!\n")
+            self.chat_area.insert(tk.END, f"Bot: {random.choice(lose_list)}\n")
+            userdata[self.name]["InGameScore"] -= 20
+            self.chat_area.insert(tk.END, f"Bot: Your account points: {userdata[self.name]['InGameScore']}\n")
+            self.chat_area.insert(tk.END,
+                                  f"Bot: Reply with **RPS** (Rock-Paper-Scissors) or **GTN** (Guess the Number) if you wish to play again!\n")
+            self.is_inchat = True
+            self.is_playing2 = False
+        elif guess2 == 'scissors' and self.choice == "Rock":
+            self.chat_area.insert(tk.END, f"Bot: I choose Rock!\n")
+            self.chat_area.insert(tk.END, f"Bot: {random.choice(lose_list)}\n")
+            userdata[self.name]["InGameScore"] -= 20
+            self.chat_area.insert(tk.END, f"Bot: Your account points: {userdata[self.name]['InGameScore']}\n")
+            self.chat_area.insert(tk.END,
+                                  f"Bot: Reply with **RPS** (Rock-Paper-Scissors) or **GTN** (Guess the Number) if you wish to play again!\n")
+            self.is_inchat = True
+            self.is_playing2 = False
+        elif guess2 == 'scissors' and self.choice == 'Paper':
+            self.chat_area.insert(tk.END, f"Bot: Your account points: {userdata[self.name]['InGameScore']}\n")
+            self.chat_area.insert(tk.END, f"Bot: {random.choice(win_list)}\n")
+            userdata[self.name]["InGameScore"] += 20
+            self.chat_area.insert(tk.END, f"Bot: Your account points: {userdata[self.name]['InGameScore']}\n")
+            self.chat_area.insert(tk.END,
+                                  f"Bot: Reply with **RPS** (Rock-Paper-Scissors) or **GTN** (Guess the Number) if you wish to play again!\n")
+            self.is_inchat = True
+            self.is_playing2 = False
+
+    def destroy(self):
+        with open("userdata.json", "w") as file:
+            json.dump(userdata, file, indent=4)
+        self.root.destroy()
+
+    def check_for_user(self, name):
+        if name in userdata:
+            self.name = name
+            return True, f"Welcome back {self.name}! Dynamic system node re-established. 💾"
+
+        elif name.isalpha():
+            self.name = name
+
+            userdata[self.name] = {"Joined": True, "InGameScore": 0}
+            with open("userdata.json", "w") as file:
+                json.dump(userdata, file, indent=4)
+
+            return True, f"Welcome {self.name}, I am K0sh, it's really nice meeting you! New dynamic profile created. 💾"
+
+        else:
+            return False, "This isn't a real name. Please try again!"
+
+
+def main():
+    root = tk.Tk()
+    app = K0sh(root)
+    root.mainloop()
+
+
+if __name__ == "__main__":
+    main()
