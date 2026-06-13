@@ -263,10 +263,19 @@ Kept previous version's code, as promised.
 Thanks for starring!
 
 ---
-
 ### Version 0.6: "???"
-*(Coming soon)*
+K0sh now keeps track of your conversations, by using a .txt file. You can now click the history button and see it!
+
+Kept previous version's code, as promised.
+
+Fixed Core issues/bugs in Blackjack and Guess the Number
+
+Changed the GUI!
+
+Please notice that there are still bugs in the program, and I am trying to find a solution for all of them.
+
+Sorry for the wait!
 
 ---
 
-`LINE COUNTER: 901 (VER. 0.5.3)`
+`LINE COUNTER: 1008 (VER. 0.6.0)`
