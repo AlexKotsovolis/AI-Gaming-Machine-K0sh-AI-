@@ -1,5 +1,7 @@
 # 🤖 K0sh AI — Semantic Chat & Gaming Machine
 
+<img width="1024" height="506" alt="image" src="https://github.com/user-attachments/assets/6cb327cd-2d87-4973-a716-a66c2c0a3c70" />
+
 
 > **Preview Note:** UI changes between versions. Screenshots below reflect specific releases.
 
