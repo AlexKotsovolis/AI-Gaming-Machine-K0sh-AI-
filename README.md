@@ -44,8 +44,11 @@ A modern desktop AI chatbot and gaming platform powered by local NLP, built enti
 
 ![Preview 0.5](img_preview.png)
 
----
 
+**VER. 0.6**
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/3ddd5bed-6f2f-419f-a2f2-5be1f0898317" />
+
+---
 ## 🛠️ Requirements
 
 - Python 3.8+
