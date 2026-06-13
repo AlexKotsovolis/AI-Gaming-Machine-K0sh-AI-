@@ -646,7 +646,7 @@ class K0sh:
 
         # Content Being loaded here:
         self.history_area.config(state='normal')
-        self.history_area.insert(tk.END, "[ History will appear here ]\n")
+        self.history_area.insert(tk.END, "[ SAVED HISTORY ]\n")
         self.history_area.config(state='disabled')
 
     def clear_chat(self):
