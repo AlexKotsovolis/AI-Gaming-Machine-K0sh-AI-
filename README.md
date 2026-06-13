@@ -295,3 +295,16 @@ WE FINALLY HIT 1K LINES!
 ---
 
 `LINE COUNTER: 1008 (VER. 0.6.0)`
+
+
+---
+##MORE:
+
+
+  -THIS PROGRAM'S INSPIRATION: (This is the real K0sh)
+
+<img width="3060" height="4080" alt="20260608_100910" src="https://github.com/user-attachments/assets/feccb714-3670-4985-a1ac-b2e2b642ddc0" />
+
+another image: 
+
+<img width="2556" height="3408" alt="20260606_093925" src="https://github.com/user-attachments/assets/9d706290-6f8c-4cc3-8d93-a89b14c81363" />
