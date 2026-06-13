@@ -1,8 +1,12 @@
 # 🤖 K0sh AI — Semantic Chat & Gaming Machine
-
+---
 <img width="1024" height="506" alt="image" src="https://github.com/user-attachments/assets/6cb327cd-2d87-4973-a716-a66c2c0a3c70" />
 
+and another version of this image ;)
 
+<img width="1024" height="506" alt="image" src="https://github.com/user-attachments/assets/4a0b7fdc-54ae-439f-8fd0-16471000cd4f" />
+
+---
 > **Preview Note:** UI changes between versions. Screenshots below reflect specific releases.
 
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue) ![License](https://img.shields.io/badge/License-K0sh%20Personal%20Use%20v1.0-red) ![Status](https://img.shields.io/badge/Status-Active-brightgreen)
