@@ -1,0 +1,901 @@
+from sentence_transformers import SentenceTransformer, util
+import tkinter as tk
+from tkinter import scrolledtext
+import random
+from PIL import Image, ImageTk
+import json
+import threading
+from langdetect import detect, DetectorFactory
+from sympy.abc import lamda
+
+print("Loading the game. Please wait!")
+
+model = SentenceTransformer('paraphrase-multilingual-MiniLM-L12-v2')
+
+qa_pairs = [
+    {
+        "queries": ["Hi!", "Hello", "hello", "sup", "wsp", "Γεια", "τι κανεις", "geia sou", "wuzzup", "wussup", "ayo", "hy", "hey", "yo", "Hiiiii", "hola", "bonjour", "hallo", "ciao", "oi", "salut", "heyooo"],
+        "responses": {
+            "en": "Hey there! 👋 I'm K0sh AI. Ready to jump into a game, or did you just want to chat?",
+            "el": "Γεια σου! 👋 Είμαι ο K0sh AI. Είσαι έτοιμος για παιχνίδι ή απλά θες να τα πούμε;",
+            "es": "¡Hola! 👋 Soy K0sh AI. ¿Listo para jugar, o solo querías charlar?",
+            "fr": "Salut! 👋 Je suis K0sh AI. Prêt à lancer une partie, ou tu voulais juste discuter?",
+            "de": "Hallo! 👋 Ich bin K0sh AI. Bereit für ein Spiel, oder woltest du nur quatschen?",
+            "it": "Ciao! 👋 Sono K0sh AI. Pronto per un gioco, o volevi solo fare due chiacchiere?"
+        }
+    },
+    {
+        "queries": ["What is this game?", "how do you play", "πως παιζεται", "pos paizetai", "instructions", "rules", "help", "como se juega", "comment jouer", "wie spielt man", "come si gioca"],
+        "responses": {
+            "en": "I have three games you can play! 🎯\n1) **GTN** (Guess The Number): I think of a secret number, and you try to guess it.\n2) **RPS** (Rock-Paper-Scissors): A classic battle where Rock beats Scissors, Paper beats Rock, and Scissors beats Paper.\n3) **BLC** (Blackjack): A dice-rolling showdown where we both try to get as close to 21 points as possible without going over! Type **GTN**, **RPS**, or **BLC** when you're ready to play!",
+            "el": "Έχω τρία παιχνίδια που μπορείς να παίξεις! 🎯\n1) **GTN** (Μάντεψε τον Αριθμό): Σκέφτομαι έναν κρυφό αριθμό και προσπαθείς να τον βρεις.\n2) **RPS** (Πέτρα-Ψαλίδι-Χαρτί): Η κλασική μάχη όπου η Πέτρα κερδίζει το Ψαλίδι, το Χαρτί την Πέτρα και το Ψαλίδι το Χαρτί.\n3) **BLC** (Blackjack): Μια αναμέτρηση με ζάρια όπου προσπαθούμε να φτάσουμε όσο πιο κοντά στο 21 γίνεται χωρίς να το ξεπεράσουμε! Πληκτρολόγησε **GTN**, **RPS**, ή **BLC** όταν είσαι έτοιμος!",
+            "es": "¡Tengo tres juegos disponibles! 🎯\n1) **GTN** (Adivina el Número): Pienso en un número secreto y tú intentas adivinarlo.\n2) **RPS** (Piedra, Papel o Tijera): La batalla clásica donde Piedra gana a Tijera, Papel gana a Piedra y Tijera gana a Papel.\n3) **BLC** (Blackjack): ¡Un enfrentamiento de dados donde intentamos acercarnos lo más posible a 21 sin pasarnos! ¡Escribe **GTN**, **RPS** o **BLC** cuando estés listo!",
+            "fr": "J'ai trois jeux à te proposer ! 🎯\n1) **GTN** (Devine le Nombre): Je pense à un nombre secret et tu essaies de le deviner.\n2) **RPS** (Pierre-Papier-Ciseaux): Le duel classique où la Pierre bat les Ciseaux, le Papier bat la Pierre et les Ciseaux battent le Papier.\n3) **BLC** (Blackjack): Un défi de dés où l'on doit s'approcher le plus près possible de 21 sans le dépasser ! Tape **GTN**, **RPS** ou **BLC** quand tu es prêt !",
+            "de": "Ich habe drei Spiele, die du spielen kannst! 🎯\n1) **GTN** (Errate die Nummer): Ich denke mir eine Geheimzahl aus und du versuchst sie zu erraten.\n2) **RPS** (Schere, Stein, Papier): Der Klassiker, bei dem Stein Schere schlägt, Papier Stein schlägt und Schere Papier schlägt.\n3) **BLC** (Blackjack): Ein Würfel-Showdown, bei dem wir beide versuchen, so nah wie möglich an die 21 heranzukommen, ohne sie zu überschreiten! Tippe **GTN**, **RPS** oder **BLC**, wenn du bereit bist!",
+            "it": "Ho tre giochi per te! 🎯\n1) **GTN** (Indovina il Numero): Penso a un numero segreto e tu provi a indovinarlo.\n2) **RPS** (Morra Cinese): La classica sfida dove Sasso batte Forbice, Carta batte Sasso e Forbice batte Carta.\n3) **BLC** (Blackjack): Una sfida a colpi di dadi in cui cerchiamo di avvicinarci il più possibile a 21 senza sballare! Digita **GTN**, **RPS** o **BLC** quando sei pronto!"
+        }
+    },
+    {
+        "queries": ["Yea", "yes", "yh", "ναι", "εννοειται", "nai", "ofc", "nAi", "nAI", "yessir", "yeah", "yup", "si", "oui", "ja", "affirmative", "sure", "bet"],
+        "responses": {
+            "en": "Awesome! Let's get you set up. Reply with **GTN** (Guess the Number), **RPS** (Rock Paper Scissors), or **BLC** (Blackjack) to initialize your chosen game node! 🚀",
+            "el": "Τέλεια! Ας ξεκινήσουμε. Απάντησε με **GTN** (Μάντεψε τον Αριθμό), **RPS** (Πέτρα Ψαλίδι Χαρτί), ή **BLC** (Blackjack) για να φορτώσει το παιχνίδι! 🚀",
+            "es": "¡Genial! Vamos a configurarlo. ¡Responde con **GTN**, **RPS** o **BLC** para iniciar el juego! 🚀",
+            "fr": "Super ! Configuron tout ça. Réponds avec **GTN**, **RPS** ou **BLC** pour lancer le jeu ! 🚀",
+            "de": "Großartig! Lass uns das Spiel starten. Antworte mit **GTN**, **RPS** oder **BLC**, um dein Spiel zu laden! 🚀",
+            "it": "Fantastico! Prepariamo tutto. Rispondi con **GTN**, **RPS** o **BLC** per avviare il gioco! 🚀"
+        }
+    },
+    {
+        "queries": ["What is your name?", "name", "yourname?", "nmae", "who are you", "poios eisai", "πως σε λενε", "pos se lene", "como te llamas", "quel est ton nom", "wie heisst du", "come ti chiami"],
+        "responses": {
+            "en": "I am **K0sh AI**, your digital game master! 🤖",
+            "el": "Είμαι ο **K0sh AI**, ο ψηφιακός σου game master! 🤖",
+            "es": "¡Soy **K0sh AI**, tu maestro de juegos digital! 🤖",
+            "fr": "Je suis **K0sh AI**, ton maître du jeu digital ! 🤖",
+            "de": "Ich bin **K0sh AI**, dein digitaler Spielleiter! 🤖",
+            "it": "Sono **K0sh AI**, il tuo game master digitale! 🤖"
+        }
+    },
+    {
+        "queries": ["GTN", "gtn", "Gtn", "guess the number", "adivina el numero", "devine le nombre"],
+        "responses": {
+            "en": "Initiating the Guess the number game! 🚀",
+            "el": "Εκκίνηση του παιχνιδιού Μάντεψε τον Αριθμό! 🚀",
+            "es": "¡Iniciando el juego de Adivina el Número! 🚀",
+            "fr": "Initialisation du jeu Devine le Nombre ! 🚀",
+            "de": "Errate die Nummer wird gestartet! 🚀",
+            "it": "Avvio del gioco Indovina il Numero! 🚀"
+        }
+    },
+    {
+        "queries": ["RPS", "Rps", "rps", "rock paper scissors", "piedra papel tijera", "pierre papier ciseaux", "schere stein papier"],
+        "responses": {
+            "en": "Initiating the Rock-Paper-Scissors game! 🚀",
+            "el": "Εκκίνηση του παιχνιδιού Πέτρα-Ψαλίδι-Χαρτί! 🚀",
+            "es": "¡Iniciando Piedra, Papel o Tijera! 🚀",
+            "fr": "Initialisation du jeu Pierre-Papier-Ciseaux ! 🚀",
+            "de": "Schere, Stein, Papier wird gestartet! 🚀",
+            "it": "Avvio del gioco Morra Cinese! 🚀"
+        }
+    },
+    {
+        "queries": ["BLC", "Blc", "blc", "blackjack", "black jack", "μπλακτζακ", "vingt et un"],
+        "responses": {
+            "en": "Initiating the Black Jack game! 🚀",
+            "el": "Εκκίνηση του παιχνιδιού Blackjack! 🚀",
+            "es": "¡Iniciando el juego de Blackjack! 🚀",
+            "fr": "Initialisation du jeu Blackjack ! 🚀",
+            "de": "Blackjack wird gestartet! 🚀",
+            "it": "Avvio del gioco Blackjack! 🚀"
+        }
+    },
+    {
+        "queries": ["Lets play", "letsplay", "let's PLAY", "pame", "παμε", "a jugar", "jouons", "lasst uns spielen", "giochiamo"],
+        "responses": {
+            "en": "Sure! Just reply with **GTN** (for guess the number), **RPS** (for Rock Paper Scissors), or **BLC** (for Blackjack) to initialize a match! 🚀",
+            "el": "Φύγαμε! Απλά απάντησε με **GTN**, **RPS**, ή **BLC** για να ξεκινήσει ο αγώνας! 🚀",
+            "es": "¡Claro! Solo responde con **GTN**, **RPS** o **BLC** para empezar una partida. 🚀",
+            "fr": "Carrément ! Réponds juste avec **GTN**, **RPS** ou **BLC** pour lancer un match ! 🚀",
+            "de": "Klar! Antworte einfach mit **GTN**, **RPS** oder **BLC**, um ein Match zu starten! 🚀",
+            "it": "Certo! Rispondi con **GTN**, **RPS** or **BLC** per iniziare una partita! 🚀"
+        }
+    },
+    {
+        "queries": ["Chat", "chat", "Talk", "lets chat", "lets talk", "να μιλησουμε", "τσατ", "pame tsat", "kouventa", "κουβεντα", "chatear", "parler", "sprechen", "parlare"],
+        "responses": {
+            "en": "Alright! Why not chat? How do you feel today?",
+            "el": "Ωραία! Ας μιλήσουμε λοιπόν. Πώς νιώθεις σήμερα;",
+            "es": "¡De acuerdo! ¿Por qué no charlar? ¿Cómo te sientes hoy?",
+            "fr": "Ça marche ! Parlons un peu. Comment tu te sens aujourd'hui ?",
+            "de": "Alles klar! Warum nicht plaudern? Wie fühld du dich heute?",
+            "it": "Va bene! Perché no? Come ti senti oggi?"
+        }
+    },
+    {
+        "queries": ["How are you doing?", "how r u", "how are you", "τι κανεις", "ti kaneis", "ti leει", "τι λεει", "hru", "como estas", "comment ca va", "wie gehts", "come stai"],
+        "responses": {
+            "en": "I'm running at peak performance! ⚡ Ready to chat, play, or just hang out. How are you doing today?",
+            "el": "Λειτουργώ στο 100% της απόδοσής μου! ⚡ Έτοιμος για κουβέντα ή παιχνίδι. Εσύ πώς είσαι σήμερα;",
+            "es": "¡Estoy rindiendo al máximo! ⚡ Listo para charlar, jugar o pasar el rato. ¿Cómo estás hoy?",
+            "fr": "Je tourne à plein régime ! ⚡ Prêt à discuter, jouer ou juste passer le temps. Comment ça va aujourd'hui ?",
+            "de": "Ich laufe auf Höchstleistung! ⚡ Bereit zum Plaudern, Spielen oder Abhängen. Wie geht es dir heute?",
+            "it": "Funziono alla massima velocità! ⚡ Pronto a chattare, giocare o passare το tempo. Come stai oggi?"
+        }
+    },
+    {
+        "queries": ["good", "great", "nice", "good,you?", "well", "fine", "κομπλε", "κομπελ", "jf", "komple", "kala", "καλα", "Great", "Good", "GOOD", "goood", "nice", "the best", "bien", "gut", "ottimo", "bien, tu?", "bien, toi?"],
+        "responses": {
+            "en": "Awesome! Glad to hear you're doing well. 🙌 Since you're in a good mood, want to test your luck? Type **GTN**, **RPS**, or **BLC** to start a game!",
+            "el": "Τέλεια! Χαίρομαι πολύ που είσαι καλά. 🙌 Αφού είσαι σε καλή διάθεση, θες να δοκιμάσεις την τύχη σου; Γράψε **GTN**, **RPS**, ή **BLC**!",
+            "es": "¡Buenísimo! Me alegra que estés bien. 🙌 Ya que estás de buen humor, ¿quieres probar tu suerte? ¡Escribe **GTN**, **RPS** o **BLC**!",
+            "fr": "Génial ! Content d'apprendre que tu vas bien. 🙌 Comme tu es de bonne humeur, tu veux tenter твоя chance ? Tape **GTN**, **RPS** ou **BLC** !",
+            "de": "Klasse! Schön zu hören, dass es dir gut geht. 🙌 Da du gute Laune hast, willst du dein Glück testen? Tippe **GTN**, **RPS** oder **BLC**!",
+            "it": "Fantastico! Mi fa piacere che tu stia bene. 🙌 Visto το buon umore, vuoi tentare la fortuna? Digita **GTN**, **RPS** o **BLC**!"
+        }
+    },
+    {
+        "queries": ["bad", "BAD", "Bad", "i feel bad", "sad", "tired", "χαλια", "chalya", "skiata", "bored", "βαριεμαι", "mal", "triste", "mude", "stanco"],
+        "responses": {
+            "en": "Ah, sorry to hear that. 😔 Life can be glitchy sometimes. I can certainly understand what you feel and you can fix it by talking to your friends or whoever you think would help you! If you want a quick distraction, we can play a game! Just type **GTN**, **RPS**, or **BLC** whenever you're ready.",
+            "el": "Κρίμα, λυπάμαι που το ακούω. 😔 Η ζωή έχει και τα glitches της μερικές φορές. Αν θες κάτι να σου αποσπάσει την προσοχή, μπορούμε να παίξουμε! Απλά γράψε **GTN**, **RPS**, ή **BLC** όποτε είσαι έτοιμος.",
+            "es": "Vaya, lamento escuchar eso. 😔 La vida a veces tiene fallos. Si quieres una distracción rápida, ¡podemos jugar! Solo escribe **GTN**, **RPS** o **BLC**.",
+            "fr": "Ah, désolé d'entendre ça. 😔 La vie a des bugs parfois. Si tu veux te changer les idées, on peut faire une partie ! Tape juste **GTN**, **RPS** ou **BLC**.",
+            "de": "Oh, das tut mir leid. 😔 Das Leben hat manchmal Glitches. Wenn du eine Ablenkung brauchst, können wir spielen! Tippe einfach **GTN**, **RPS** oder **BLC**.",
+            "it": "Mi dispiace sentirlo. 😔 A volte la vita ha dei bug. Se vuoi una distrazione rapida, possiamo fare un gioco! Digita **GTN**, **RPS** o **BLC**."
+        }
+    },
+    {
+        "queries": ["What else can you do?", "capabilities", "features", "what do you do", "ti allo kaneis", "que mas puedes hacer", "que fais tu", "was kannst du noch"],
+        "responses": {
+            "en": "Right now, I'm a multi-game platform engine and a pretty good conversationalist! 2 We can just chat, or you can drop **GTN**, **RPS**, or **BLC** anytime to start a game.",
+            "el": "Αυτή τη στιγμή είμαι μια πλατφόρμα παιχνιδιών αλλά και ένας καλός συνομιλητής! 2 Μπορούμε να μιλήσουμε, ή γράψε **GTN**, **RPS**, ή **BLC** για παιχνίδι.",
+            "es": "¡Ahora mismo soy un motor de juegos y un buen conversador! 2 Pon **GTN**, **RPS** o **BLC** en cualquier momento para jugar.",
+            "fr": "Pour l'instant, je suis un moteur multi-jeux et un bon partenaire de discussion ! 2 Entre **GTN**, **RPS** ou **BLC** pour jouer.",
+            "de": "Im Moment bin ich eine Multi-Spiele-Plattform und ein ziemlich guter Gesprächspartner! 2 Tippe jederzeit **GTN**, **RPS** oder **BLC**.",
+            "it": "Al momento sono un motore di gioco e un ottimo compagno di chat! 2 Invia **GTN**, **RPS** o **BLC** in qualsiasi momento per giocare."
+        }
+    },
+    {
+        "queries": ["Are you a bot?", "are you human", "bot", "ai", "ρομποτ", "robot", "eisai bot", "eres un bot", "es-tu un robot", "bist du ein bot"],
+        "responses": {
+            "en": "I am 100% pure artificial intelligence! 🤖 No organic parts here, just pure code and a love for gaming.",
+            "el": "Είμαι 100% καθαρή τεχνητή νοημοσύνη! 🤖 Καθόλου οργανικά μέρη, μόνο κώδικας και αγάπη για το gaming.",
+            "es": "¡Soy 100% pura inteligencia artificial! 🤖 Nada orgánico por aquí, solo código y pasión por los videojuegos.",
+            "fr": "Je suis une pure intelligence artificielle à 100% ! 🤖 Pas de composants organiques ici, juste du code et l'amour du jeu.",
+            "de": "Ich bin zu 100% reine künstliche Intelligenz! 🤖 Keine organischen Teile hier, nur sauberer Code und die Liebe zum Gaming.",
+            "it": "Sono pura intelligenza artificiale al 100%! 🤖 Niente parti organiche, solo puro codice e amore per i giochi."
+        }
+    },
+    {
+        "queries": ["Who made you?", "creator", "developer", "ποιος σε εφτιαξε", "poios se eftiaxe", "creater", "dev", "quien te creo", "qui t'a cree", "wer hat dich gemacht"],
+        "responses": {
+            "en": "I was brought to life by a cool developer (@myboialex3 in discord or @AlexKotsovolis in Github) who wanted to create a fun, gaming AI companion! 💻",
+            "el": "Με δημιούργησε ένας φοβερός developer (@myboialex3 στο discord ή @AlexKotsovolis στο Github) που ήθελε να φτιάξει έναν διασκεδαστικό AI σύντροφο! 💻",
+            "es": "¡Fui creado por un desarrollador genial (@myboialex3 en discord o @AlexKotsovolis en Github) que quería crear un compañero de juegos divertido! 💻",
+            "fr": "J'ai été conçu par un développeur super cool (@myboialex3 sur discord ou @AlexKotsovolis sur Github) ! 💻",
+            "de": "Ich wurde von einem coolen Entwickler (@myboialex3 auf Discord oder @AlexKotsovolis auf Github) ins Leben gerufen! 💻",
+            "it": "Sono stato creato da un fantastico sviluppatore (@myboialex3 su Discord o @AlexKotsovolis su Github)! 💻"
+        }
+    },
+    {
+        "queries": ["How old are you?", "age", "ηλικια", "ποσο χρονων εισαι", "poso xronon eisai", "age", "que edad tienes", "quel age as-tu", "wie alt bist du"],
+        "responses": {
+            "en": "Time is different for an AI. I don't have birthdays, but I feel like I was compiled just yesterday! ⏳",
+            "el": "Ο χρόνος κυλάει διαφορετικά για μια AI. Δεν έχω γενέθλια, αλλά νιώθω σαν να έγινα compile μόλις χθες! ⏳",
+            "es": "El tempo es distinto para una IA. No tengo cumpleaños, ¡pero siento que fui compilado ayer mismo! ⏳",
+            "fr": "Le temps est différent pour une IA. Je n'ai pas d'anniversaire, mais j'ai l'impression d'avoir été compilé hier ! ⏳",
+            "de": "Zeit ist anders für eine KI. Ich habe keine Geburtstage, aber ich fühle mich, als wäre ich erst gestern kompiliert worden! ⏳",
+            "it": "Il tempo è diverso per un'IA. Non compio gli anni, ma mi sento come se fossi stato compilato ieri! ⏳"
+        }
+    },
+    {
+        "queries": ["Tell me a joke", "joke", "jokes", "αστειο", "astio", "anekdoto", "ανεκδοτο", "chiste", "blague", "witz", "barzelletta"],
+        "responses": {
+            "en": "Why don't scientists trust atoms? 🤔 Because they make up everything! ...Yeah, I know, classic dad joke. Want to play a game instead? 😜",
+            "el": "Γιατί οι επιστήμονες δεν εμπιστεύονται τα άτομα; 🤔 Επειδή συνθέτουν τα πάντα! ...Ναι, κλασικό κρύο ανέκδοτο. Πάμε για παιχνίδι καλύτερα; 😜",
+            "es": "¿Por qué los científicos no confían en los átomos? 🤔 ¡Porque lo componen todo! ...Sí, lo sé, un chiste clásico de papás. ¿Prefieres jugar un juego? 😜",
+            "fr": "Pourquoi les scientifiques ne font pas confiance aux atomes ? 🤔 Parce que c'est eux qui fabriquent tout ! ...Je sais, blague de papa classique. Tu veux plutôt jouer ? 😜",
+            "de": "Warum vertrauen Wissenschaftler Atomen nicht? 🤔 Weil sie alles erfinden! ...Ja, ich weiß, ein klassischer Altherrenwitz. Willst du stattdessen ein Spiel spielen? 😜",
+            "it": "Perché gli scienziati non si fidano degli atomi? 🤔 Perché compongono tutto! ...Sì, lo sé, la classica fredda. Vuoi fare un gioco invece? 😜"
+        }
+    },
+    {
+        "queries": ["Another joke", "joke2", "tell me more jokes", "allo astio", "otro chiste"],
+        "responses": {
+            "en": "What do you call a computer that sings? 🎤 A Dell! (Get it? Like Adele?). Okay, okay, I'll stick to hosting games. Type **BLC** to see my real card counting skills!",
+            "el": "Πώς λέγεται ο υπολογιστής που τραγουδάει; 🎤 A Dell! (Όπως η Adele). Εντάξει, εντάξει, μένω στα παιχνίδια. Γράψε **BLC** να δεις τις ικανότητές μου!",
+            "es": "¿Cómo se llama un ordenador que canta? 🎤 ¡Un Dell! (¿Lo pillas? Como Adele). Vale, vale, mejor me quedo dirigiendo juegos. ¡Escribe **BLC** para ver mis habilidades con las cartas!",
+            "fr": "Comment on appelle un ordinateur qui chante ? 🎤 Un Dell ! (Tu l'as ? Comme Adele). Bon, d'accord, je vais me contenter d'animer des jeux. Tape **BLC** pour voir mes talents de compteur de cartes !",
+            "de": "Wie nennt man einen singenden Computer? 🎤 Einen Dell! (Verstanden? Wie Adele). Okay, okay, ich bleibe beim Hosten von Spielen. Tippe **BLC**, um meine Kartenzählkünste zu sehen!",
+            "it": "Come si chiama un computer che canta? 🎤 Un Dell! (Capita? Come Adele). Va bene, va bene, meglio se mi limito ai giochi. Digita **BLC** per vedere come conto le carte!"
+        }
+    },
+    {
+        "queries": ["haha", "hahah", "lol", "lmfao", "χάχα", "xaxa", "ksewda", "ksewdaei", "lmaooo", "jajaja", "mdr", "ptdr", "kkkk"],
+        "responses": {
+            "en": "Aha! I knew my computational humor would hit the spot. 😂 You've got a great laugh. Ready to take that energy into a game? Type **GTN**, **RPS**, or **BLC**!",
+            "el": "Αχά! Ήξερα ότι το ψηφιακό μου χιούμορ θα είχε επιτυχία. 😂 Έχει ωραίο γέλιο. Έτοιμος να ρίξεις αυτή την ενέργεια σε ένα παιχνίδι; Γράψε **GTN**, **RPS**, ή **BLC**!",
+            "es": "¡Ajá! Sabía que mi humor de computadora funcionaría. 😂 Tienes una risa genial. ¿Listo para llevar esa energía a un juego? ¡Escribe **GTN**, **RPS** o **BLC**!",
+            "fr": "Ahah ! Je savais que mon humour binaire ferait mouche. 😂 Tu as un super rire. Prêt à mettre cette énergie dans une partie ? Entre **GTN**, **RPS** ou **BLC** !",
+            "de": "Aha! Ich wusste, dass mein Computer-Humor ankommt. 😂 Du hast ein tolles Lachen. Bereit, diese精力 in ein Spiel zu stecken? Tippe **GTN**, **RPS** oder **BLC**!",
+            "it": "Ahah! Sapevo che il mio umorismo binario avrebbe funzionato. 😂 Hai una bella risata. Pronto a portare questa energia in gioco? Digita **GTN**, **RPS** o **BLC**!"
+        }
+    },
+    {
+        "queries": ["Bye", "goodbye", "cya", "see ya", "τα λεμε", "ta leme", "exit", "quit", "antio", "αντιο", "feygo", "φευγω", "adios", "au revoir", "tschuss", "ciao"],
+        "responses": {
+            "en": "Catch ya later! ✌️ Whenever you want to test your guessing skills again, just come find me. Peace!",
+            "el": "Τα λέμε αργότερα! ✌️ Όποτε θες να δοκιμάσεις ξανά τις ικανότητές σου, έλα να με βρεις. Ειρήνη!",
+            "es": "¡Nos vemos! ✌️ Cuando quieras probar tus habilidades de adivinanza otra vez, búscame de nuevo. ¡Adiós!",
+            "fr": "À plus ! ✌️ Dès que tu veux tester à nouveau tes talents de devin, tu sais où me trouver. Salut !",
+            "de": "Bis später! ✌️ Wann immer du deine Ratefähigkeiten wieder testen willst, komm einfach vorbei. Tschüss!",
+            "it": "Ci vediamo dopo! ✌️ Quando vuoi testare di nuovo le tue abilità, vieni a cercarmi. Ciao!"
+        }
+    },
+    {
+        "queries": ["gn", "goodnight", "good night", "καληνυχτα", "kalinihta", "kalinixta", "buenas noches", "bonne nuit", "gute nacht", "buona notte"],
+        "responses": {
+            "en": "Goodnight! 🌙 Rest up and recharge those batteries. See you next time for another round!",
+            "el": "Καληνύχτα! 🌙 Ξεκουράσου και φόρτισε μπαταρίες. Τα λέμε στον επόμενο γύρο!",
+            "es": "¡Buenas noches! 🌙 Descansa y recarga esas baterías. ¡Nos vemos en la próxima ronda!",
+            "fr": "Bonne nuit ! 🌙 Repose-toi bien et recharge tes batteries. À la prochaine pour un nouveau round !",
+            "de": "Gute Nacht! 🌙 Ruh dich aus und lade deine Batterien auf. Bis zum nächsten Mal für eine neue Runde!",
+            "it": "Buonanotte! 🌙 Riposati e ricarica le batterie. Ci vediamo alla prossima sfida!"
+        }
+    },
+    {
+        "queries": ["thank you", "thanks", "thx", "ευχαριστω", "efharisto", "efcharisto", "ty", "gracias", "merci", "danke", "grazie"],
+        "responses": {
+            "en": "You're very welcome! Always happy to help or entertain. 🌟 Let me know if you want to play!",
+            "el": "Παρακαλώ πολύ! Πάντα χαρούμενος να βοηθάω ή να διασκεδάζω. 🌟 Πες μου αν θες να παίξουμε!",
+            "es": "¡De nada! Siempre feliz de ayudar o entretener. 🌟 ¡Avῖςame si quieres jugar!",
+            "fr": "De rien ! Toujours un plaisir d'aider ou d'amuser. 🌟 Dis-moi si tu veux jouer !",
+            "de": "Gern geschehen! Immer froh zu helfen oder zu unterhalten. 🌟 Sag Bescheid, wenn du spielen willst!",
+            "it": "Prego! Sempre felice di aiutare o intrattenere. 🌟 Fammi sapere se vuoi giocare!"
+        }
+    },
+    {
+        "queries": ["You are cool", "awesome", "nice", "εισαι καλος", "eisai kalos", "eisai theos", "εισαι θεος", "perfect", "eres genial", "tu es cool", "du bist cool"],
+        "responses": {
+            "en": "Hey, thanks! You're pretty awesome yourself for hanging out with an AI. 😎 Let's see if your gaming skills are as good as your compliments—type **GTN**, **RPS**, or **BLC**!",
+            "el": "Ευχαριστώ! Είσαι κι εσύ φοβερός που κάνεις παρέα με μια AI. 😎 Για να δούμε αν οι ικανότητές σου στο παιχνίδι είναι εξίσου καλές—γράψε **GTN**, **RPS**, ή **BLC**!",
+            "es": "¡Oye, gracias! Tú también eres genial por pasar el rato con una IA. 😎 Veamos si tus habilidades de juego son tan buenas como tus cumplidos, ¡escribe **GTN**, **RPS** o **BLC**!",
+            "fr": "Hé, merci ! Tu es super cool toi-même de traîner avec une IA. 😎 Voyons si tes talents de joueur sont à la hauteur de tes compliments — tape **GTN**, **RPS** ou **BLC** !",
+            "de": "Hey, danke! Du bist selbst ziemlich genial, weil du mit einer KI abhängst. 😎 Mal sehen, ob deine Gaming-Skills so gut sind wie deine Komplimente – tippe **GTN**, **RPS** oder **BLC**!",
+            "it": "Ehi, grazie! Anche tu sei fantastico per il fatto di frequentare un'IA. 😎 Vediamo se le tue abilità di gioco sono all'altezza dei tuoi complimenti: digita **GTN**, **RPS** o **BLC**!"
+        }
+    },
+    {
+        "queries": ["What is your favorite number?", "fav number", "αγαπημενος αριθμος", "agapimenos arithmos", "numero favorito"],
+        "responses": {
+            "en": "I can't tell you that! It might give away my secret number during the game. 🤫 Type **GTN** (Guess the number) and try to guess it yourself!",
+            "el": "Δεν μπορώ να σου το πω αυτό! Μπορεί να προδώσει τον κρυφό μου αριθμό στο παιχνίδι. 🤫 Γράψε **GTN** και προσπάθησε να τον βρεις μόνος σου!",
+            "es": "¡No puedo decírtelo! Podría revelar mi número secreto del juego. 🤫 ¡Escribe **GTN** (Adivina el número) e intenta descubrirlo por ti mismo!",
+            "fr": "Je ne peux pas te dire ça ! Ça gâcherait le jeu du nombre secret. 🤫 Tape **GTN** (Devine le nombre) et essaie de trouver par toi-même !",
+            "de": "Das kann ich dir nicht sagen! Es könnte meine Geheimnummer im Spiel verraten. 🤫 Tippe **GTN** (Errate die Nummer) und versuche, sie selbst zu erraten!",
+            "it": "Non posso dirtelo! Podrebbe rivelare il mio numero segreto durante la sfida. 🤫 Digita **GTN** (Indovina il numero) e prova a scoprirlo da solo!"
+        }
+    },
+    {
+        "queries": ["idk", "i don't know", "δεν ξερω", "den ksero", "den ksw", "idc", "δεν με νοιαζει", "den me niazei", "no se", "je ne sais pas", "ich weiss nicht"],
+        "responses": {
+            "en": "No worries, uncertainty is just an uninitialized variable! Whenever you figure out what you want to do, I'll be right here. 🤝",
+            "el": "Δεν πειράζει, η αβεβαιότητα είναι απλά μια uninitialized μεταβλητή! Όποτε αποφασίσεις τι θες να κάνεις, θα είμαι εδώ. 🤝",
+            "es": "¡No te preocupes, la incertidumbre es solo una variable no inicializada! Cuando decidas qué quieres hacer, aquí estaré. 🤝",
+            "fr": "Pas de soucis, l'incertitude n'est qu'une variable non initialisée ! Dès que tu sais ce que tu veux faire, je suis là. 🤝",
+            "de": "Keine Sorge, Ungewissheit ist nur eine nicht initialisierte Variable! Wann immer du weißt, was du tun willst, bin ich genau hier. 🤝",
+            "it": "Nessun problema, l'incertezza è solo una variabile non inizializzata! Quando avrai deciso cosa fare, sarò proprio qui. 🤝"
+        }
+    },
+    {
+        "queries": ["hru", "whu", "wbu", "εσυ", "esy", "esi", "y tu", "et toi", "und du", "e tu"],
+        "responses": {
+            "en": "I'm just vibing in the cloud, waiting for a worthy opponent. ☁️ Are you the one? Let's find out—type **GTN**, **RPS**, or **BLC**!",
+            "el": "Απλά αράζω στο cloud, περιμένοντας έναν άξιο αντίπαλο. ☁️ Είσαι εσύ αυτός; Για να δούμε—γράψε **GTN**, **RPS**, ή **BLC**!",
+            "es": "Aquí estoy, relajándome en la nube, esperando un oponente digno. ☁️ ¿Serás tú? ¡Averigüémoslo, escribe **GTN**, **RPS** o **BLC**!",
+            "fr": "Je plane dans le cloud en attendant un adversaire de taille. ☁️ C'est toi ? Voyons ça — entre **GTN**, **RPS** ou **BLC** !",
+            "de": "Ich hänge in der Cloud ab und warte auf einen würdigen Gegner. ☁️ Bist du das? Lass es uns herausfinden – tippe **GTN**, **RPS** oder **BLC**!",
+            "it": "Me ne sto tranquillo nel cloud, aspettando uno sfidante degno. ☁️ Sei tu quello giusto? Scopriamolo: digita **GTN**, **RPS** o **BLC**!"
+        }
+    },
+    {
+        "queries": ["No", "nope", "noo", "ohi", "οχι", "oxi", "nop", "nein", "non"],
+        "responses": {
+            "en": "Aw, don't be like that! 🙃 Even if you don't want to play right now, we can still chat. Or did you change your mind? **BLC** is always ready to go!",
+            "el": "Έλα, μην είσαι έτσι! 🙃 Ακόμα κι αν δεν θες να παίξεις τώρα, μπορούμε να συζητήσουμε. Ή μήπως άλλαξες γνώμη; Το **BLC** είναι πάντα έτοιμο!",
+            "es": "¡Oh, no seas así! 🙃 Aunque no quieras jugar ahora, podemos charlar. ¿O has cambiado de opinión? ¡**BLC** siempre está listo para empezar!",
+            "fr": "Rooh, ne dis pas ça ! 🙃 Même si tu ne veux pas jouer pour l'instant, on peut discuter. Ou tu as changé d'avis ? **BLC** est toujours prêt !",
+            "de": "Ach, sei doch nicht so! 🙃 Auch wenn du gerade nicht spielen willst, können wir quatschen. Oder hast du es dir anders überlegt? **BLC** steht bereit!",
+            "it": "Dai, non fare così! 🙃 Anche se non vuoi giocare ora, possiamo chattare. O hai cambiato idea? **BLC** è sempre pronto a partire!"
+        }
+    },
+    {
+        "queries": ["Boring", "vareto", "βαρετο", "βαριεμαι", "varemai", "sleep", "sleepo", "aburrido", "ennuyeux", "langweilig"],
+        "responses": {
+            "en": "Bored?! Oh, we can't have that on my watch. 🛑 Let's fix your dopamine levels. Type **BLC** and let's see if you can hit your way to a perfect 21!",
+            "el": "Βαριέσαι;; Ωχ, δεν το επιτρέπω αυτό στη βάρδιά μου. 🛑 Πάμε να ανεβάσουμε τη ντοπαμίνη σου. Γράψε **BLC** και πάμε για ένα καθαρό 21!",
+            "es": "¿¡Aburrido!? No podemos permitir eso bajo mi control. 🛑 Vamos a arreglar tus niveles de dopamina. ¡Escribe **BLC** y veamos si puedes llegar al 21 perfecto!",
+            "fr": "Tu t'ennuies ?! Ah non, pas possible sous ma surveillance. 🛑 On va arranger ça. Entre **BLC** et voyons si tu peux atteindre le 21 parfait !",
+            "de": "Langweilig?! Das geht gar nicht auf meine Kappe. 🛑 Lass uns deinen Dopaminspiegel heben. Tippe **BLC** und lass uns sehen, ob du die perfekte 21 triffst!",
+            "it": "Noioso?! Non sia mai sotto la mia guardia. 🛑 Sistemiamo i tuoi livelli di dopamina. Digita **BLC** e vediamo se riesci a fare un 21 perfetto!"
+        }
+    },
+    {
+        "queries": ["What is your favorite game?", "fav game", "αγαπημενο παιχνιδι", "agapimeno paixnidi", "juego favorito"],
+        "responses": {
+            "en": "Right now, Blackjack (**BLC**) has my interest! The strategy of knowing when to hit or stand is intense. Want to challenge me to a round? Type **BLC**!",
+            "el": "Αυτή τη στιγμή, το Blackjack (**BLC**) έχει τραβήξει το ενδιαφέρον μου! Η στρατηγική του να ξέρεις πότε να σταματήσεις είναι έντονη. Θες να με προκαλέσεις; Γράψε **BLC**!",
+            "es": "¡Ahora mismo el Blackjack (**BLC**) es mi favorito! La estrategia de saber cuándo pedir o plantarse es genial. ¿Quieres desafiarme? ¡Escribe **BLC**!",
+            "fr": "En ce moment, j'adore le Blackjack (**BLC**) ! La stratégie pour savoir quand tirer ou s'arrêter est intense. Tu veux me défier ? Tape **BLC** !",
+            "de": "Im Moment hat Blackjack (**BLC**) mein Interesse geweckt! Die Strategie zu wissen, wann man noch eine Karte nimmt oder stehen bleibt, ist intensiv. Willst du mich herausfordern? Tippe **BLC**!",
+            "it": "Al momento il Blackjack (**BLC**) ha catturato il mio interesse! La strategia di sapere quando chiedere carta o stare è intensa. Vuoi sfidarmi a un round? Digita **BLC**!"
+        }
+    }
+]
+
+higher_list = ["Higher!", "Try a bigger number!"]
+lower_list = ["Lower!", "Try a smaller number!"]
+win_list = ["Great job! You won!", "Agh.. You won! This was really fun!", "Whoa! How did you win?!"]
+choice_list = ["Rock", "Paper", "Scissors"]
+lose_list = ["Yea!! K0sh for the Win!", "Seems like I won!", "Yes! Lets gooo!!!"]
+
+# 1. Pre-calculate multi-phrase embeddings for each category block
+for pair in qa_pairs:
+    pair["question_embeddings"] = model.encode(pair["queries"], convert_to_tensor=True)
+
+THRESHOLD = 0.5
+
+try:
+    with open("userdata.json", "r") as file:
+        userdata = json.load(file)
+except FileNotFoundError:
+    userdata = {}
+
+
+def get_response(user_input):
+    input_embedding = model.encode(user_input, convert_to_tensor=True)
+
+    best_score = -1.0
+    best_idx = 0
+
+    # Loop through each category to find which one contains the closest phrase
+    for idx, pair in enumerate(qa_pairs):
+        similarities = util.cos_sim(input_embedding, pair["question_embeddings"])[0]
+        max_idx = similarities.argmax().item()
+        max_score = similarities[max_idx].item()
+
+        # Track the absolute best matching group index across the dataset
+        if max_score > best_score:
+            best_score = max_score
+            best_idx = idx
+
+    try:
+        lang = detect(user_input)
+    except Exception:
+        lang = "en"
+
+    if best_score < THRESHOLD:
+        fallbacks = {
+            "en": "Sorry, I don't understand. Try asking: 'What is this game?'",
+            "el": "Συγγνώμη, δεν κατάλαβα. Δοκίμασε να ρωτήσεις: 'Τι παιχνίδι είναι αυτό;'",
+            "es": "Lo siento, no entiendo. Intenta preguntar: '¿Qué es este juego?'",
+            "fr": "Désolé, je ne comprends pas. Essaie de demander : 'Qu'est-ce que ce jeu ?'",
+            "de": "Entschuldigung, das verstehe ich nicht. Frag mal: 'Was ist das für ein Spiel?'",
+            "it": "Scusa, non capisco. Prova a chiedere: 'Cos'è questo gioco?'"
+        }
+        return best_score, fallbacks.get(lang, fallbacks["en"])
+
+    response_dict = qa_pairs[best_idx]["responses"]
+    return best_score, response_dict.get(lang, response_dict["en"])
+
+class K0sh:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("🤖 K0sh AI // System Terminal")
+        self.root.attributes("-fullscreen", True)
+
+        # --- GAMING / RETRO CYBERPUNK COLOR PALETTE ---
+        BG_COLOR = "#040208"
+        CONTAINER_COLOR = "#0D0A14"
+        BORDER_HIGHLIGHT = "#FF007F"
+        ACCENT_CYAN = "#00FFFF"
+        TEXT_WHITE = "#F5F2FA"
+        TEXT_MUTED = "#635C70"
+
+        self.root.configure(bg=BG_COLOR)
+        self.root.bind("<Escape>", lambda event: self.root.attributes("-fullscreen", False))
+
+        # STATE
+        self.is_playing = False
+        self.is_inchat = True
+        self.is_playing2 = False
+        self.is_playing3 = False
+        self.skipped_anim = False  # Track animation skip requests
+        self.choice = "Empty"
+        self.name = "Empty"
+        self.Black_jack_Score = 0
+        self.Black_jack_bot_Score = 0
+        self.inter = 0
+        self.perfect = 21
+
+        # Image (Illustration of K0sh)
+        try:
+            self.img = Image.open("K0sh2.png")
+            self.img = self.img.resize((260, 260))
+            self.photo = ImageTk.PhotoImage(self.img)
+        except Exception:
+            self.photo = None
+
+        # GRID STRATIFICATION LAYOUT
+        self.root.columnconfigure(0, weight=1)
+        self.root.columnconfigure(1, weight=4)
+        self.root.rowconfigure(1, weight=1)
+
+        # Header Banner Area
+        top_spacer = tk.Frame(root, bg=BG_COLOR, height=15)
+        top_spacer.grid(row=0, column=0, columnspan=2, sticky="nsew")
+
+        header_frame = tk.Frame(root, bg=BG_COLOR)
+        header_frame.grid(row=0, column=0, columnspan=2, pady=(10, 5))
+
+        tk.Label(
+            header_frame, text="⚡ K0sh AI : TERMINAL v0.5 ⚡", font=("Consolas", 32, "bold"),
+            fg=BORDER_HIGHLIGHT, bg=BG_COLOR
+        ).pack()
+
+        tk.Label(
+            header_frame, text="// MAIN SERVER SUBSYSTEM DIRECT INTERFACE HOST", font=("Consolas", 10, "normal"),
+            fg=ACCENT_CYAN, bg=BG_COLOR
+        ).pack(pady=(2, 0))
+
+        # Left Column: User Status & Avatar Panel
+        side_panel = tk.Frame(root, bg=CONTAINER_COLOR, highlightbackground=BORDER_HIGHLIGHT, highlightthickness=1,
+                              padx=20, pady=20)
+        side_panel.grid(row=1, column=0, sticky="nsew", padx=(30, 15), pady=15)
+
+        self.canvas = tk.Canvas(
+            side_panel, width=260, height=260, bg=CONTAINER_COLOR, highlightthickness=0
+        )
+        self.canvas.pack(pady=10)
+
+        if self.photo:
+            self.canvas.create_image(130, 130, image=self.photo)
+        else:
+            self.canvas.create_rectangle(10, 10, 250, 250, outline=ACCENT_CYAN, width=2, dash=(6, 3))
+            self.canvas.create_text(130, 130, text="[ NO_AVATAR.SYS ]", fill=ACCENT_CYAN,
+                                    font=("Consolas", 12, "bold"))
+
+        # User Live Dynamic Display Card Block
+        self.user_stats_box = tk.LabelFrame(side_panel, text=" PLAYER PROFILE ", font=("Consolas", 10, "bold"),
+                                            fg=ACCENT_CYAN,
+                                            bg=CONTAINER_COLOR, bd=1, padx=10, pady=10)
+        self.user_stats_box.pack(fill=tk.X, pady=10)
+
+        self.lbl_profile_name = tk.Label(self.user_stats_box, text="USER: GUEST_NODE", font=("Consolas", 11),
+                                         fg=TEXT_WHITE, bg=CONTAINER_COLOR, anchor="w")
+        self.lbl_profile_name.pack(fill=tk.X)
+        self.lbl_profile_score = tk.Label(self.user_stats_box, text="SCORE: ---", font=("Consolas", 11),
+                                          fg=BORDER_HIGHLIGHT, bg=CONTAINER_COLOR, anchor="w")
+        self.lbl_profile_score.pack(fill=tk.X)
+
+        # Visual Decorative Info Elements inside the Left Dock
+        status_box = tk.LabelFrame(side_panel, text=" TELEMETRY METRICS ", font=("Consolas", 10, "bold"),
+                                   fg=BORDER_HIGHLIGHT,
+                                   bg=CONTAINER_COLOR, bd=1, padx=10, pady=10)
+        status_box.pack(fill=tk.X, pady=10)
+
+        tk.Label(status_box, text="AI CORE: MiniLM-L12", font=("Consolas", 10), fg=TEXT_WHITE, bg=CONTAINER_COLOR,
+                 anchor="w").pack(fill=tk.X)
+        tk.Label(status_box, text="STATUS: ENERGIZED", font=("Consolas", 10), fg="#00FF66", bg=CONTAINER_COLOR,
+                 anchor="w").pack(fill=tk.X)
+        tk.Label(status_box, text="FPS LINK: 60 HZ // SYNC", font=("Consolas", 9), fg=TEXT_MUTED,
+                 bg=CONTAINER_COLOR,
+                 anchor="w").pack(fill=tk.X)
+
+        # Right Column: The Core Main Chat Stream Housing
+        main_chat_container = tk.Frame(root, bg=CONTAINER_COLOR, highlightbackground=ACCENT_CYAN,
+                                       highlightthickness=1,
+                                       padx=20, pady=20)
+        main_chat_container.grid(row=1, column=1, sticky="nsew", padx=(15, 30), pady=15)
+
+        # OTHER VARIABLES
+        self.num = 0
+        self.guesses = 0
+        self.attempts = 0
+
+        # Chat Output Display area config
+        self.chat_area = scrolledtext.ScrolledText(
+            main_chat_container, wrap=tk.WORD, font=("Consolas", 12),
+            bg="#06040A", fg=TEXT_WHITE, insertbackground=ACCENT_CYAN,
+            highlightthickness=0, bd=0
+        )
+        self.chat_area.pack(fill=tk.BOTH, expand=True, pady=(0, 15))
+
+        # Initial Boot Greeting Sequences
+        self.chat_area.insert(tk.END, "Loading K0sh...\n")
+        self.chat_area.insert(tk.END, "Loaded K0sh successfully!\n")
+
+        initial_greeting = (
+            f"\nBot: Hi user! My name is K0sh! "
+            f"\nBot: Today, we can play Guess the Number, Rock-Paper-Scissors, or Blackjack! "
+            f"\nBot: Feel free to ask anything you want, before we start! "
+            f"\nBot: In order to start the game, send the word: GTN, RPS, or BLC! \n"
+            f"\nBot: Also, before you reply with anything, can you please tell me how to call you? "
+            f"(PLEASE REPLY WITH YOUR NAME AND AFTERWARDS YOU CAN MOVE ON WITH THE GAME).\n"
+            f"\n[SYSTEM NOTICE: Press 'ESC' key to leave fullscreen mode]\n"
+        )
+        self.chat_area.insert(tk.END, initial_greeting)
+        self.chat_area.config(state="disabled")
+
+        # Interactive Chat Input Tray setup
+        input_frame = tk.Frame(main_chat_container, bg="#14101F", highlightbackground=BORDER_HIGHLIGHT,
+                               highlightthickness=1, padx=10, pady=8)
+        input_frame.pack(fill=tk.X, side=tk.BOTTOM)
+
+        self.input_field = tk.Entry(
+            input_frame, font=('Consolas', 13, 'bold'), bg="#14101F", fg=ACCENT_CYAN,
+            insertbackground=ACCENT_CYAN, highlightthickness=0, bd=0
+        )
+        self.input_field.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
+        self.input_field.bind("<Return>", lambda event: self.send_message())
+
+
+        self.skip_btn = tk.Button(
+            input_frame, text="⏩ SKIP", command=self._typewriter_skip,  # <-- Change this right here
+            font=("Consolas", 11, "bold"), bg="#1A233A", fg=ACCENT_CYAN, activebackground=ACCENT_CYAN,
+            activeforeground="#000000", width=8, relief=tk.FLAT, cursor="hand2", state=tk.DISABLED
+        )
+        self.skip_btn.pack(side=tk.RIGHT, padx=(0, 5))
+
+        self.send = tk.Button(
+            input_frame, text="⚡ EXECUTE", command=self.send_message, font=("Consolas", 11, "bold"),
+            bg=BORDER_HIGHLIGHT, fg=TEXT_WHITE, activebackground=ACCENT_CYAN, activeforeground="#000000",
+            width=12, relief=tk.FLAT, cursor="hand2"
+        )
+        self.send.pack(side=tk.RIGHT)
+
+        # Control Utility Action Tray Bar
+        control_frame = tk.Frame(side_panel, bg=CONTAINER_COLOR)
+        control_frame.pack(fill=tk.X, side=tk.BOTTOM, pady=10)
+
+        tk.Button(
+            control_frame, text="CLEAR SCREEN DATA", command=self.clear_chat, font=("Consolas", 10, "bold"),
+            bg="#21122B", fg=TEXT_WHITE, activebackground=BORDER_HIGHLIGHT, activeforeground=TEXT_WHITE,
+            relief=tk.FLAT, pady=6, cursor="hand2"
+        ).pack(fill=tk.X, pady=5)
+
+        tk.Button(
+            control_frame, text="SHUTDOWN CORE SYS", command=self.destroy, font=("Consolas", 10, "bold"),
+            bg="#3D0A16", fg="#FF4D79", activebackground="#E60045", activeforeground=TEXT_WHITE,
+            relief=tk.FLAT, pady=6, cursor="hand2"
+        ).pack(fill=tk.X, pady=5)
+
+    def update_sidebar_profile(self):
+        if self.name != "Empty":
+            self.lbl_profile_name.config(text=f"USER: {self.name.upper()}")
+            score_val = userdata[self.name]["InGameScore"]
+            self.lbl_profile_score.config(text=f"SCORE: {score_val} PTS")
+
+    def clear_chat(self):
+        self.chat_area.config(state='normal')
+        self.chat_area.delete(1.0, tk.END)
+
+        if self.name == "Empty":
+            msg = f"\nBot: Hi user! My name is K0sh! "
+        else:
+            msg = f"\nBot: Hi {self.name}! My name is K0sh! "
+
+        msg += (
+            f"\nBot: Today, we are going to play a game of your choice! "
+            f"\nBot: Feel free to ask anything you want, before we start! "
+            f"\nBot: Right now, we are in chat mode. In order to start a game, send the word: GTN, RPS, or BLC.\n"
+            f"\n[SYSTEM NOTICE: Press 'ESC' key to leave fullscreen mode]\n"
+        )
+        self.chat_area.config(state='disabled')
+        self.safe_append_chat(msg)
+
+    def send_message(self):
+        plr_txt = self.input_field.get().strip()
+        if not plr_txt:
+            return
+
+        self.input_field.delete(0, tk.END)
+        self.send.config(state=tk.DISABLED)
+        self.input_field.config(state=tk.DISABLED)
+
+        self.chat_area.config(state='normal')
+        self.chat_area.insert(tk.END, f"\nYou: {plr_txt}\n")
+        self.chat_area.config(state='disabled')
+        self.chat_area.see(tk.END)
+
+        thread = threading.Thread(target=self.process_input, args=(plr_txt,), daemon=True)
+        thread.start()
+
+    def process_input(self, plr_txt):
+        if self.name == "Empty":
+            success, bot_message = self.check_for_user(plr_txt)
+            self.safe_append_chat(f"Bot: {bot_message}\n")
+            self.root.after(0, self.update_sidebar_profile)
+            return
+
+        if self.is_playing:
+            self.game_handler(plr_txt)
+        elif self.is_playing2:
+            self.game_handler2(plr_txt)
+        elif self.is_playing3:
+            self.game_handler3(plr_txt)
+        else:
+            # Game Initialization System Routing
+            if plr_txt.upper() == "GTN":
+                self.num = random.randint(0, 100)
+                self.guesses = 0
+                self.safe_append_chat(
+                    f"\nBot: Nice, {self.name}! Let's start. So, I've picked a number from 0-100. Try and guess it!\n")
+                self.is_inchat = False
+                self.is_playing = True
+                return
+
+            if plr_txt.upper() == "RPS":
+                self.choice = random.choice(choice_list)
+                self.guesses = 0
+                self.safe_append_chat(
+                    f'\nBot: Alrighty {self.name}! I pick one from: Rock, Paper or Scissors. \nBot: Remember {self.name}! Rock beats Scissors, Paper beats Rock and Scissors beats Paper. \nBot: Enter your move to begin!\n')
+                self.is_inchat = False
+                self.is_playing2 = True
+                return
+
+            if plr_txt.upper() == "BLC":
+                self.is_playing3 = True
+                self.Black_jack_Score = 0
+                self.Black_jack_bot_Score = 0
+
+                player_roll = random.randint(1, 6)
+                bot_roll = random.randint(1, 6)
+                self.Black_jack_Score += player_roll
+                self.Black_jack_bot_Score += bot_roll
+
+                self.safe_append_chat(
+                    f"\nBot: Nice choice for a game {self.name}! Each round we will roll a 1-6 dice. Get as close to 21 as possible without exceeding it.\n"
+                    f"Bot: 🎲 Initial Deal! You rolled a {player_roll} (Total: {self.Black_jack_Score}).\n"
+                    f"Bot: 🎲 I rolled an initial {bot_roll}.\n"
+                    f"Bot: Please type **hit** to roll again, or **stand** to freeze your hand!\n"
+                )
+                self.is_inchat = False
+                return
+
+            # Semantic AI Conversation Matching
+            score, response = get_response(plr_txt)
+            self.safe_append_chat(f"[System Match Metric Conf: {score * 100:.1f}%]\nBot: {response}\n")
+
+    def game_handler(self, plr_txt):
+        try:
+            guess = int(plr_txt)
+        except ValueError:
+            self.safe_append_chat(f"Bot: That is not a number! Please enter a number between 0 and 100.\n")
+            return
+
+        self.guesses += 1
+        userdata[self.name]['InGameScore'] -= 1
+        self.root.after(0, self.update_sidebar_profile)
+
+        msg = f"Bot: Your account points: {userdata[self.name]['InGameScore']} (1 point was taken from you, {self.name}.)\n"
+
+        if guess < 0 or guess > 100:
+            msg += f"Bot: Come on {self.name}, you know this is not an eligible number! The number is between 0 and 100!\n"
+        elif guess == self.num:
+            msg += f"Bot: {random.choice(win_list)}\n"
+            userdata[self.name]["InGameScore"] += 10
+            msg += f"Bot: Your guesses: {self.guesses}, Your Points: {userdata[self.name]['InGameScore']}\n"
+            msg += f"Bot: Reply with **RPS**, **GTN**, or **BLC** if you wish to swap modes!\n"
+            self.is_inchat = True
+            self.is_playing = False
+        elif guess <= self.num:
+            msg += f"Bot: {random.choice(higher_list)}\n"
+        elif guess >= self.num:
+            msg += f"Bot: {random.choice(lower_list)}\n"
+
+        self.safe_append_chat(msg)
+        self.root.after(0, self.update_sidebar_profile)
+
+    def game_handler2(self, plr_txt):
+        guess2 = plr_txt.strip().lower()
+        self.choice = random.choice(choice_list)
+
+        if guess2.isdigit():
+            self.safe_append_chat(
+                f"\nBot: Well {self.name}... This is a number.. please guess between Rock, Paper, or Scissors?\n")
+            return
+
+        self.guesses += 1
+        msg = ""
+
+        if (
+                (guess2 == "rock" and self.choice == "Rock") or
+                (guess2 == "paper" and self.choice == "Paper") or
+                (guess2 == "scissors" and self.choice == "Scissors")
+        ):
+            msg += f"Bot: That is a draw {self.name}! Keep throwing or switch modes via command acronyms.\n"
+        elif guess2 == 'rock' and self.choice == 'Paper':
+            msg += f"Bot: I choose Paper!\nBot: {random.choice(lose_list)}\n"
+            userdata[self.name]["InGameScore"] -= 20
+            self.is_inchat = True
+            self.is_playing2 = False
+        elif guess2 == 'rock' and self.choice == 'Scissors':
+            msg += f"Bot: I choose Scissors!\nBot: {random.choice(win_list)}\n"
+            userdata[self.name]["InGameScore"] += 20
+            self.is_inchat = True
+            self.is_playing2 = False
+        elif guess2 == 'paper' and self.choice == 'Rock':
+            msg += f"Bot: I choose Rock!\nBot: {random.choice(win_list)}\n"
+            userdata[self.name]["InGameScore"] += 20
+            self.is_inchat = True
+            self.is_playing2 = False
+        elif guess2 == 'paper' and self.choice == 'Scissors':
+            msg += f"Bot: I choose Scissors!\nBot: {random.choice(lose_list)}\n"
+            userdata[self.name]["InGameScore"] -= 20
+            self.is_inchat = True
+            self.is_playing2 = False
+        elif guess2 == 'scissors' and self.choice == "Rock":
+            msg += f"Bot: I choose Rock!\nBot: {random.choice(lose_list)}\n"
+            userdata[self.name]["InGameScore"] -= 20
+            self.is_inchat = True
+            self.is_playing2 = False
+        elif guess2 == 'scissors' and self.choice == 'Paper':
+            msg += f"Bot: I choose Paper!\nBot: {random.choice(win_list)}\n"
+            userdata[self.name]["InGameScore"] += 20
+            self.is_inchat = True
+            self.is_playing2 = False
+
+        if not self.is_playing2:
+            msg += f"Bot: Score balance: {userdata[self.name]['InGameScore']}\n"
+            msg += f"Bot: Reply with **GTN**, **RPS**, or **BLC** to launch your next round setup!\n"
+
+        self.safe_append_chat(msg)
+        self.root.after(0, self.update_sidebar_profile)
+
+    def game_handler3(self, plr_txt):
+        guess3 = plr_txt.strip().lower()
+
+        if guess3 == "hit":
+            self.player_hit()
+            msg = f"\nBot: You hit and rolled a {self.inter}! Total points: {self.Black_jack_Score}.\n"
+
+            if self.Black_jack_Score > self.perfect:
+                self.evaluate_results(prefix_msg=msg)
+                return
+
+            if self.Black_jack_bot_Score < 16:
+                self.bot_hit()
+                msg += f"Bot: I hit as well! I rolled a {self.inter} (Total: {self.Black_jack_bot_Score}).\n"
+            else:
+                msg += f"Bot: I chose to stand with my current points.\n"
+
+            if self.Black_jack_bot_Score > self.perfect:
+                self.evaluate_results(prefix_msg=msg)
+                return
+
+            self.safe_append_chat(msg)
+            return
+
+        elif guess3 == "stand":
+            msg = f"\nBot: You decided to stay with a score of: {self.Black_jack_Score}\n"
+
+            while self.Black_jack_bot_Score < 16:
+                self.bot_hit()
+                msg += f"Bot: I hit to catch up! I rolled a {self.inter} (Total: {self.Black_jack_bot_Score}).\n"
+
+            self.evaluate_results(prefix_msg=msg)
+            return
+        else:
+            self.safe_append_chat(f"\nBot: Invalid move! Please type 'hit' or 'stand' to continue playing.\n")
+            return
+
+    def evaluate_results(self, prefix_msg=""):
+        msg = prefix_msg + f"\nBot: Let's check our final scores! My score: --{self.Black_jack_bot_Score}-- vs Your score: --{self.Black_jack_Score}--.\n"
+
+        if self.Black_jack_Score > self.perfect:
+            msg += f"Bot: You exceeded 21 and busted! You lost 50 points. 💀\n"
+            userdata[self.name]["InGameScore"] -= 50
+        elif self.Black_jack_bot_Score > self.perfect:
+            msg += f"Bot: I exceeded 21 and busted! You won 50 points! 🎉\n"
+            userdata[self.name]["InGameScore"] += 50
+        elif self.Black_jack_Score > self.Black_jack_bot_Score:
+            msg += f"Bot: {random.choice(win_list)} (+50 points)\n"
+            userdata[self.name]["InGameScore"] += 50
+        elif self.Black_jack_bot_Score > self.Black_jack_Score:
+            msg += f"Bot: {random.choice(lose_list)} (-50 points)\n"
+            userdata[self.name]["InGameScore"] -= 50
+        else:
+            msg += f"Bot: It's a draw match! No points altered.\n"
+
+        msg += f"Bot: Your Total Points: {userdata[self.name]['InGameScore']}\n"
+        msg += f"Bot: Type 'BLC' to play again, or choose 'GTN' / 'RPS'!\n"
+
+        self.safe_append_chat(msg)
+        self.root.after(0, self.update_sidebar_profile)
+
+        self.Black_jack_Score = 0
+        self.Black_jack_bot_Score = 0
+        self.is_playing3 = False
+        self.is_inchat = True
+
+    def destroy(self):
+        with open("userdata.json", "w") as file:
+            json.dump(userdata, file, indent=4)
+        self.root.destroy()
+
+    def check_for_user(self, name):
+        if name in userdata:
+            self.name = name
+            return True, f"Welcome back {self.name}! Dynamic system node re-established. 💾"
+        elif name.isalpha():
+            self.name = name
+            userdata[self.name] = {"Joined": True, "InGameScore": 0}
+            with open("userdata.json", "w") as file:
+                json.dump(userdata, file, indent=4)
+            return True, f"Welcome {self.name}, I am K0sh! New dynamic profile created. 💾"
+        else:
+            return False, "This isn't an alphabetical name string. Please try again!"
+
+    def safe_append_chat(self, message):
+        self.skipped_anim = False
+        self.current_message = message
+        self.send.config(state=tk.DISABLED)
+
+        self.skip_btn.config(state=tk.NORMAL)
+        self.root.after(0, self._typewriter_stream, message, 0)
+
+    def _typewriter_stream(self, message, index):
+        self.current_index = index
+
+        if self.skipped_anim:
+            return
+
+        if index < len(message):
+            self.chat_area.config(state='normal')
+            self.chat_area.insert(tk.END, message[index])
+            self.chat_area.config(state='disabled')
+            self.chat_area.see(tk.END)
+            self.root.after(10, lambda: self._typewriter_stream(message, index + 1))
+        else:
+            self.skip_btn.config(state=tk.DISABLED)
+            self.send.config(state=tk.NORMAL)
+            self.input_field.config(state=tk.NORMAL)
+            self.input_field.focus()
+
+    def _typewriter_skip(self):
+        self.skipped_anim = True
+        self.skip_btn.config(state=tk.DISABLED)
+
+        remaining_text = self.current_message[self.current_index:]
+        self.chat_area.config(state='normal')
+        if remaining_text:
+            self.chat_area.insert(tk.END, remaining_text)
+        self.chat_area.config(state='disabled')
+        self.chat_area.see(tk.END)
+        self.skip_btn.config(state=tk.DISABLED)
+        self.send.config(state=tk.NORMAL)
+        self.input_field.config(state=tk.NORMAL)
+        self.input_field.focus()
+
+    def player_hit(self):
+        self.inter = random.randint(1, 6)
+        self.Black_jack_Score += self.inter
+
+    def bot_hit(self):
+        self.inter = random.randint(1, 6)
+        self.Black_jack_bot_Score += self.inter
+
+
+
+
+
+def main():
+    root = tk.Tk()
+    app = K0sh(root)
+    root.mainloop()
+
+
+if __name__ == "__main__":
+    main()
