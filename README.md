@@ -164,6 +164,9 @@ K0sh AI is named after a real cat. Here he is — the grumpy mastermind behind i
 <img src="https://github.com/user-attachments/assets/feccb714-3670-4985-a1ac-b2e2b642ddc0" width="45%" alt="The real K0sh"/>
 &nbsp;&nbsp;
 <img src="https://github.com/user-attachments/assets/9d706290-6f8c-4cc3-8d93-a89b14c81363" width="45%" alt="K0sh, the original AI"/>
+&nbsp;&nbsp;
+<img width="3060" height="4080" alt="20260614_085406" src="https://github.com/user-attachments/assets/b106db8e-eb46-43aa-8418-82075b8505ad" />
+
 
 *The original K0sh — he helped me code the project, as well as making my day. His name is Cinammon.*
 </div>
