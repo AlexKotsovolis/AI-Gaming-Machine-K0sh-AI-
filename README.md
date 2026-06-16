@@ -124,6 +124,8 @@ python k0sh_ai.py
 <img src="https://github.com/user-attachments/assets/20fa9bc7-72a0-4365-81e9-f1cde2a79075" width="80%" alt="K0sh AI Game Mode"/>
 <br/><br/>
 <img src="https://github.com/user-attachments/assets/4a0b7fdc-54ae-439f-8fd0-16471000cd4f" width="80%" alt="K0sh AI Chat"/>
+<br/><br/>
+<img width="1919" height="1079" alt="Screenshot 2026-06-16 111851" src="https://github.com/user-attachments/assets/8ef04085-2bd0-48f1-9b95-5157d0ac1a05" />
 </div>
 
 ---
