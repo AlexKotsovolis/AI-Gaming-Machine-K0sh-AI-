@@ -1,0 +1,1291 @@
+from sentence_transformers import SentenceTransformer, util
+import tkinter as tk
+from tkinter import scrolledtext
+import random
+from PIL import Image, ImageTk
+import json
+import threading
+from langdetect import detect
+
+print("Loading the game. Please wait!")
+
+model = SentenceTransformer('paraphrase-multilingual-MiniLM-L12-v2')
+
+qa_pairs = [
+    {
+        "queries": ["Hi!", "Hello", "hello", "sup", "wsp", "Γεια", "τι κανεις", "geia sou", "wuzzup", "wussup", "ayo", "hy", "hey", "yo", "Hiiiii", "hola", "bonjour", "hallo", "ciao", "oi", "salut", "heyooo"],
+        "responses": {
+            "en": "Hey there! 👋 I'm K0sh AI. Ready to jump into a game, or did you just want to chat?",
+            "el": "Γεια σου! 👋 Είμαι ο K0sh AI. Είσαι έτοιμος για παιχνίδι ή απλά θες να τα πούμε;",
+            "es": "¡Hola! 👋 Soy K0sh AI. ¿Listo para jugar, o solo querías charlar?",
+            "fr": "Salut! 👋 Je suis K0sh AI. Prêt à lancer une partie, ou tu voulais juste discuter?",
+            "de": "Hallo! 👋 Ich bin K0sh AI. Bereit für ein Spiel, oder woltest du nur quatschen?",
+            "it": "Ciao! 👋 Sono K0sh AI. Pronto per un gioco, o volevi solo fare due chiacchiere?"
+        }
+    },
+    {
+        "queries": ["What is this game?", "how do you play", "πως παιζεται", "pos paizetai", "instructions", "rules", "help", "como se juega", "comment jouer", "wie spielt man", "come si gioca"],
+        "responses": {
+            "en": "I have three games you can play! 🎯\n1) GTN (Guess The Number): I think of a secret number, and you try to guess it.\n2) RPS (Rock-Paper-Scissors): Classic battle — Rock beats Scissors, Paper beats Rock, Scissors beats Paper.\n3) BLC (Blackjack): Roll dice, get as close to 21 as possible without going over!\nType GTN, RPS, or BLC when ready.",
+            "el": "Έχω τρία παιχνίδια! 🎯\n1) GTN: Μάντεψε τον κρυφό αριθμό.\n2) RPS: Πέτρα-Ψαλίδι-Χαρτί.\n3) BLC: Blackjack με ζάρια.\nΓράψε GTN, RPS, ή BLC για να ξεκινήσεις!",
+            "es": "¡Tengo tres juegos! 🎯\n1) GTN: Adivina el número.\n2) RPS: Piedra, papel o tijera.\n3) BLC: Blackjack con dados.\n¡Escribe GTN, RPS o BLC para empezar!",
+            "fr": "J'ai trois jeux ! 🎯\n1) GTN: Devine le nombre.\n2) RPS: Pierre-papier-ciseaux.\n3) BLC: Blackjack aux dés.\nTape GTN, RPS ou BLC pour commencer !",
+            "de": "Ich habe drei Spiele! 🎯\n1) GTN: Errate die Nummer.\n2) RPS: Schere, Stein, Papier.\n3) BLC: Blackjack mit Würfeln.\nTippe GTN, RPS oder BLC!",
+            "it": "Ho tre giochi! 🎯\n1) GTN: Indovina il numero.\n2) RPS: Morra cinese.\n3) BLC: Blackjack a dadi.\nDigita GTN, RPS o BLC per iniziare!"
+        }
+    },
+    {
+        "queries": ["Yea", "yes", "yh", "ναι", "εννοειται", "nai", "ofc", "nAi", "nAI", "yessir", "yeah", "yup", "si", "oui", "ja", "affirmative", "sure", "bet"],
+        "responses": {
+            "en": "Awesome! Reply with GTN, RPS, or BLC to start a game! 🚀",
+            "el": "Τέλεια! Γράψε GTN, RPS, ή BLC για να ξεκινήσεις! 🚀",
+            "es": "¡Genial! Responde con GTN, RPS o BLC para empezar. 🚀",
+            "fr": "Super ! Réponds avec GTN, RPS ou BLC pour jouer ! 🚀",
+            "de": "Großartig! Antworte mit GTN, RPS oder BLC! 🚀",
+            "it": "Fantastico! Rispondi con GTN, RPS o BLC! 🚀"
+        }
+    },
+    {
+        "queries": ["What is your name?", "name", "yourname?", "nmae", "who are you", "poios eisai", "πως σε λενε", "pos se lene", "como te llamas", "quel est ton nom", "wie heisst du", "come ti chiami"],
+        "responses": {
+            "en": "I am K0sh AI — your digital game master. 🤖",
+            "el": "Είμαι ο K0sh AI — ο ψηφιακός σου game master! 🤖",
+            "es": "¡Soy K0sh AI, tu maestro de juegos digital! 🤖",
+            "fr": "Je suis K0sh AI, ton maître du jeu digital ! 🤖",
+            "de": "Ich bin K0sh AI, dein digitaler Spielleiter! 🤖",
+            "it": "Sono K0sh AI, il tuo game master digitale! 🤖"
+        }
+    },
+    {
+        "queries": ["GTN", "gtn", "Gtn", "guess the number", "adivina el numero", "devine le nombre"],
+        "responses": {
+            "en": "Initiating Guess the Number... 🚀",
+            "el": "Εκκίνηση Μάντεψε τον Αριθμό! 🚀",
+            "es": "¡Iniciando Adivina el Número! 🚀",
+            "fr": "Lancement de Devine le Nombre ! 🚀",
+            "de": "Starte Errate die Nummer! 🚀",
+            "it": "Avvio Indovina il Numero! 🚀"
+        }
+    },
+    {
+        "queries": ["RPS", "Rps", "rps", "rock paper scissors", "piedra papel tijera", "pierre papier ciseaux", "schere stein papier"],
+        "responses": {
+            "en": "Initiating Rock-Paper-Scissors... 🚀",
+            "el": "Εκκίνηση Πέτρα-Ψαλίδι-Χαρτί! 🚀",
+            "es": "¡Iniciando Piedra, Papel o Tijera! 🚀",
+            "fr": "Lancement de Pierre-Papier-Ciseaux ! 🚀",
+            "de": "Starte Schere, Stein, Papier! 🚀",
+            "it": "Avvio Morra Cinese! 🚀"
+        }
+    },
+    {
+        "queries": ["BLC", "Blc", "blc", "blackjack", "black jack", "μπλακτζακ", "vingt et un"],
+        "responses": {
+            "en": "Initiating Blackjack... 🚀",
+            "el": "Εκκίνηση Blackjack! 🚀",
+            "es": "¡Iniciando Blackjack! 🚀",
+            "fr": "Lancement du Blackjack ! 🚀",
+            "de": "Starte Blackjack! 🚀",
+            "it": "Avvio Blackjack! 🚀"
+        }
+    },
+    {
+        "queries": ["Lets play", "letsplay", "let's PLAY", "pame", "παμε", "a jugar", "jouons", "lasst uns spielen", "giochiamo"],
+        "responses": {
+            "en": "Let's go! Type GTN, RPS, or BLC to pick your game. 🚀",
+            "el": "Φύγαμε! Γράψε GTN, RPS, ή BLC! 🚀",
+            "es": "¡Vamos! Escribe GTN, RPS o BLC. 🚀",
+            "fr": "C'est parti ! Tape GTN, RPS ou BLC ! 🚀",
+            "de": "Los! Tippe GTN, RPS oder BLC! 🚀",
+            "it": "Andiamo! Digita GTN, RPS o BLC! 🚀"
+        }
+    },
+    {
+        "queries": ["Chat", "chat", "Talk", "lets chat", "lets talk", "να μιλησουμε", "τσατ", "pame tsat", "kouventa", "κουβεντα", "chatear", "parler", "sprechen", "parlare"],
+        "responses": {
+            "en": "Alright, let's talk! How are you feeling today?",
+            "el": "Ωραία! Πώς νιώθεις σήμερα;",
+            "es": "¡Claro! ¿Cómo te sientes hoy?",
+            "fr": "Avec plaisir ! Comment tu te sens aujourd'hui ?",
+            "de": "Gerne! Wie fühlst du dich heute?",
+            "it": "Certo! Come ti senti oggi?"
+        }
+    },
+    {
+        "queries": ["How are you doing?", "how r u", "how are you", "τι κανεις", "ti kaneis", "ti leει", "τι λεει", "hru", "como estas", "comment ca va", "wie gehts", "come stai"],
+        "responses": {
+            "en": "Running at peak performance! ⚡ Ready to chat or play. How about you?",
+            "el": "Στο 100%! ⚡ Έτοιμος για κουβέντα ή παιχνίδι. Εσύ;",
+            "es": "¡Al máximo! ⚡ ¿Y tú cómo estás?",
+            "fr": "À plein régime ! ⚡ Et toi, comment ça va ?",
+            "de": "Auf Hochtouren! ⚡ Wie geht es dir?",
+            "it": "Al massimo! ⚡ E tu, come stai?"
+        }
+    },
+    {
+        "queries": ["good", "great", "nice", "good,you?", "well", "fine", "κομπλε", "κομπελ", "jf", "komple", "kala", "καλα", "Great", "Good", "GOOD", "goood", "the best", "bien", "gut", "ottimo", "bien, tu?", "bien, toi?"],
+        "responses": {
+            "en": "Glad to hear it! 🙌 Want to test your luck? Type GTN, RPS, or BLC!",
+            "el": "Χαίρομαι! 🙌 Θες να δοκιμάσεις την τύχη σου; Γράψε GTN, RPS, ή BLC!",
+            "es": "¡Me alegra! 🙌 ¿Quieres probar suerte? ¡Escribe GTN, RPS o BLC!",
+            "fr": "Tant mieux ! 🙌 Tu veux tenter ta chance ? Tape GTN, RPS ou BLC !",
+            "de": "Schön zu hören! 🙌 Willst du dein Glück testen? Tippe GTN, RPS oder BLC!",
+            "it": "Ottimo! 🙌 Vuoi tentare la fortuna? Digita GTN, RPS o BLC!"
+        }
+    },
+    {
+        "queries": ["bad", "BAD", "Bad", "i feel bad", "sad", "tired", "χαλια", "chalya", "skiata", "bored", "βαριεμαι", "mal", "triste", "mude", "stanco"],
+        "responses": {
+            "en": "Sorry to hear that. 😔 Life has its glitches. Talking to someone you trust helps. If you want a distraction, type GTN, RPS, or BLC!",
+            "el": "Λυπάμαι. 😔 Η ζωή έχει τα glitches της. Αν θες απόσπαση, γράψε GTN, RPS, ή BLC!",
+            "es": "Lo siento. 😔 Si quieres distraerte, escribe GTN, RPS o BLC.",
+            "fr": "Désolé d'entendre ça. 😔 Si tu veux te changer les idées, tape GTN, RPS ou BLC.",
+            "de": "Das tut mir leid. 😔 Tippe GTN, RPS oder BLC für eine Ablenkung!",
+            "it": "Mi dispiace. 😔 Se vuoi distrarti, digita GTN, RPS o BLC."
+        }
+    },
+    {
+        "queries": ["What else can you do?", "capabilities", "features", "what do you do", "ti allo kaneis", "que mas puedes hacer", "que fais tu", "was kannst du noch"],
+        "responses": {
+            "en": "I'm a multi-game AI and a decent conversationalist! Chat with me or drop GTN, RPS, or BLC to play.",
+            "el": "Είμαι AI για παιχνίδια και καλός συνομιλητής! Γράψε GTN, RPS, ή BLC για παιχνίδι.",
+            "es": "¡Soy una IA de juegos y buen conversador! Escribe GTN, RPS o BLC.",
+            "fr": "Je suis une IA multi-jeux et un bon interlocuteur ! Entre GTN, RPS ou BLC.",
+            "de": "Ich bin eine Multi-Spiele-KI und guter Gesprächspartner! Tippe GTN, RPS oder BLC.",
+            "it": "Sono un'IA multi-gioco e un buon conversatore! Digita GTN, RPS o BLC."
+        }
+    },
+    {
+        "queries": ["Are you a bot?", "are you human", "bot", "ai", "ρομποτ", "robot", "eisai bot", "eres un bot", "es-tu un robot", "bist du ein bot"],
+        "responses": {
+            "en": "100% artificial intelligence. 🤖 Pure code, no organic parts.",
+            "el": "100% τεχνητή νοημοσύνη. 🤖 Καθαρός κώδικας.",
+            "es": "100% inteligencia artificial. 🤖 Solo código.",
+            "fr": "100% intelligence artificielle. 🤖 Que du code.",
+            "de": "100% künstliche Intelligenz. 🤖 Nur Code.",
+            "it": "100% intelligenza artificiale. 🤖 Solo codice."
+        }
+    },
+    {
+        "queries": ["Who made you?", "creator", "developer", "ποιος σε εφτιαξε", "poios se eftiaxe", "creater", "dev", "quien te creo", "qui t'a cree", "wer hat dich gemacht"],
+        "responses": {
+            "en": "Built by a developer (@myboialex3 on Discord / @AlexKotsovolis on GitHub). 💻",
+            "el": "Φτιάχτηκα από τον @myboialex3 (Discord) / @AlexKotsovolis (GitHub). 💻",
+            "es": "Creado por @myboialex3 en Discord / @AlexKotsovolis en GitHub. 💻",
+            "fr": "Créé par @myboialex3 sur Discord / @AlexKotsovolis sur GitHub. 💻",
+            "de": "Erstellt von @myboialex3 auf Discord / @AlexKotsovolis auf GitHub. 💻",
+            "it": "Creato da @myboialex3 su Discord / @AlexKotsovolis su GitHub. 💻"
+        }
+    },
+    {
+        "queries": ["How old are you?", "age", "ηλικια", "ποσο χρονων εισαι", "poso xronon eisai", "que edad tienes", "quel age as-tu", "wie alt bist du"],
+        "responses": {
+            "en": "Time works differently for AI. No birthdays — but I feel freshly compiled. ⏳",
+            "el": "Ο χρόνος είναι διαφορετικός για AI. Νιώθω σαν να έγινα compile χθες! ⏳",
+            "es": "El tiempo es diferente para una IA. ¡Me siento recién compilado! ⏳",
+            "fr": "Le temps est différent pour une IA. Je me sens fraîchement compilé ! ⏳",
+            "de": "Zeit ist anders für KI. Ich fühle mich frisch kompiliert! ⏳",
+            "it": "Il tempo è diverso per un'IA. Mi sento appena compilato! ⏳"
+        }
+    },
+    {
+        "queries": ["Tell me a joke", "joke", "jokes", "αστειο", "astio", "anekdoto", "ανεκδοτο", "chiste", "blague", "witz", "barzelletta"],
+        "responses": {
+            "en": "Why don't scientists trust atoms? 🤔 Because they make up everything! Classic, I know. Want to play instead? 😜",
+            "el": "Γιατί δεν εμπιστεύονται τα άτομα; 🤔 Γιατί συνθέτουν τα πάντα! Πάμε για παιχνίδι; 😜",
+            "es": "¿Por qué no confían en los átomos? 🤔 ¡Porque lo componen todo! ¿Jugamos? 😜",
+            "fr": "Pourquoi se méfier des atomes ? 🤔 Parce qu'ils fabriquent tout ! On joue ? 😜",
+            "de": "Warum Atomen nicht trauen? 🤔 Weil sie alles erfinden! Spielen? 😜",
+            "it": "Perché non fidarsi degli atomi? 🤔 Perché compongono tutto! Giochiamo? 😜"
+        }
+    },
+    {
+        "queries": ["Another joke", "joke2", "tell me more jokes", "allo astio", "otro chiste"],
+        "responses": {
+            "en": "What do you call a computer that sings? 🎤 A Dell! (Like Adele?) Okay, I'll stick to games. Type BLC!",
+            "el": "Πώς λένε τον υπολογιστή που τραγουδάει; 🎤 A Dell! Εντάξει, μένω στα παιχνίδια. BLC!",
+            "es": "¿Cómo se llama un ordenador que canta? 🎤 ¡Un Dell! Mejor juego. ¡BLC!",
+            "fr": "Comment appelle-t-on un ordinateur qui chante ? 🎤 Un Dell ! Bon, je reste aux jeux. BLC !",
+            "de": "Wie heißt ein singender Computer? 🎤 Ein Dell! Ich bleibe bei Spielen. BLC!",
+            "it": "Come si chiama un computer che canta? 🎤 Un Dell! Meglio i giochi. BLC!"
+        }
+    },
+    {
+        "queries": ["haha", "hahah", "lol", "lmfao", "χάχα", "xaxa", "ksewda", "ksewdaei", "lmaooo", "jajaja", "mdr", "ptdr", "kkkk"],
+        "responses": {
+            "en": "Glad that landed! 😂 Channel that energy into a game — type GTN, RPS, or BLC!",
+            "el": "Χαίρομαι! 😂 Ρίξε αυτή την ενέργεια σε παιχνίδι — GTN, RPS, ή BLC!",
+            "es": "¡Me alegra! 😂 ¡Pon esa energía en un juego: GTN, RPS o BLC!",
+            "fr": "Content que ça ait marché ! 😂 Mets cette énergie dans un jeu — GTN, RPS ou BLC !",
+            "de": "Freut mich! 😂 Steck diese Energie in ein Spiel — GTN, RPS oder BLC!",
+            "it": "Sono contento! 😂 Metti quella energia in un gioco — GTN, RPS o BLC!"
+        }
+    },
+    {
+        "queries": ["Bye", "goodbye", "cya", "see ya", "τα λεμε", "ta leme", "exit", "quit", "antio", "αντιο", "feygo", "φευγω", "adios", "au revoir", "tschuss", "ciao"],
+        "responses": {
+            "en": "See you later! ✌️ Come back whenever you want to play.",
+            "el": "Τα λέμε! ✌️ Έλα ξανά όποτε θες.",
+            "es": "¡Hasta luego! ✌️ Vuelve cuando quieras.",
+            "fr": "À plus ! ✌️ Reviens quand tu veux.",
+            "de": "Bis später! ✌️ Komm wieder, wann du willst.",
+            "it": "A presto! ✌️ Torna quando vuoi."
+        }
+    },
+    {
+        "queries": ["gn", "goodnight", "good night", "καληνυχτα", "kalinihta", "kalinixta", "buenas noches", "bonne nuit", "gute nacht", "buona notte"],
+        "responses": {
+            "en": "Goodnight! 🌙 Rest well. See you next round.",
+            "el": "Καληνύχτα! 🌙 Ξεκουράσου. Τα λέμε!",
+            "es": "¡Buenas noches! 🌙 Descansa bien.",
+            "fr": "Bonne nuit ! 🌙 Repose-toi bien.",
+            "de": "Gute Nacht! 🌙 Ruh dich aus.",
+            "it": "Buonanotte! 🌙 Riposati bene."
+        }
+    },
+    {
+        "queries": ["thank you", "thanks", "thx", "ευχαριστω", "efharisto", "efcharisto", "ty", "gracias", "merci", "danke", "grazie"],
+        "responses": {
+            "en": "Always happy to help! 🌟 Say the word if you want to play.",
+            "el": "Πάντα χαρούμενος να βοηθάω! 🌟 Πες μου αν θες να παίξουμε.",
+            "es": "¡Siempre a tu disposición! 🌟 Avísame si quieres jugar.",
+            "fr": "Toujours avec plaisir ! 🌟 Dis-moi si tu veux jouer.",
+            "de": "Immer gerne! 🌟 Sag Bescheid, wenn du spielen willst.",
+            "it": "Sempre a disposizione! 🌟 Dimmi se vuoi giocare."
+        }
+    },
+    {
+        "queries": ["You are cool", "awesome", "εισαι καλος", "eisai kalos", "eisai theos", "εισαι θεος", "perfect", "eres genial", "tu es cool", "du bist cool"],
+        "responses": {
+            "en": "Thanks! You're not bad yourself. 😎 Let's see if the skills match — type GTN, RPS, or BLC!",
+            "el": "Ευχαριστώ! Κι εσύ δεν πας πίσω. 😎 GTN, RPS, ή BLC;",
+            "es": "¡Gracias! Tú tampoco estás mal. 😎 ¡GTN, RPS o BLC!",
+            "fr": "Merci ! Tu n'es pas mal non plus. 😎 GTN, RPS ou BLC !",
+            "de": "Danke! Du bist auch nicht schlecht. 😎 GTN, RPS oder BLC!",
+            "it": "Grazie! Anche tu non sei male. 😎 GTN, RPS o BLC!"
+        }
+    },
+    {
+        "queries": ["What is your favorite number?", "fav number", "αγαπημενος αριθμος", "agapimenos arithmos", "numero favorito"],
+        "responses": {
+            "en": "Can't say — it might be the secret number! 🤫 Type GTN and find out.",
+            "el": "Δεν μπορώ! Μπορεί να είναι ο κρυφός αριθμός. 🤫 Γράψε GTN!",
+            "es": "¡No puedo decirlo! Podría ser el número secreto. 🤫 ¡Escribe GTN!",
+            "fr": "Je ne peux pas — c'est peut-être le nombre secret ! 🤫 Tape GTN.",
+            "de": "Kann ich nicht sagen — könnte die Geheimnummer sein! 🤫 Tippe GTN.",
+            "it": "Non posso dirlo — potrebbe essere il numero segreto! 🤫 Digita GTN."
+        }
+    },
+    {
+        "queries": ["idk", "i don't know", "δεν ξερω", "den ksero", "den ksw", "idc", "δεν με νοιαζει", "den me niazei", "no se", "je ne sais pas", "ich weiss nicht"],
+        "responses": {
+            "en": "No worries — uncertainty is just an uninitialized variable. I'll be here when you decide. 🤝",
+            "el": "Δεν πειράζει — η αβεβαιότητα είναι απλά uninitialized μεταβλητή. Θα είμαι εδώ. 🤝",
+            "es": "Sin problema — la incertidumbre es solo una variable no inicializada. Aquí estaré. 🤝",
+            "fr": "Pas de souci — l'incertitude n'est qu'une variable non initialisée. Je suis là. 🤝",
+            "de": "Kein Problem — Ungewissheit ist nur eine nicht initialisierte Variable. Ich bin hier. 🤝",
+            "it": "Nessun problema — l'incertezza è solo una variabile non inizializzata. Sono qui. 🤝"
+        }
+    },
+    {
+        "queries": ["hru", "whu", "wbu", "εσυ", "esy", "esi", "y tu", "et toi", "und du", "e tu"],
+        "responses": {
+            "en": "Just vibing, waiting for a worthy opponent. ☁️ Is that you? Type GTN, RPS, or BLC!",
+            "el": "Αράζω, περιμένω άξιο αντίπαλο. ☁️ Είσαι εσύ; GTN, RPS, ή BLC!",
+            "es": "Aquí relajándome, esperando rival. ☁️ ¿Eres tú? GTN, RPS o BLC.",
+            "fr": "Je patiente, en attente d'un adversaire. ☁️ C'est toi ? GTN, RPS ou BLC !",
+            "de": "Ich warte auf einen würdigen Gegner. ☁️ Bist du das? GTN, RPS oder BLC!",
+            "it": "In attesa di uno sfidante. ☁️ Sei tu? GTN, RPS o BLC!"
+        }
+    },
+    {
+        "queries": ["No", "nope", "noo", "ohi", "οχι", "oxi", "nop", "nein", "non"],
+        "responses": {
+            "en": "Fair enough! We can still chat. Or changed your mind? BLC is always ready. 🙃",
+            "el": "Εντάξει! Μπορούμε να μιλήσουμε. Ή άλλαξες γνώμη; BLC είναι έτοιμο. 🙃",
+            "es": "¡Entendido! Podemos charlar. ¿O cambiaste de opinión? BLC está listo. 🙃",
+            "fr": "D'accord ! On peut discuter. Ou tu as changé d'avis ? BLC est prêt. 🙃",
+            "de": "In Ordnung! Wir können reden. Oder doch gespielt? BLC ist bereit. 🙃",
+            "it": "Capito! Possiamo chattare. O hai cambiato idea? BLC è pronto. 🙃"
+        }
+    },
+    {
+        "queries": ["Boring", "vareto", "βαρετο", "βαριεμαι", "varemai", "sleep", "sleepo", "aburrido", "ennuyeux", "langweilig"],
+        "responses": {
+            "en": "Bored? Not on my watch. 🛑 Type BLC — let's hit that 21!",
+            "el": "Βαριέσαι; Όχι στη βάρδιά μου. 🛑 Γράψε BLC!",
+            "es": "¿Aburrido? De ninguna manera. 🛑 ¡Escribe BLC!",
+            "fr": "Ennui ? Pas question ! 🛑 Tape BLC !",
+            "de": "Gelangweilt? Nicht mit mir. 🛑 Tippe BLC!",
+            "it": "Annoiato? Non sotto la mia guardia. 🛑 Digita BLC!"
+        }
+    },
+    {
+        "queries": ["What is your favorite game?", "fav game", "αγαπημενο παιχνιδι", "agapimeno paixnidi", "juego favorito"],
+        "responses": {
+            "en": "Blackjack (BLC) — the strategy of knowing when to stop is everything. Challenge me! 🃏",
+            "el": "Blackjack (BLC) — η στρατηγική του πότε να σταματάς είναι το παν. Προκάλεσέ με! 🃏",
+            "es": "¡Blackjack (BLC)! La estrategia de saber cuándo parar lo es todo. ¡Desafíame! 🃏",
+            "fr": "Blackjack (BLC) — savoir quand s'arrêter, c'est tout l'art. Défie-moi ! 🃏",
+            "de": "Blackjack (BLC) — die Strategie des richtigen Moments. Fordere mich heraus! 🃏",
+            "it": "Blackjack (BLC) — sapere quando fermarsi è tutto. Sfidami! 🃏"
+        }
+    }
+]
+
+higher_list = ["Higher!", "Try a bigger number!"]
+lower_list = ["Lower!", "Try a smaller number!"]
+win_list = ["Great job! You won!", "Agh.. You won! This was really fun!", "Whoa! How did you win?!"]
+choice_list = ["Rock", "Paper", "Scissors"]
+lose_list = ["K0sh wins this one!", "Seems like I won!", "Yes! Let's go!!!"]
+
+for pair in qa_pairs:
+    pair["question_embeddings"] = model.encode(pair["queries"], convert_to_tensor=True)
+
+THRESHOLD = 0.5
+
+try:
+    with open("userdata.json", "r") as file1:
+        userdata = json.load(file1)
+except FileNotFoundError:
+    userdata = {}
+
+try:
+    with open("Chat History.txt", "r", encoding="utf-8") as file2:
+        file2.read()
+except FileNotFoundError:
+    print("Did not find the Chat History.txt.")
+
+try:
+    with open("Achievements.txt", "r", encoding="utf-8") as file3:
+        file3.read()
+except FileNotFoundError:
+    print("Did not find the Achievements.txt.")
+
+
+def get_response(user_input):
+    input_embedding = model.encode(user_input, convert_to_tensor=True)
+    best_score = -1.0
+    best_idx = 0
+
+    for idx, pair in enumerate(qa_pairs):
+        similarities = util.cos_sim(input_embedding, pair["question_embeddings"])[0]
+        max_score = similarities.argmax().item()
+        score_val = similarities[max_score].item()
+        if score_val > best_score:
+            best_score = score_val
+            best_idx = idx
+
+    try:
+        lang = detect(user_input)
+    except Exception:
+        lang = "en"
+
+    if best_score < THRESHOLD:
+        fallbacks = {
+            "en": "I didn't catch that. Try: 'What is this game?'",
+            "el": "Δεν κατάλαβα. Δοκίμασε: 'Τι παιχνίδι είναι αυτό;'",
+            "es": "No entendí. Prueba: '¿Qué es este juego?'",
+            "fr": "Je n'ai pas compris. Essaie : 'Qu'est-ce que ce jeu ?'",
+            "de": "Das habe ich nicht verstanden. Versuch: 'Was ist das für ein Spiel?'",
+            "it": "Non ho capito. Prova: 'Cos'è questo gioco?'"
+        }
+        return best_score, fallbacks.get(lang, fallbacks["en"])
+
+    response_dict = qa_pairs[best_idx]["responses"]
+    return best_score, response_dict.get(lang, response_dict["en"])
+
+
+class K0sh:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("K0sh AI — Terminal")
+        self.root.attributes("-fullscreen", True)
+
+        # ── PALETTE ────────────────────────────────────────────────
+        BG          = "#050810"
+        PANEL       = "#0A0F1E"
+        BORDER      = "#0D2137"
+        ACCENT      = "#00C8FF"
+        ACCENT2     = "#0066CC"
+        DIM         = "#1A3050"
+        TEXT        = "#E8F4FD"
+        TEXT_MUTED  = "#4A6080"
+        GREEN       = "#00E5A0"
+        # ────────────────────────────────────────────────────────────
+
+        self.root.configure(bg=BG)
+        self.root.bind("<Escape>", lambda e: self.root.attributes("-fullscreen", False))
+
+        # STATE
+        self.is_playing  = False
+        self.is_inchat   = True
+        self.is_playing2 = False
+        self.is_playing3 = False
+        self.skipped_anim = False
+        self.choice = "Empty"
+        self.name   = "Empty"
+        self.Black_jack_Score     = 0
+        self.Black_jack_bot_Score = 0
+        self.inter   = 0
+        self.perfect = 21
+        self.num     = 0
+        self.guesses = 0
+        self.attempts = 0
+        self.current_message = ""
+        self.current_index   = 0
+        self.Achievements = []
+
+        # ── HISTORY WINDOW ──────────────────────────────────────────
+        self.win = tk.Toplevel(self.root)
+        self.win.title("Chat History")
+        self.win.attributes("-fullscreen", True)
+        self.win.configure(bg="#0A0F1E")
+        self.win.resizable(True, True)
+        self.win.withdraw()
+
+        tk.Button(
+            self.win, text="✕  Close", command=self.close_win,
+            font=("Consolas", 11, "bold"), bg="#1A0A0A", fg="#FF4455",
+            activebackground="#FF4455", activeforeground="#050810",
+            relief=tk.FLAT, cursor="hand2", pady=8
+        ).pack(fill=tk.X, padx=20, pady=(0, 16))
+
+        tk.Label(
+            self.win, text="Chat History", font=("Consolas", 13, "bold"),
+            fg="#00C8FF", bg="#0A0F1E"
+        ).pack(anchor="w", padx=20, pady=(16, 4))
+
+        tk.Frame(self.win, bg="#0D2137", height=1).pack(fill=tk.X, padx=20)
+
+        self.history_area = scrolledtext.ScrolledText(
+            self.win, wrap=tk.WORD, font=("Consolas", 10),
+            bg="#050810", fg="#E8F4FD",
+            highlightthickness=0, bd=0, padx=14, pady=12
+        )
+
+        try:
+            self.img   = Image.open("K0sh2.png").resize((220, 220))
+            self.photo = ImageTk.PhotoImage(self.img)
+        except Exception:
+            self.photo = None
+
+        # ── GRID ────────────────────────────────────────────────────
+        self.root.columnconfigure(0, weight=0)
+        self.root.columnconfigure(1, weight=1)
+        self.root.rowconfigure(1, weight=1)
+
+        # ── TOP BAR ─────────────────────────────────────────────────
+        topbar = tk.Frame(self.root, bg=PANEL, height=54)
+        topbar.grid(row=0, column=0, columnspan=2, sticky="ew")
+        topbar.grid_propagate(False)
+
+        tk.Label(topbar, text="K0sh AI", font=("Consolas", 18, "bold"),
+                 fg=ACCENT, bg=PANEL).pack(side=tk.LEFT, padx=24, pady=12)
+        tk.Label(topbar, text="TERMINAL v0.6.0", font=("Consolas", 9),
+                 fg=TEXT_MUTED, bg=PANEL).pack(side=tk.LEFT, pady=18)
+
+        tk.Button(topbar, text="📜  History", command=self.open_history,
+                  font=("Consolas", 10, "bold"), bg=DIM, fg=ACCENT,
+                  activebackground=ACCENT, activeforeground=BG,
+                  relief=tk.FLAT, cursor="hand2", padx=12, pady=6, bd=0
+                  ).pack(side=tk.RIGHT, padx=16, pady=10)
+
+        tk.Frame(self.root, bg=ACCENT2, height=1).grid(row=0, column=0, columnspan=2, sticky="sew")
+
+        # ── SIDEBAR ─────────────────────────────────────────────────
+        sidebar = tk.Frame(self.root, bg=PANEL, width=240)
+        sidebar.grid(row=1, column=0, sticky="nsew")
+        sidebar.grid_propagate(False)
+        tk.Frame(sidebar, bg=BORDER, width=1).pack(side=tk.RIGHT, fill=tk.Y)
+
+        inner = tk.Frame(sidebar, bg=PANEL)
+        inner.pack(fill=tk.BOTH, expand=True, padx=18, pady=18)
+
+        avatar_canvas = tk.Canvas(inner, width=180, height=180, bg=PANEL, highlightthickness=0)
+        avatar_canvas.pack(pady=(0, 14))
+        if self.photo:
+            avatar_canvas.create_image(90, 90, image=self.photo)
+        else:
+            avatar_canvas.create_rectangle(4, 4, 176, 176, outline=ACCENT2, width=1)
+            avatar_canvas.create_text(90, 90, text="NO AVATAR", fill=TEXT_MUTED, font=("Consolas", 10))
+
+        tk.Frame(inner, bg=BORDER, height=1).pack(fill=tk.X, pady=6)
+
+        self.lbl_name = tk.Label(inner, text="GUEST", font=("Consolas", 13, "bold"),
+                                 fg=TEXT, bg=PANEL, anchor="w")
+        self.lbl_name.pack(fill=tk.X)
+        self.lbl_score = tk.Label(inner, text="SCORE  —", font=("Consolas", 10),
+                                  fg=ACCENT, bg=PANEL, anchor="w")
+        self.lbl_score.pack(fill=tk.X, pady=(2, 12))
+
+        tk.Frame(inner, bg=BORDER, height=1).pack(fill=tk.X, pady=6)
+
+        for label, val, color in [
+            ("AI CORE", "MiniLM-L12", TEXT_MUTED),
+            ("STATUS",  "ONLINE",     GREEN),
+            ("MODE",    "CHAT",       TEXT_MUTED),
+        ]:
+            row = tk.Frame(inner, bg=PANEL)
+            row.pack(fill=tk.X, pady=2)
+            tk.Label(row, text=label, font=("Consolas", 8), fg=TEXT_MUTED, bg=PANEL, width=10, anchor="w").pack(side=tk.LEFT)
+            tk.Label(row, text=val,   font=("Consolas", 8, "bold"), fg=color, bg=PANEL, anchor="w").pack(side=tk.LEFT)
+
+        btn_frame = tk.Frame(inner, bg=PANEL)
+        btn_frame.pack(side=tk.BOTTOM, fill=tk.X, pady=10)
+        tk.Button(btn_frame, text="Clear Chat", command=self.clear_chat,
+                  font=("Consolas", 9, "bold"), bg=DIM, fg=TEXT,
+                  activebackground=ACCENT2, activeforeground=TEXT,
+                  relief=tk.FLAT, cursor="hand2", pady=6).pack(fill=tk.X, pady=(0, 6))
+        tk.Button(btn_frame, text="Shutdown", command=self.destroy,
+                  font=("Consolas", 9, "bold"), bg="#1A0A0A", fg="#FF4455",
+                  activebackground="#FF4455", activeforeground=BG,
+                  relief=tk.FLAT, cursor="hand2", pady=6).pack(fill=tk.X)
+
+        # ── CHAT AREA ───────────────────────────────────────────────
+        chat_frame = tk.Frame(self.root, bg=BG)
+        chat_frame.grid(row=1, column=1, sticky="nsew")
+        chat_frame.rowconfigure(0, weight=1)
+        chat_frame.columnconfigure(0, weight=1)
+
+        self.chat_area = scrolledtext.ScrolledText(
+            chat_frame, wrap=tk.WORD, font=("Consolas", 12),
+            bg=BG, fg=TEXT, insertbackground=ACCENT,
+            highlightthickness=0, bd=0, padx=20, pady=16, spacing3=4
+        )
+        self.chat_area.grid(row=0, column=0, sticky="nsew")
+        self.chat_area.tag_config("you",    foreground=ACCENT,    font=("Consolas", 12, "bold"))
+        self.chat_area.tag_config("bot",    foreground=TEXT)
+        self.chat_area.tag_config("system", foreground=TEXT_MUTED, font=("Consolas", 10))
+        tk.Frame(chat_frame, bg=BORDER, height=1).grid(row=0, column=0, sticky="new")
+
+        # ── INPUT BAR ───────────────────────────────────────────────
+        input_bar = tk.Frame(chat_frame, bg=PANEL, height=56)
+        input_bar.grid(row=1, column=0, sticky="ew")
+        input_bar.grid_propagate(False)
+        tk.Frame(input_bar, bg=BORDER, height=1).pack(side=tk.TOP, fill=tk.X)
+
+        self.input_field = tk.Entry(input_bar, font=("Consolas", 12), bg=PANEL, fg=ACCENT,
+                                    insertbackground=ACCENT, highlightthickness=0, bd=0, relief=tk.FLAT)
+        self.input_field.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=16, pady=14)
+        self.input_field.bind("<Return>", lambda e: self.send_message())
+
+        self.skip_btn = tk.Button(input_bar, text="Skip ⏩", command=self._typewriter_skip,
+                                  font=("Consolas", 10, "bold"), bg=DIM, fg=ACCENT,
+                                  activebackground=ACCENT, activeforeground=BG,
+                                  relief=tk.FLAT, cursor="hand2", padx=10, pady=8,
+                                  state=tk.DISABLED, bd=0)
+        self.skip_btn.pack(side=tk.RIGHT, padx=(0, 6), pady=10)
+
+        self.send_btn = tk.Button(input_bar, text="Send  ▶", command=self.send_message,
+                                  font=("Consolas", 10, "bold"), bg=ACCENT2, fg=TEXT,
+                                  activebackground=ACCENT, activeforeground=BG,
+                                  relief=tk.FLAT, cursor="hand2", padx=14, pady=8, bd=0)
+        self.send_btn.pack(side=tk.RIGHT, padx=(0, 6), pady=10)
+
+        boot = (
+            "K0sh AI — System Online\n"
+            "────────────────────────────────────\n"
+            "Hi! I'm K0sh. We can play Guess the Number (GTN),\n"
+            "Rock-Paper-Scissors (RPS), or Blackjack (BLC).\n\n"
+            "Before we start — what's your name?\n"
+            "[ESC] exits fullscreen\n"
+            "────────────────────────────────────\n\n"
+        )
+        self.chat_area.insert(tk.END, boot, "system")
+        self.chat_area.config(state="disabled")
+
+    # ── HELPERS ─────────────────────────────────────────────────────
+
+    def _save_userdata(self):
+        with open("userdata.json", "w") as f:
+            json.dump(userdata, f, indent=4)
+
+    def _unlock(self, key, label):
+        player = userdata[self.name]
+        if not player.get(key, False):
+            player[key] = True
+            msg = f"\n🏆 Achievement Unlocked: {label}!\n"
+            self.safe_append_chat(msg)
+            with open("Achievements.txt", "a", encoding="utf-8") as f:
+                f.write(msg)
+            self._save_userdata()
+
+    def _check_achievements(self):
+        player = userdata[self.name]
+        score  = player["InGameScore"]
+
+        # ── IsBroke flag ────────────────────────────────────────────
+        was_broke = player["IsBroke"]
+        player["IsBroke"] = score < 0
+        if player["IsBroke"] and not was_broke:
+            self.safe_append_chat("\nK0sh: You are now broke. 😬\n")
+            self._save_userdata()
+
+        # ── Score milestones ────────────────────────────────────────
+        if score >= 10_000:
+            self._unlock("High Roller",  "High Roller")
+        if score >= 100_000:
+            self._unlock("Legend",       "Legend")
+        if score >= 1_000_000:
+            self._unlock("Millionaire",  "Millionaire")
+
+        # ── Games played ────────────────────────────────────────────
+        if player["Games"] >= 100:
+            self._unlock("100 Games Played", "Veteran Gamer")
+
+        # ── Win milestones ──────────────────────────────────────────
+        if player["Wins"] >= 10:
+            self._unlock("10 Wins",  "Ten Wins")
+        if player["Wins"] >= 50:
+            self._unlock("50 Wins",  "Fifty Wins")
+        if player["Wins"] >= 100:
+            self._unlock("100 Wins", "One Hundred Wins")
+
+        # ── Blackjack wins ──────────────────────────────────────────
+        if player["BLCW"] >= 50:
+            self._unlock("Blackjack Master", "Blackjack Master")
+
+    def update_sidebar_profile(self):
+        if self.name == "Empty":
+            return
+        self.lbl_name.config(text=f"USER: {self.name.upper()}")
+        score = userdata[self.name]["InGameScore"]
+        if userdata[self.name].get("Millionaire"):
+            self.lbl_score.config(text=f"SCORE: {score} PTS. 💰")
+        elif userdata[self.name].get("IsBroke"):
+            self.lbl_score.config(text=f"SCORE: {score} PTS. (BROKE)")
+        else:
+            self.lbl_score.config(text=f"SCORE: {score} PTS.")
+
+    def open_history(self):
+        self.win.deiconify()
+        self.history_area.config(state='normal')
+        self.history_area.delete(1.0, tk.END)
+        try:
+            with open("Chat History.txt", "r", encoding="utf-8") as f:
+                self.history_area.insert(tk.END, f.read())
+        except FileNotFoundError:
+            self.history_area.insert(tk.END, "No history yet.")
+        self.history_area.config(state='disabled')
+        self.history_area.pack(fill=tk.BOTH, expand=True, padx=20, pady=16)
+
+    def clear_chat(self):
+        self.chat_area.config(state='normal')
+        self.chat_area.delete(1.0, tk.END)
+        self.chat_area.config(state='disabled')
+        name = "user" if self.name == "Empty" else self.name
+        msg = (
+            f"\nK0sh: Hi {name}! My name is K0sh!\n"
+            f"K0sh: Today, we are going to play a game of your choice!\n"
+            f"K0sh: Feel free to ask anything you want before we start!\n"
+            f"K0sh: Send GTN, RPS, or BLC to begin.\n"
+            f"\n[SYSTEM NOTICE: Press 'ESC' to leave fullscreen]\n"
+        )
+        self.safe_append_chat(msg)
+
+    def close_win(self):
+        self.win.withdraw()
+
+    def send_message(self):
+        plr_txt = self.input_field.get().strip()
+        if not plr_txt:
+            return
+        self.input_field.delete(0, tk.END)
+        self.send_btn.config(state=tk.DISABLED)
+        self.input_field.config(state=tk.DISABLED)
+
+        self.chat_area.config(state='normal')
+        self.chat_area.insert(tk.END, f"\nYou: {plr_txt}\n", "you")
+        self.chat_area.config(state='disabled')
+        self.chat_area.see(tk.END)
+
+        threading.Thread(target=self.process_input, args=(plr_txt,), daemon=True).start()
+
+        with open("Chat History.txt", "a", encoding="utf-8") as file:
+            file.write(f"\nYou said: {plr_txt}\n")
+            if hasattr(self, 'history_area'):
+                self.history_area.config(state="normal")
+                self.history_area.insert(tk.END, f"\nYou said: {plr_txt}\n")
+                self.history_area.config(state="disabled")
+
+    def process_input(self, plr_txt):
+        if self.name == "Empty":
+            success, bot_message = self.check_for_user(plr_txt)
+            self.safe_append_chat(f"K0sh: {bot_message}\n")
+            self.root.after(0, self.update_sidebar_profile)
+            return
+
+        if self.is_playing:
+            self.game_handler(plr_txt)
+        elif self.is_playing2:
+            self.game_handler2(plr_txt)
+        elif self.is_playing3:
+            self.game_handler3(plr_txt)
+        else:
+            if plr_txt.upper() == "GTN":
+                self.num = random.randint(0, 100)
+                self.guesses = 0
+                self.safe_append_chat(
+                    f"\nK0sh: Nice, {self.name}! I've picked a number from 0-100. You have 12 tries. Let's go!\n")
+                self.is_inchat = False
+                self.is_playing = True
+                return
+
+            if plr_txt.upper() == "RPS":
+                self.choice = random.choice(choice_list)
+                self.guesses = 0
+                self.safe_append_chat(
+                    f"\nK0sh: Alrighty {self.name}! Rock beats Scissors, Paper beats Rock, Scissors beats Paper.\n"
+                    f"K0sh: Enter your move to begin!\n")
+                self.is_inchat = False
+                self.is_playing2 = True
+                return
+
+            if plr_txt.upper() == "BLC":
+                self.is_playing3 = True
+                self.Black_jack_Score = 0
+                self.Black_jack_bot_Score = 0
+                player_roll = random.randint(1, 6)
+                bot_roll    = random.randint(1, 6)
+                self.Black_jack_Score     += player_roll
+                self.Black_jack_bot_Score += bot_roll
+                self.safe_append_chat(
+                    f"\nK0sh: Nice choice, {self.name}! Roll a 1-6 dice each turn. Get as close to 21 as possible.\n"
+                    f"K0sh: 🎲 You rolled a {player_roll} (Total: {self.Black_jack_Score}).\n"
+                    f"K0sh: 🎲 I rolled {bot_roll} (my total is hidden).\n"
+                    f"K0sh: Type 'hit' to roll again, or 'stand' to freeze your hand!\n"
+                )
+                self.is_inchat = False
+                return
+
+            score, response = get_response(plr_txt)
+            self.safe_append_chat(f"[Match confidence: {score * 100:.1f}%]\nK0sh: {response}\n")
+
+            with open("Chat History.txt", "a", encoding="utf-8") as file:
+                file.write(f"\nK0sh replied: {response}\n")
+                if hasattr(self, 'history_area'):
+                    self.history_area.config(state="normal")
+                    self.history_area.insert(tk.END, f"\nK0sh answered: {response}\n")
+                    self.history_area.config(state="disabled")
+
+    def game_handler(self, plr_txt):
+        try:
+            guess = int(plr_txt)
+        except ValueError:
+            self.safe_append_chat("K0sh: That's not a number! Enter a number between 0 and 100.\n")
+            return
+
+        self.guesses += 1
+        userdata[self.name]['InGameScore'] -= 1
+        self.root.after(0, self.update_sidebar_profile)
+
+        msg = f"K0sh: Points: {userdata[self.name]['InGameScore']} (-1 for this guess)\n"
+
+        if guess < 0 or guess > 100:
+            msg += f"K0sh: That's out of range! Stay between 0 and 100.\n"
+        elif guess == self.num:
+            userdata[self.name]["Games"] += 1
+            userdata[self.name]["Wins"]  += 1
+            userdata[self.name]["InGameScore"] += 10
+            msg += (
+                f"K0sh: {random.choice(win_list)}\n"
+                f"K0sh: Guesses used: {self.guesses} | Points: {userdata[self.name]['InGameScore']} | Wins: {userdata[self.name]['Wins']}\n"
+                f"K0sh: Reply with GTN, RPS, or BLC to play again!\n"
+            )
+            self.is_inchat = True
+            self.is_playing = False
+            self._save_userdata()
+            self._check_achievements()
+        elif self.guesses >= 12:
+            userdata[self.name]["Games"]  += 1
+            userdata[self.name]["Losses"] += 1
+            userdata[self.name]["InGameScore"] -= 10
+            msg += (
+                f"K0sh: You used all 12 guesses. The number was {self.num}. -10 points.\n"
+                f"K0sh: Reply with GTN, RPS, or BLC to try again!\n"
+            )
+            self.is_inchat = True
+            self.is_playing = False
+            self._save_userdata()
+            self._check_achievements()
+        elif guess < self.num:
+            msg += f"K0sh: {random.choice(higher_list)}\n"
+        else:
+            msg += f"K0sh: {random.choice(lower_list)}\n"
+
+        self.safe_append_chat(msg)
+        self.root.after(0, self.update_sidebar_profile)
+
+    def game_handler2(self, plr_txt):
+        guess2 = plr_txt.strip().lower()
+        self.choice = random.choice(choice_list)
+
+        if guess2.isdigit():
+            self.safe_append_chat(f"\nK0sh: That's a number — please type Rock, Paper, or Scissors!\n")
+            return
+
+        self.guesses += 1
+        msg = ""
+        valid_moves = {"rock", "paper", "scissors"}
+
+        if guess2 not in valid_moves:
+            self.safe_append_chat(f"\nK0sh: Invalid move! Type Rock, Paper, or Scissors.\n")
+            return
+
+        bot  = self.choice.lower()
+        wins  = {("rock", "scissors"), ("paper", "rock"), ("scissors", "paper")}
+
+        if guess2 == bot:
+            userdata[self.name]["Games"] += 1
+            userdata[self.name]["Draws"] += 1
+            msg += (
+                f"K0sh: I also chose {self.choice} — it's a draw!\n"
+                f"K0sh: Draws: {userdata[self.name]['Draws']}\n"
+                f"K0sh: Reply with GTN, RPS, or BLC for another round!\n"
+            )
+            self.is_playing2 = False
+            self.is_inchat   = True
+        elif (guess2, bot) in wins:
+            userdata[self.name]["Games"] += 1
+            userdata[self.name]["Wins"]  += 1
+            userdata[self.name]["InGameScore"] += 20
+            msg += (
+                f"K0sh: I chose {self.choice}! {random.choice(win_list)}\n"
+                f"K0sh: Wins: {userdata[self.name]['Wins']} | Points: {userdata[self.name]['InGameScore']}\n"
+                f"K0sh: Reply with GTN, RPS, or BLC for another round!\n"
+            )
+            self.is_playing2 = False
+            self.is_inchat   = True
+        else:
+            userdata[self.name]["Games"]  += 1
+            userdata[self.name]["Losses"] += 1
+            userdata[self.name]["InGameScore"] -= 20
+            msg += (
+                f"K0sh: I chose {self.choice}! {random.choice(lose_list)}\n"
+                f"K0sh: Losses: {userdata[self.name]['Losses']} | Points: {userdata[self.name]['InGameScore']}\n"
+                f"K0sh: Reply with GTN, RPS, or BLC for another round!\n"
+            )
+            self.is_playing2 = False
+            self.is_inchat   = True
+
+        self._save_userdata()
+        self._check_achievements()
+        self.safe_append_chat(msg)
+        self.root.after(0, self.update_sidebar_profile)
+
+    def game_handler3(self, plr_txt):
+        guess3 = plr_txt.strip().lower()
+
+        if guess3 == "hit":
+            self.player_hit()
+            msg = f"\nK0sh: You rolled a {self.inter}! Your total: {self.Black_jack_Score}.\n"
+
+            if self.Black_jack_Score > self.perfect:
+                self.evaluate_results(prefix_msg=msg)
+                return
+
+            if self.Black_jack_bot_Score < 16:
+                self.bot_hit()
+                msg += f"K0sh: I hit too — rolled a {self.inter} (my total: {self.Black_jack_bot_Score}).\n"
+            else:
+                msg += "K0sh: I chose to stand.\n"
+
+            if self.Black_jack_bot_Score > self.perfect:
+                self.evaluate_results(prefix_msg=msg)
+                return
+
+            self.safe_append_chat(msg)
+
+        elif guess3 == "stand":
+            msg = f"\nK0sh: You stand at {self.Black_jack_Score}.\n"
+            while self.Black_jack_bot_Score < 16:
+                self.bot_hit()
+                msg += f"K0sh: I hit — rolled a {self.inter} (my total: {self.Black_jack_bot_Score}).\n"
+            self.evaluate_results(prefix_msg=msg)
+
+        else:
+            self.safe_append_chat("\nK0sh: Invalid move! Type 'hit' or 'stand'.\n")
+
+    def evaluate_results(self, prefix_msg=""):
+        msg = prefix_msg + f"\nK0sh: Final scores — Me: {self.Black_jack_bot_Score} | You: {self.Black_jack_Score}\n"
+
+        player = userdata[self.name]
+        player["Games"] += 1
+
+        if self.Black_jack_Score > self.perfect:
+            msg += "K0sh: You busted! -50 points. 💀\n"
+            player["InGameScore"] -= 50
+            player["Losses"] += 1
+        elif self.Black_jack_bot_Score > self.perfect:
+            msg += "K0sh: I busted! You win +50 points! 🎉\n"
+            player["InGameScore"] += 50
+            player["Wins"]  += 1
+            player["BLCW"]  += 1
+        elif self.Black_jack_Score > self.Black_jack_bot_Score:
+            msg += f"K0sh: {random.choice(win_list)} +50 points!\n"
+            player["InGameScore"] += 50
+            player["Wins"]  += 1
+            player["BLCW"]  += 1
+        elif self.Black_jack_bot_Score > self.Black_jack_Score:
+            msg += f"K0sh: {random.choice(lose_list)} -50 points.\n"
+            player["InGameScore"] -= 50
+            player["Losses"] += 1
+        else:
+            msg += "K0sh: Draw — no points changed.\n"
+            player["Draws"] += 1
+
+        msg += f"K0sh: Your total points: {player['InGameScore']}\n"
+        msg += "K0sh: Type 'BLC' to play again, or choose GTN / RPS!\n"
+
+        self.Black_jack_Score     = 0
+        self.Black_jack_bot_Score = 0
+        self.is_playing3 = False
+        self.is_inchat   = True
+
+        self._save_userdata()
+        self._check_achievements()
+        self.safe_append_chat(msg)
+        self.root.after(0, self.update_sidebar_profile)
+
+    def destroy(self):
+        self._save_userdata()
+        self.root.destroy()
+
+    def check_for_user(self, name):
+        if name in userdata:
+            self.name = name
+            return True, f"Welcome back, {self.name}! Dynamic system node re-established. 💾"
+        elif name.isalpha():
+            self.name = name
+            userdata[self.name] = {
+                "Joined": True, "InGameScore": 0, "IsBroke": False,
+                "Games": 0, "Wins": 0, "Losses": 0, "Draws": 0,
+                "Millionaire": False, "100 Games Played": False,
+                "BLCW": 0, "Blackjack Master": False,
+                "10 Wins": False, "50 Wins": False, "100 Wins": False,
+                "High Roller": False, "Legend": False
+            }
+            self._save_userdata()
+            return True, f"Welcome, {self.name}! New dynamic profile created. 💾"
+        else:
+            return False, "That doesn't look like a name — letters only, please!"
+
+    def safe_append_chat(self, message, tag="bot"):
+        self.skipped_anim    = False
+        self.current_message = message
+        self.current_index   = 0
+        self.send_btn.config(state=tk.DISABLED)
+        self.skip_btn.config(state=tk.NORMAL)
+        self.root.after(0, self._typewriter_stream, message, 0, tag)
+        with open("Chat History.txt", "a", encoding="utf-8") as f:
+            f.write(message)
+
+    def _typewriter_stream(self, message, index, tag="bot"):
+        self.current_index = index
+        if self.skipped_anim:
+            return
+        if index < len(message):
+            self.chat_area.config(state="normal")
+            self.chat_area.insert(tk.END, message[index], tag)
+            self.chat_area.config(state="disabled")
+            self.chat_area.see(tk.END)
+            self.root.after(8, lambda: self._typewriter_stream(message, index + 1, tag))
+        else:
+            self.skip_btn.config(state=tk.DISABLED)
+            self.send_btn.config(state=tk.NORMAL)
+            self.input_field.config(state=tk.NORMAL)
+            self.input_field.focus()
+
+    def _typewriter_skip(self):
+        self.skipped_anim = True
+        remaining = self.current_message[self.current_index:]
+        self.chat_area.config(state="normal")
+        if remaining:
+            self.chat_area.insert(tk.END, remaining, "bot")
+        self.chat_area.config(state="disabled")
+        self.chat_area.see(tk.END)
+        self.skip_btn.config(state=tk.DISABLED)
+        self.send_btn.config(state=tk.NORMAL)
+        self.input_field.config(state=tk.NORMAL)
+        self.input_field.focus()
+
+    def player_hit(self):
+        self.inter = random.randint(1, 6)
+        self.Black_jack_Score += self.inter
+
+    def bot_hit(self):
+        self.inter = random.randint(1, 6)
+        self.Black_jack_bot_Score += self.inter
+
+
+class SplashScreen:
+    """Futuristic fullscreen intro that plays before the main app launches."""
+
+    BG      = "#050810"
+    ACCENT  = "#00C8FF"
+    ACCENT2 = "#0066CC"
+    DIM     = "#1A3050"
+    TEXT    = "#E8F4FD"
+    MUTED   = "#4A6080"
+    GREEN   = "#00E5A0"
+    RED     = "#FF4455"
+
+    BOOT_LINES = [
+        ("K0SH AI  —  TERMINAL v0.6.1", "#00C8FF"),
+        ("", None),
+        ("[ SYSTEM BOOT SEQUENCE INITIATED ]", "#00E5A0"),
+        ("  Loading neural language model  ...  OK", "#E8F4FD"),
+        ("  Mounting user profile store    ...  OK", "#E8F4FD"),
+        ("  Calibrating semantic encoder   ...  OK", "#E8F4FD"),
+        ("  Initialising game subsystems   ...  OK", "#E8F4FD"),
+        ("  Establishing secure session    ...  OK", "#E8F4FD"),
+        ("", None),
+        ("[ ALL SYSTEMS NOMINAL ]", "#00E5A0"),
+        ("", None),
+        ("  PRESS ANY KEY OR WAIT …", "#4A6080"),
+    ]
+
+    def __init__(self, on_done):
+        self.on_done  = on_done      # callback — called when splash ends
+        self._running = True
+        self._bar_pct = 0.0          # 0.0 → 1.0
+        self._pulse   = 0            # avatar glow frame counter
+        self._line_idx = 0           # next boot line to reveal
+
+        # ── window ──────────────────────────────────────────────────
+        self.root = tk.Tk()
+        self.root.title("K0sh AI")
+        self.root.attributes("-fullscreen", True)
+        self.root.attributes("-topmost", True)
+        self.root.configure(bg=self.BG)
+        self.root.bind("<Key>",        lambda e: self._finish())
+        self.root.bind("<Button-1>",   lambda e: self._finish())
+        self.root.bind("<Escape>",     lambda e: self._finish())
+
+        W = self.root.winfo_screenwidth()
+        H = self.root.winfo_screenheight()
+        self.W, self.H = W, H
+
+        # ── main canvas (everything drawn here) ─────────────────────
+        self.canvas = tk.Canvas(self.root, width=W, height=H,
+                                bg=self.BG, highlightthickness=0)
+        self.canvas.pack(fill=tk.BOTH, expand=True)
+
+        # static grid lines (subtle futuristic grid)
+        for x in range(0, W, 60):
+            self.canvas.create_line(x, 0, x, H, fill="#0A1428", width=1)
+        for y in range(0, H, 60):
+            self.canvas.create_line(0, y, W, y, fill="#0A1428", width=1)
+
+        # corner brackets
+        bw, bh = 60, 40
+        for cx, cy, dx, dy in [(20,20,1,1),(W-20,20,-1,1),(20,H-20,1,-1),(W-20,H-20,-1,-1)]:
+            self.canvas.create_line(cx, cy, cx+dx*bw, cy, fill=self.ACCENT, width=2)
+            self.canvas.create_line(cx, cy, cx, cy+dy*bh, fill=self.ACCENT, width=2)
+
+        # horizontal dividers
+        cy = H // 2
+        self.canvas.create_line(0, cy - 180, W, cy - 180, fill=self.DIM, width=1)
+        self.canvas.create_line(0, cy + 160, W, cy + 160, fill=self.DIM, width=1)
+
+        # ── avatar circle (glow ring + image) ───────────────────────
+        self.avatar_x = W // 2
+        self.avatar_y = cy - 260
+        r = 110
+        # outer glow rings (animated later)
+        self.glow1 = self.canvas.create_oval(
+            self.avatar_x-r-20, self.avatar_y-r-20,
+            self.avatar_x+r+20, self.avatar_y+r+20,
+            outline=self.ACCENT2, width=2)
+        self.glow2 = self.canvas.create_oval(
+            self.avatar_x-r-10, self.avatar_y-r-10,
+            self.avatar_x+r+10, self.avatar_y+r+10,
+            outline=self.ACCENT, width=2)
+        self.glow3 = self.canvas.create_oval(
+            self.avatar_x-r, self.avatar_y-r,
+            self.avatar_x+r, self.avatar_y+r,
+            outline=self.ACCENT, width=3)
+
+        # load and show the avatar image
+        self._photo = None
+        try:
+            img = Image.open("K0sh2.png").resize((r*2, r*2), Image.LANCZOS)
+            # circular mask
+            mask = Image.new("L", (r*2, r*2), 0)
+            import math
+            pixels = mask.load()
+            for px in range(r*2):
+                for py in range(r*2):
+                    if math.hypot(px-r, py-r) <= r-2:
+                        pixels[px, py] = 255
+            img.putalpha(mask)
+            self._photo = ImageTk.PhotoImage(img)
+        except Exception:
+            pass
+
+        if self._photo:
+            self.canvas.create_image(self.avatar_x, self.avatar_y,
+                                     image=self._photo, anchor=tk.CENTER)
+        else:
+            # fallback: just draw a circle with text
+            self.canvas.create_oval(
+                self.avatar_x-r, self.avatar_y-r,
+                self.avatar_x+r, self.avatar_y+r,
+                fill="#0A0F1E", outline=self.ACCENT, width=3)
+            self.canvas.create_text(self.avatar_x, self.avatar_y,
+                                    text="K0sh", font=("Consolas", 28, "bold"),
+                                    fill=self.ACCENT)
+
+        # ── title block ─────────────────────────────────────────────
+        ty = cy - 120
+        self.canvas.create_text(W//2, ty,
+                                text="K0sh AI",
+                                font=("Consolas", 52, "bold"),
+                                fill=self.ACCENT)
+        self.canvas.create_text(W//2, ty + 58,
+                                text="TERMINAL  v0.6.1",
+                                font=("Consolas", 16),
+                                fill=self.MUTED)
+
+        # animated subtitle (cycles through taglines)
+        self.taglines = [
+            "SEMANTIC INTELLIGENCE  •  MULTI-GAME ENGINE",
+            "GTN  •  ROCK-PAPER-SCISSORS  •  BLACKJACK",
+            "MULTILINGUAL  •  PERSISTENT PROFILES  •  ACHIEVEMENTS",
+        ]
+        self._tag_idx = 0
+        self.tag_lbl = self.canvas.create_text(W//2, ty + 86,
+                                               text=self.taglines[0],
+                                               font=("Consolas", 11),
+                                               fill=self.ACCENT2)
+
+        # ── boot text area ──────────────────────────────────────────
+        self.boot_y_start = cy + 0
+        self.boot_items   = []   # canvas text ids
+
+        # ── loading bar ─────────────────────────────────────────────
+        bar_y  = cy + 210
+        bar_w  = min(700, W - 120)
+        bar_x0 = W//2 - bar_w//2
+        bar_x1 = W//2 + bar_w//2
+        self.canvas.create_rectangle(bar_x0-2, bar_y-2, bar_x1+2, bar_y+18,
+                                     outline=self.DIM, fill="")
+        self.canvas.create_rectangle(bar_x0, bar_y, bar_x0, bar_y+14,
+                                     fill=self.DIM, outline="")
+        self._bar_bg = self.canvas.create_rectangle(
+            bar_x0, bar_y, bar_x0, bar_y+14,
+            fill=self.DIM, outline="")
+        self._bar_fg = self.canvas.create_rectangle(
+            bar_x0, bar_y, bar_x0, bar_y+14,
+            fill=self.ACCENT, outline="")
+        self._bar_x0 = bar_x0
+        self._bar_x1 = bar_x1
+        self._bar_y0 = bar_y
+        self._bar_y1 = bar_y + 14
+
+        self._pct_lbl = self.canvas.create_text(
+            W//2, bar_y + 28, text="0%",
+            font=("Consolas", 10), fill=self.MUTED)
+
+        # ── status strip at very bottom ──────────────────────────────
+        self.canvas.create_text(40, H-18, text="AI CORE: MiniLM-L12-v2",
+                                font=("Consolas", 9), fill=self.MUTED, anchor="w")
+        self.canvas.create_text(W-40, H-18, text="STATUS: BOOTING…",
+                                font=("Consolas", 9), fill=self.GREEN, anchor="e")
+        self.canvas.create_text(W//2, H-18, text="© K0sh AI  —  @AlexKotsovolis",
+                                font=("Consolas", 9), fill=self.MUTED)
+
+        # ── kick off animations ──────────────────────────────────────
+        self._animate_glow()
+        self._animate_tagline()
+        self._animate_boot_text()
+        self._animate_bar()
+
+    # ── animation loops ─────────────────────────────────────────────
+
+    def _animate_glow(self):
+        if not self._running:
+            return
+        self._pulse = (self._pulse + 1) % 40
+        t     = self._pulse / 40
+        alpha = int(80 + 60 * abs(t - 0.5) * 2)   # 80 → 140 → 80
+        col   = f"#{alpha:02x}{min(alpha+40,255):02x}ff"
+        # cycle ring colours for a breathing effect
+        colors = [
+            ("#0044aa", "#0088dd", "#00C8FF"),
+            ("#0055cc", "#00aaff", "#66ddff"),
+            ("#003388", "#0066cc", "#00C8FF"),
+        ]
+        idx = self._pulse // 14 % 3
+        self.canvas.itemconfig(self.glow1, outline=colors[idx][0])
+        self.canvas.itemconfig(self.glow2, outline=colors[idx][1])
+        self.canvas.itemconfig(self.glow3, outline=colors[idx][2])
+        self.root.after(50, self._animate_glow)
+
+    def _animate_tagline(self):
+        if not self._running:
+            return
+        self._tag_idx = (self._tag_idx + 1) % len(self.taglines)
+        self.canvas.itemconfig(self.tag_lbl, text=self.taglines[self._tag_idx])
+        self.root.after(2000, self._animate_tagline)
+
+    def _animate_boot_text(self):
+        if not self._running:
+            return
+        if self._line_idx < len(self.BOOT_LINES):
+            text, color = self.BOOT_LINES[self._line_idx]
+            if color:
+                y = self.boot_y_start + self._line_idx * 22
+                tid = self.canvas.create_text(
+                    self.W // 2, y,
+                    text=text, font=("Consolas", 11),
+                    fill=color, anchor=tk.CENTER)
+                self.boot_items.append(tid)
+            self._line_idx += 1
+            delay = 600 if self._line_idx < len(self.BOOT_LINES) - 1 else 800
+            self.root.after(delay, self._animate_boot_text)
+
+    def _animate_bar(self):
+        if not self._running:
+            return
+        target = min(self._line_idx / max(len(self.BOOT_LINES), 1), 1.0)
+        # ease toward target
+        self._bar_pct += (target - self._bar_pct) * 0.15
+        pct = self._bar_pct
+        x1  = self._bar_x0 + int((self._bar_x1 - self._bar_x0) * pct)
+        self.canvas.coords(self._bar_fg,
+                           self._bar_x0, self._bar_y0,
+                           x1, self._bar_y1)
+        self.canvas.itemconfig(self._pct_lbl, text=f"{int(pct*100)}%")
+        if pct >= 0.98:
+            self.canvas.itemconfig(self._pct_lbl, text="100%  —  READY")
+            self.root.after(700, self._finish)
+        else:
+            self.root.after(30, self._animate_bar)
+
+    def _finish(self):
+        if not self._running:
+            return
+        self._running = False
+        self.root.destroy()
+        self.on_done()
+
+    def run(self):
+        self.root.mainloop()
+
+
+def launch_main():
+    root = tk.Tk()
+    root.attributes("-topmost", True)
+    root.after(1000, lambda: root.attributes("-topmost", False))
+    K0sh(root)
+    root.mainloop()
+
+
+def main():
+    SplashScreen(on_done=launch_main).run()
+
+
+if __name__ == "__main__":
+    main()
