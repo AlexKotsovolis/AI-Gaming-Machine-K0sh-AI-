@@ -163,7 +163,7 @@ K0sh AI is named after a real cat. Here he is — the grumpy mastermind behind i
 &nbsp;&nbsp;
 <img src="https://github.com/user-attachments/assets/9d706290-6f8c-4cc3-8d93-a89b14c81363" width="45%" alt="K0sh, the original AI"/>
 
-*The original K0sh — semantic, multilingual, and completely indifferent to your input.*
+*The original K0sh — he helped me code the project, as well as making my day. His name is Cinammon.*
 </div>
 
 ---
