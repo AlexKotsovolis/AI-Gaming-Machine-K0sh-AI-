@@ -139,6 +139,7 @@ python k0sh_ai.py
 
 | Version | Codename | Highlights |
 |:---:|:---|:---|
+| `0.6.3` | ⚡ | Enhanced K0sh's answers, more q_a pairs, fixed core bugs (go see in releases) |
 | `0.6.2` | 🏆 | Achievement system, animated loading screen, Broke state fixes |
 | `0.6.1` | QOL | Secure data saving, history bug fix, harder Blackjack, Broke state |
 | `0.6` | ??? | Chat history UI window, GUI overhaul, core bug fixes |
@@ -158,7 +159,7 @@ python k0sh_ai.py
 
 ## 🐱 The Inspiration
 
-K0sh AI is named after a real cat. Here he is — the grumpy mastermind behind it all.
+K0sh AI is named after a real cat. Here he is — the grumpy mastermind behind it all. (The images are not made with ai, they are completely real.)
 
 <div align="center">
 <img src="https://github.com/user-attachments/assets/feccb714-3670-4985-a1ac-b2e2b642ddc0" width="45%" alt="The real K0sh"/>
