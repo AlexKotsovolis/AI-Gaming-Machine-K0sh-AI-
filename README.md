@@ -139,6 +139,7 @@ python k0sh_ai.py
 
 | Version | Codename | Highlights |
 |:---:|:---|:---|
+| `0.6.5` | ?! | After a long time, introduced difficulties, (more in releases) bug fixes and more QOL changes. |
 | `0.6.4` | 🐛 | Basically version 0.6.3 (so sub-version), but with core bugs fixed and comms added (/stats, /ach) |
 | `0.6.3` | ⚡ | Enhanced K0sh's answers, more q_a pairs, fixed core bugs (go see in releases) |
 | `0.6.2` | 🏆 | Achievement system, animated loading screen, Broke state fixes |
