@@ -139,6 +139,7 @@ python k0sh_ai.py
 
 | Version | Codename | Highlights |
 |:---:|:---|:---|
+| `2.0` | GIANT UPDATE | Added strong frontend, removed the good old tkinter gui, so it is finally clean |
 | `0.6.6` | Minor Fixes | Minor Fixes in the core code, bugs in BLC (from diffs) reworked achievements|
 | `0.6.5` | ?! | After a long time, introduced difficulties, (more in releases) bug fixes and more QOL changes. |
 | `0.6.4` | 🐛 | Basically version 0.6.3 (so sub-version), but with core bugs fixed and comms added (/stats, /ach) |
