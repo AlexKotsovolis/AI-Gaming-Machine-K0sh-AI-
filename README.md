@@ -250,8 +250,34 @@ echo '{"command":"register","data":{"name":"YourName"}}' | python k0sh_bridge.py
 
 <br/>
 
+<div align="center">
+
+| Version | Codename | Highlights |
+|:---:|:---|:---|
+| `2.0` | 🚀 GIANT UPDATE | Complete frontend rewrite — tkinter out, React + Tauri in. Cyberpunk dashboard, animated avatar, auto-login, difficulty modal, stats & achievements panel |
+| `0.6.6` | 🔧 Minor Fixes | Core code fixes, BLC difficulty bugs reworked, achievements polished |
+| `0.6.5` | ⚔️ Difficulties | Introduced Easy / Medium / Hard for GTN and BLC, plus QOL improvements |
+| `0.6.4` | 🐛 Sub-version | `/stats` and `/ach` commands added, core bugs fixed |
+| `0.6.3` | ⚡ Enhanced NLP | Expanded QA pairs, richer multilingual responses, core bug fixes |
+| `0.6.2` | 🏆 Achievements | Achievement system, animated splash screen, Broke state fixes |
+| `0.6.1` | 🛡️ QOL | Secure data saving, history bug fix, harder Blackjack, Broke state |
+| `0.6` | 🖥️ GUI Overhaul | Chat history UI window, full interface redesign, core bug fixes |
+| `0.5.3` | 🔒 Input Lock | Input locked during bot response, enhanced QA pairs |
+| `0.5.2` | 🌍 Multilingual | English, Greek, and phonetic Greeklish support added |
+| `0.5.1` | ✍️ Typewriter | Character-by-character animations, core bug fixes |
+| `0.5` | 🃏 Blackjack | BLC game mode added, GUI refresh |
+| `0.4.1` | 🧵 Threading | Non-blocking multithreaded UI responses |
+| `0.4` | 👤 Login System | Player profiles, persistent scores, welcome-back detection |
+| `0.3` | ✂️ RPS | Rock-Paper-Scissors game mode added |
+| `0.2` | 🔄 Rework | Chat UI rework, version history tracking begins |
+| `0.1` | 🌱 Initial Release | Guess the Number + basic chat |
+
+</div>
+
+<br/>
+
 <details>
-<summary><b>❯ Click to expand full changelog</b></summary>
+<summary><b>❯ Click to expand detailed changelog</b></summary>
 
 <br/>
 
