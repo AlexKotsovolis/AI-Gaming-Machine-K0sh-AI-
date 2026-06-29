@@ -1,21 +1,35 @@
 <div align="center">
 
-<!-- HEADER BANNER -->
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0f0c29,50:302b63,100:24243e&height=200&section=header&text=K0sh%20AI&fontSize=80&fontColor=00d4ff&fontAlignY=38&desc=Semantic%20Chat%20%26%20Gaming%20Machine&descColor=a78bfa&descSize=22&descAlignY=62&animation=fadeIn" width="100%"/>
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:04050f,30:0f0c29,60:1e1040,100:302b63&height=220&section=header&text=K0SH%20AI&fontSize=90&fontColor=8b5cf6&fontAlignY=38&desc=Semantic%20Chat%20%E2%80%A2%20Multi-Game%20Engine%20%E2%80%A2%20Cyberpunk%20Terminal&descColor=6366f1&descSize=20&descAlignY=62&animation=fadeIn" width="100%"/>
 
 <br/>
 
-<!-- BADGES -->
-[![Python](https://img.shields.io/badge/Python-3.8%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-[![Torch](https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)](https://pytorch.org/)
-[![Sentence Transformers](https://img.shields.io/badge/Sentence--BERT-Multilingual-8b5cf6?style=for-the-badge&logo=huggingface&logoColor=white)](https://www.sbert.net/)
-[![License](https://img.shields.io/badge/License-K0sh%20Personal%20Use%20v1.0-00d4ff?style=for-the-badge)](./LICENCE)
-[![Version](https://img.shields.io/badge/Version-0.6.2-a78bfa?style=for-the-badge)](#)
-[![Stars](https://img.shields.io/github/stars/AlexKotsovolis/AI-Gaming-Machine-K0sh-AI-?style=for-the-badge&color=fbbf24&logo=github)](https://github.com/AlexKotsovolis/AI-Gaming-Machine-K0sh-AI-)
+<a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.8%2B-8b5cf6?style=for-the-badge&logo=python&logoColor=white&labelColor=0f0c29"/></a>
+<a href="https://pytorch.org/"><img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white&labelColor=0f0c29"/></a>
+<a href="https://www.sbert.net/"><img src="https://img.shields.io/badge/Sentence--BERT-Multilingual-6366f1?style=for-the-badge&logo=huggingface&logoColor=white&labelColor=0f0c29"/></a>
+<a href="https://tauri.app/"><img src="https://img.shields.io/badge/Tauri-2.0-24C8D8?style=for-the-badge&logo=tauri&logoColor=white&labelColor=0f0c29"/></a>
+<a href="https://react.dev/"><img src="https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=white&labelColor=0f0c29"/></a>
+
+<br/><br/>
+
+<a href="./LICENCE"><img src="https://img.shields.io/badge/License-K0sh%20Personal%20Use%20v1.0-ec4899?style=for-the-badge&labelColor=0f0c29"/></a>
+<a href="#"><img src="https://img.shields.io/badge/Version-2.0%20%E2%80%94%20GIANT%20UPDATE-10b981?style=for-the-badge&labelColor=0f0c29"/></a>
+<a href="https://github.com/AlexKotsovolis/AI-Gaming-Machine-K0sh-AI-/stargazers"><img src="https://img.shields.io/github/stars/AlexKotsovolis/AI-Gaming-Machine-K0sh-AI-?style=for-the-badge&color=f59e0b&logo=github&labelColor=0f0c29"/></a>
+
+<br/><br/>
+
+```
+██╗  ██╗ ██████╗ ███████╗██╗  ██╗     █████╗ ██╗
+██║ ██╔╝██╔═████╗██╔════╝██║  ██║    ██╔══██╗██║
+█████╔╝ ██║██╔██║███████╗███████║    ███████║██║
+██╔═██╗ ████╔╝██║╚════██║██╔══██║    ██╔══██║██║
+██║  ██╗╚██████╔╝███████║██║  ██║    ██║  ██║██║
+╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝    ╚═╝  ╚═╝╚═╝
+```
 
 <br/>
 
-> *Semantic. Multilingual. Built with love for one grumpy, magnificent cat.*
+> *「 Semantic. Multilingual. Built for one grumpy, magnificent cat. 」*
 
 <br/>
 
@@ -25,183 +39,355 @@
 
 ---
 
+<br/>
+
 <div align="center">
-<img src="https://github.com/user-attachments/assets/6cb327cd-2d87-4973-a716-a66c2c0a3c70" width="80%" alt="K0sh AI Preview" style="border-radius: 12px;"/>
+
+## ◈ SYSTEM PREVIEW ◈
+
+<img src="https://github.com/user-attachments/assets/6cb327cd-2d87-4973-a716-a66c2c0a3c70" width="85%" alt="K0sh AI Preview" style="border-radius: 16px; box-shadow: 0 0 40px #8b5cf6;"/>
+
 </div>
 
 <br/>
 
-## 🌐 What is K0sh AI?
+---
 
-**K0sh AI** is a fully local desktop AI chatbot and mini gaming platform — built from scratch in **pure Python**. It uses **Sentence-BERT** with cosine similarity to understand what you *mean*, not just what you *type*. Typos, slang, Greeklish — K0sh gets it.
+<br/>
 
-No APIs. No subscriptions. No cloud. Just your machine, your model, and your moves.
+## ❯ WHAT IS K0SH AI?
+
+**K0sh AI** is a fully local, offline-first AI chatbot and gaming platform — rebuilt from scratch in **Python + React + Tauri**. At its core it uses **Sentence-BERT** with cosine similarity to understand what you *mean*, not just what you *type*. Greeklish, slang, typos — K0sh handles it all.
+
+No APIs. No subscriptions. No cloud required. Just your machine, your model, and your moves.
+
+Version **2.0** marks a complete architectural overhaul: the old tkinter GUI is gone, replaced with a **cyberpunk React dashboard** powered by a **Tauri desktop shell** — giving K0sh a commercial-grade frontend while keeping the Python brain 100% intact.
+
+<br/>
 
 ---
 
-## ✨ Feature Highlights
+<br/>
 
-| | Feature | Description |
-|---|---|---|
-| 🧠 | **Semantic NLP** | Powered by `paraphrase-multilingual-MiniLM-L12-v2` for intent matching beyond keywords |
-| 🌍 | **Multilingual** | Supports English, Greek, and phonetic Greeklish natively |
-| 🎮 | **3 Game Modes** | Guess the Number · Rock-Paper-Scissors · Blackjack |
-| 👤 | **Player Profiles** | Login system with persistent score tracking via JSON |
-| 💬 | **Typewriter Replies** | Smooth character-by-character response animations |
-| 📜 | **Chat History** | In-app history window with full session logging |
-| 🖥️ | **Cyberpunk GUI** | Retro dark interface built with Tkinter |
-| ⚡ | **Multithreaded** | Non-blocking UI — zero freezes during AI responses |
-| 🏆 | **Achievements** | Unlock rewards as you play and chat |
+## ❯ FEATURE HIGHLIGHTS
+
+<br/>
+
+<div align="center">
+
+| ◈ | Feature | Details |
+|:---:|:---|:---|
+| 🧠 | **Semantic NLP Engine** | `paraphrase-multilingual-MiniLM-L12-v2` — intent matching beyond keywords |
+| 🌍 | **6-Language Support** | English · Greek · Spanish · French · German · Italian |
+| 🎮 | **3 Game Modes + Difficulties** | GTN · RPS · Blackjack — each with Easy / Medium / Hard |
+| 👤 | **Persistent Player Profiles** | Auto-login from `userdata.json`, full score history |
+| 🎨 | **Cyberpunk Dashboard** | React + Tauri frontend with glassmorphism, neon glow & animations |
+| 🤖 | **Animated AI Avatar** | Canvas-rendered avatar with speaking state, scan lines & eye glow |
+| 📊 | **Live Stats Panel** | Real-time score, win rate bar, game breakdown — all in-app |
+| 🏆 | **Achievement System** | 8 unlockable achievements with progress tracking |
+| 🔥 | **Win Streak Tracker** | Glowing win counter with neon pulse animation |
 | 💀 | **Broke State** | Go negative? K0sh won't let you forget it |
-
----
-
-## 🎮 Game Modes
-
-<div align="center">
-
-| Command | Game | Description |
-|:---:|:---:|:---|
-| `GTN` | 🔢 Guess the Number | K0sh picks a number — can you crack it? |
-| `RPS` | ✂️ Rock-Paper-Scissors | Classic. Instant. Competitive. |
-| `BLC` | 🃏 Blackjack | The dice-based card challenge. Don't go broke. |
+| 💾 | **Session Persistence** | Game state saved to `k0sh_session.json` — resume anytime |
+| 📜 | **Chat History Logging** | Full session log written to `Chat History.txt` |
 
 </div>
 
+<br/>
+
 ---
 
-## 🛠️ Tech Stack
+<br/>
+
+## ❯ GAME MODES
+
+<br/>
 
 <div align="center">
 
-| Technology | Role |
-|:---|:---|
-| **Python 3.8+** | Core application logic |
-| **Tkinter** | Desktop GUI & animations |
-| **Sentence-Transformers** | Semantic NLP engine (SBERT) |
-| **PyTorch** | Tensor computations for embeddings |
-| **Threading** | Non-blocking UI architecture |
-| **JSON** | Player data & score persistence |
-| **LangDetect** | Runtime language detection |
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        GAME SELECTION                           │
+├──────────┬──────────────────────────┬───────────────────────────┤
+│  GTN 🎯  │   Guess The Number       │ 0–100 · 6/8/12 guesses   │
+│  RPS ✊  │   Rock · Paper · Scissors│ Classic · ±20 pts         │
+│  BLC 🃏  │   Blackjack Dice         │ Target 21/37/51 · ±50 pts │
+└──────────┴──────────────────────────┴───────────────────────────┘
+```
+
+| Mode | Easy | Medium | Hard |
+|:---:|:---:|:---:|:---:|
+| **GTN** | 12 guesses · target 0–100 | 8 guesses · target 0–100 | 6 guesses · target 0–100 |
+| **BLC** | Target: **21** | Target: **37** | Target: **51** |
+| **RPS** | No difficulties — pure instinct | | |
 
 </div>
 
+<br/>
+
 ---
 
-## 🚀 Getting Started
+<br/>
 
-### 1 — Clone the Repository
+## ❯ TECH STACK
+
+<br/>
+
+<div align="center">
+
+```
+┌────────────────────────────────────────────────────────────────────┐
+│                         ARCHITECTURE v2.0                          │
+│                                                                    │
+│   ┌─────────────────────────────────────────────────────────┐      │
+│   │              FRONTEND  (React + Tauri)                  │      │
+│   │   Cyberpunk Dashboard · Canvas Avatar · Glassmorphism   │      │
+│   └───────────────────────┬─────────────────────────────────┘      │
+│                           │  JSON stdin / stdout                   │
+│   ┌───────────────────────▼─────────────────────────────────┐      │
+│   │              BACKEND  (Python)                          │      │
+│   │   Sentence-BERT · Game Logic · Achievements · Profiles  │      │
+│   └─────────────────────────────────────────────────────────┘      │
+└────────────────────────────────────────────────────────────────────┘
+```
+
+| Layer | Technology | Role |
+|:---|:---:|:---|
+| **AI / NLP** | Sentence-Transformers + PyTorch | Semantic intent matching |
+| **Language Detection** | LangDetect | Runtime 6-language routing |
+| **Game Logic** | Python 3.8+ | All scoring, state, achievements |
+| **Session State** | JSON files | Cross-call game persistence |
+| **Desktop Shell** | Tauri 2.0 (Rust) | Native window, stdin/stdout bridge |
+| **UI Framework** | React 18 | Component-based cyberpunk dashboard |
+| **Animations** | Canvas API + CSS | Avatar, particles, neon effects |
+| **Data Persistence** | JSON | `userdata.json` · `k0sh_session.json` |
+
+</div>
+
+<br/>
+
+---
+
+<br/>
+
+## ❯ GETTING STARTED
+
+<br/>
+
+### ① Clone the Repository
 
 ```bash
 git clone https://github.com/AlexKotsovolis/AI-Gaming-Machine-K0sh-AI-.git
 cd AI-Gaming-Machine-K0sh-AI-
 ```
 
-### 2 — Install Dependencies
+<br/>
+
+### ② Install Python Dependencies
 
 ```bash
-pip install sentence-transformers torch pillow langdetect
+pip install sentence-transformers torch langdetect
 ```
 
-### 3 — Run the App
-
-Navigate to the latest version folder and launch:
-
-```bash
-cd "CODE_VERSIONS/CODE (VER. 0.6.2)"
-python k0sh_ai.py
-```
-
-> **⚠️ First Run Notice:** K0sh AI will download the `paraphrase-multilingual-MiniLM-L12-v2` model on first startup (~120MB). Internet connection required once.
-
----
-
-## 📸 Screenshots
-
-<div align="center">
-<img src="https://github.com/user-attachments/assets/3ddd5bed-6f2f-419f-a2f2-5be1f0898317" width="80%" alt="K0sh AI Main Interface"/>
-<br/><br/>
-<img src="https://github.com/user-attachments/assets/20fa9bc7-72a0-4365-81e9-f1cde2a79075" width="80%" alt="K0sh AI Game Mode"/>
-<br/><br/>
-<img src="https://github.com/user-attachments/assets/4a0b7fdc-54ae-439f-8fd0-16471000cd4f" width="80%" alt="K0sh AI Chat"/>
-<br/><br/>
-<img width="1919" height="1079" alt="Screenshot 2026-06-16 111851" src="https://github.com/user-attachments/assets/8ef04085-2bd0-48f1-9b95-5157d0ac1a05" />
-</div>
-
----
-
-## 📋 Version History
-
-<details>
-<summary><strong>Click to expand full changelog</strong></summary>
+> **First run** will download `paraphrase-multilingual-MiniLM-L12-v2` (~120 MB). Internet required once.
 
 <br/>
 
-| Version | Codename | Highlights |
-|:---:|:---|:---|
-| `2.0` | GIANT UPDATE | Added strong frontend, removed the good old tkinter gui, so it is finally clean |
-| `0.6.6` | Minor Fixes | Minor Fixes in the core code, bugs in BLC (from diffs) reworked achievements|
-| `0.6.5` | ?! | After a long time, introduced difficulties, (more in releases) bug fixes and more QOL changes. |
-| `0.6.4` | 🐛 | Basically version 0.6.3 (so sub-version), but with core bugs fixed and comms added (/stats, /ach) |
-| `0.6.3` | ⚡ | Enhanced K0sh's answers, more q_a pairs, fixed core bugs (go see in releases) |
-| `0.6.2` | 🏆 | Achievement system, animated loading screen, Broke state fixes |
-| `0.6.1` | QOL | Secure data saving, history bug fix, harder Blackjack, Broke state |
-| `0.6` | ??? | Chat history UI window, GUI overhaul, core bug fixes |
-| `0.5.3` | QOL Fixes | Input lock during bot response, enhanced Q&A pairs |
-| `0.5.2` | Multilingual | English, Greek, and Greeklish support |
-| `0.5.1` | Enhanced GUI | Typewriter animations, core bug fixes |
-| `0.5` | Another One | Blackjack (BLC) game mode, GUI refresh |
-| `0.4.1` | Threading | Non-blocking multithreaded responses |
-| `0.4` | Wait.. I know you! | Login system, player profiles, persistent scores |
-| `0.3` | One.. More.. Game! | Rock-Paper-Scissors (RPS) added |
-| `0.2` | Rework | Chat UI rework, version history tracking begins |
-| `0.1` | Release | Initial release — Guess the Number + Chat |
+### ③ Install Frontend Dependencies
+
+```bash
+npm install
+```
+
+<br/>
+
+### ④ Launch
+
+```bash
+npm run tauri dev
+```
+
+Or for the standalone Python bridge only:
+
+```bash
+echo '{"command":"register","data":{"name":"YourName"}}' | python k0sh_bridge.py
+```
+
+<br/>
+
+---
+
+<br/>
+
+## ❯ SCREENSHOTS
+
+<br/>
+
+<div align="center">
+
+<img src="https://github.com/user-attachments/assets/3ddd5bed-6f2f-419f-a2f2-5be1f0898317" width="80%" alt="K0sh AI Main Interface"/>
+
+<br/><br/>
+
+<img src="https://github.com/user-attachments/assets/20fa9bc7-72a0-4365-81e9-f1cde2a79075" width="80%" alt="K0sh AI Game Mode"/>
+
+<br/><br/>
+
+<img src="https://github.com/user-attachments/assets/4a0b7fdc-54ae-439f-8fd0-16471000cd4f" width="80%" alt="K0sh AI Chat"/>
+
+<br/><br/>
+
+<img src="https://github.com/user-attachments/assets/8ef04085-2bd0-48f1-9b95-5157d0ac1a05" width="80%" alt="K0sh AI v2.0"/>
+
+</div>
+
+<br/>
+
+---
+
+<br/>
+
+## ❯ VERSION HISTORY
+
+<br/>
+
+<details>
+<summary><b>❯ Click to expand full changelog</b></summary>
+
+<br/>
+
+```
+v2.0   ──  GIANT UPDATE  ──────────────────────────────────────────────────
+         Complete frontend rewrite: tkinter removed, React + Tauri added.
+         Cyberpunk dashboard with animated avatar, stats panel,
+         achievement tracker, win streak, difficulty modal, auto-login.
+
+v0.6.6 ──  Minor Fixes  ──────────────────────────────────────────────────
+         Core code fixes, BLC difficulty bugs reworked, achievements polish.
+
+v0.6.5 ──  Difficulties  ─────────────────────────────────────────────────
+         GTN/BLC difficulty system (Easy/Medium/Hard), QOL improvements.
+
+v0.6.4 ──  Commands  ─────────────────────────────────────────────────────
+         /stats and /ach commands added, core bugs fixed (sub-version).
+
+v0.6.3 ──  Enhanced NLP  ─────────────────────────────────────────────────
+         Expanded QA pairs, richer responses, core bug fixes.
+
+v0.6.2 ──  Achievements  ─────────────────────────────────────────────────
+         Achievement system, animated splash screen, Broke state fixes.
+
+v0.6.1 ──  QOL Update  ───────────────────────────────────────────────────
+         Secure data saving, history bug fix, harder Blackjack, Broke state.
+
+v0.6   ──  GUI Overhaul  ─────────────────────────────────────────────────
+         Chat history window, full GUI redesign, core bug fixes.
+
+v0.5.3 ──  Input Lock  ───────────────────────────────────────────────────
+         Input locked during bot response, enhanced QA pairs.
+
+v0.5.2 ──  Multilingual  ─────────────────────────────────────────────────
+         English, Greek, and phonetic Greeklish support.
+
+v0.5.1 ──  Typewriter  ───────────────────────────────────────────────────
+         Character-by-character animations, bug fixes.
+
+v0.5   ──  Blackjack  ────────────────────────────────────────────────────
+         BLC game mode added, GUI refresh.
+
+v0.4.1 ──  Threading  ────────────────────────────────────────────────────
+         Non-blocking multithreaded responses.
+
+v0.4   ──  Login System  ─────────────────────────────────────────────────
+         Player profiles, persistent scores, welcome-back detection.
+
+v0.3   ──  Rock-Paper-Scissors  ──────────────────────────────────────────
+         RPS game mode added.
+
+v0.2   ──  Rework  ───────────────────────────────────────────────────────
+         Chat UI rework, version tracking begins.
+
+v0.1   ──  Initial Release  ──────────────────────────────────────────────
+         Guess the Number + basic chat.
+```
 
 </details>
 
+<br/>
+
 ---
 
-## 🐱 The Inspiration
+<br/>
 
-K0sh AI is named after a real cat. Here he is — the grumpy mastermind behind it all. (The images are not made with ai, they are completely real.)
+## ❯ THE INSPIRATION
+
+<br/>
 
 <div align="center">
-<img src="https://github.com/user-attachments/assets/feccb714-3670-4985-a1ac-b2e2b642ddc0" width="45%" alt="The real K0sh"/>
-&nbsp;&nbsp;
-<img src="https://github.com/user-attachments/assets/9d706290-6f8c-4cc3-8d93-a89b14c81363" width="45%" alt="K0sh, the original AI"/>
-&nbsp;&nbsp;
-<img width="3060" height="4080" alt="20260614_085406" src="https://github.com/user-attachments/assets/b106db8e-eb46-43aa-8418-82075b8505ad" />
 
+*K0sh AI is named after a real cat. The grumpy mastermind behind it all.*
+*(All photos are 100% real — no AI generation.)*
 
-*The original K0sh — he helped me code the project, as well as making my day. His name is Cinammon.*
+<br/>
+
+<img src="https://github.com/user-attachments/assets/feccb714-3670-4985-a1ac-b2e2b642ddc0" width="30%" alt="K0sh the cat"/>
+&nbsp;&nbsp;
+<img src="https://github.com/user-attachments/assets/9d706290-6f8c-4cc3-8d93-a89b14c81363" width="30%" alt="K0sh, the original AI"/>
+&nbsp;&nbsp;
+<img src="https://github.com/user-attachments/assets/b106db8e-eb46-43aa-8418-82075b8505ad" width="30%" alt="K0sh in full glory"/>
+
+<br/><br/>
+
+> *His name is Cinnamon. He helped me code every single version by sitting on the keyboard at the worst possible moments.*
+
 </div>
 
----
-
-## 🔒 License
-
-This project is licensed under the **K0sh AI Personal Use License v1.0**.
-
-- ✅ You **may**: Use and modify the software for personal, non-commercial purposes.
-- ❌ You **may NOT**: Commercialize, sell, distribute, or republish the software or modified versions.
-
-For full terms, see the [`LICENCE`](./LICENCE) file. © 2026 Alex Kotsovolis. All rights reserved.
+<br/>
 
 ---
 
-## 👨‍💻 Author
+<br/>
+
+## ❯ LICENSE
+
+<br/>
+
+This project is protected under the **K0sh AI Personal Use License v1.0**.
+
+```
+✅  Personal, non-commercial use and modification — permitted
+✅  Forking for learning purposes — permitted
+❌  Commercial use, resale, or redistribution — NOT permitted
+❌  Publishing modified versions without attribution — NOT permitted
+```
+
+Full terms in [`LICENCE`](./LICENCE). © 2026 Alex Kotsovolis. All rights reserved.
+
+<br/>
+
+---
+
+<br/>
+
+## ❯ AUTHOR
+
+<br/>
 
 <div align="center">
 
 **Alex Kotsovolis**
 
-[![GitHub](https://img.shields.io/badge/GitHub-@AlexKotsovolis-181717?style=for-the-badge&logo=github)](https://github.com/AlexKotsovolis)
-[![Discord](https://img.shields.io/badge/Discord-@myboialex3-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.com/)
+<br/>
+
+[![GitHub](https://img.shields.io/badge/GitHub-@AlexKotsovolis-8b5cf6?style=for-the-badge&logo=github&logoColor=white&labelColor=0f0c29)](https://github.com/AlexKotsovolis)
+&nbsp;
+[![Discord](https://img.shields.io/badge/Discord-@myboialex3-6366f1?style=for-the-badge&logo=discord&logoColor=white&labelColor=0f0c29)](https://discord.com/)
 
 <br/>
 
-*If K0sh AI made you smile, smash that ⭐ — it means a lot!*
+*If K0sh AI made you smile — or if you lost all your points on Blackjack — smash that ⭐*
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:24243e,50:302b63,100:0f0c29&height=120&section=footer" width="100%"/>
+<br/>
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:302b63,50:1e1040,100:04050f&height=140&section=footer&animation=fadeIn" width="100%"/>
 
 </div>
