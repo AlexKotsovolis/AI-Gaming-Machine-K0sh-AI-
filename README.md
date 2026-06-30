@@ -29,7 +29,7 @@
 
 <br/>
 
-> *「 Semantic. Multilingual. Built for one grumpy, magnificent cat. 」*
+> *「 Semantic. Multilingual. Built by one grumpy, magnificent cat. 」*
 
 <br/>
 
