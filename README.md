@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:04050f,30:0f0c29,60:1e1040,100:302b63&height=220&section=header&text=K0SH%20AI&fontSize=90&fontColor=8b5cf6&fontAlignY=38&desc=Semantic%20Chat%20%E2%80%A2%20Multi-Game%20Engine%20%E2%80%A2%20Cyberpunk%20Terminal&descColor=6366f1&descSize=20&descAlignY=62&animation=fadeIn" width="100%"/>
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:04050f,30:0f0c29,60:1e1040,100:302b63&height=220&section=header&text=K0SH%20AI&fontSize=90&fontColor=8b5cf6&fontAlignY=38&desc=Semantic%20Chat%20%E2%80%A2%20Multi-Game%20Engine%20%E2%80%A2%20Amber%20Terminal&descColor=6366f1&descSize=20&descAlignY=62&animation=fadeIn" width="100%"/>
 
 <br/>
 
@@ -253,6 +253,7 @@ echo '{"command":"register","data":{"name":"YourName"}}' | python k0sh_bridge.py
 
 | Version | Codename | Highlights |
 |:---:|:---|:---|
+| `2.2` |🔥| Reworked the GUI, added an "Amber" theme (🔥) and I added this because the idea was really cool. Enjoy! |
 | `2.1` | + | Added user's history access, which you can delete, and some fixes to the gui + an exit button. Enjoy! |
 | `2.0` | 🚀 GIANT UPDATE | Complete frontend rewrite — tkinter out, React + Tauri in. Cyberpunk dashboard, animated avatar, auto-login, difficulty modal, stats & achievements panel |
 | `0.6.6` | 🔧 Minor Fixes | Core code fixes, BLC difficulty bugs reworked, achievements polished |
