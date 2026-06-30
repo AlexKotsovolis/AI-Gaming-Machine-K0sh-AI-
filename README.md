@@ -13,7 +13,7 @@
 <br/><br/>
 
 <a href="./LICENCE"><img src="https://img.shields.io/badge/License-K0sh%20Personal%20Use%20v1.0-ec4899?style=for-the-badge&labelColor=0f0c29"/></a>
-<a href="#"><img src="https://img.shields.io/badge/Version-2.1%20%E2%80%94%20ADDONS%20UPDATE-10b981?style=for-the-badge&labelColor=0f0c29"/></a>
+<a href="#"><img src="https://img.shields.io/badge/Version-2.3%20%E2%80%94%20ADDONS%20UPDATE-10b981?style=for-the-badge&labelColor=0f0c29"/></a>
 <a href="https://github.com/AlexKotsovolis/AI-Gaming-Machine-K0sh-AI-/stargazers"><img src="https://img.shields.io/github/stars/AlexKotsovolis/AI-Gaming-Machine-K0sh-AI-?style=for-the-badge&color=f59e0b&logo=github&labelColor=0f0c29"/></a>
 
 <br/><br/>
