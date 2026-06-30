@@ -224,17 +224,26 @@ echo '{"command":"register","data":{"name":"YourName"}}' | python k0sh_bridge.py
 
 <div align="center">
 
-<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/456edc1d-c829-4288-91d4-75313d5da834" />
+<img width="1919" height="1077" alt="image" src="https://github.com/user-attachments/assets/c6620885-0f3d-4f8c-bb73-d5199f053018" />
 
 
 <br/><br/>
 
-<img width="1918" height="1079" alt="image" src="https://github.com/user-attachments/assets/1772d97e-e7fe-4e13-a330-4c50dcbaf66b" />
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/7a067d62-ff8f-4b8d-a908-65f0097ec90d" />
 
 
 <br/><br/>
 
-<img width="1919" height="1075" alt="image" src="https://github.com/user-attachments/assets/31901ac6-9e91-4deb-b05f-3cecc5dc2791" />
+<img width="1919" height="1078" alt="image" src="https://github.com/user-attachments/assets/7c48e750-0c99-4698-bb78-e9919b4acc29" />
+
+<br/><br/>
+
+<img width="1919" height="1068" alt="image" src="https://github.com/user-attachments/assets/48d51fb5-b62e-473d-82d1-aeeac42151ce" />
+
+
+<br/><br/>
+
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/05184032-9f1a-483e-adba-6017501ff274" />
 
 
 </div>
