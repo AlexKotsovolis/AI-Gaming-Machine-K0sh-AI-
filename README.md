@@ -224,19 +224,18 @@ echo '{"command":"register","data":{"name":"YourName"}}' | python k0sh_bridge.py
 
 <div align="center">
 
-<img src="https://github.com/user-attachments/assets/3ddd5bed-6f2f-419f-a2f2-5be1f0898317" width="80%" alt="K0sh AI Main Interface"/>
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/456edc1d-c829-4288-91d4-75313d5da834" />
+
 
 <br/><br/>
 
-<img src="https://github.com/user-attachments/assets/20fa9bc7-72a0-4365-81e9-f1cde2a79075" width="80%" alt="K0sh AI Game Mode"/>
+<img width="1918" height="1079" alt="image" src="https://github.com/user-attachments/assets/1772d97e-e7fe-4e13-a330-4c50dcbaf66b" />
+
 
 <br/><br/>
 
-<img src="https://github.com/user-attachments/assets/4a0b7fdc-54ae-439f-8fd0-16471000cd4f" width="80%" alt="K0sh AI Chat"/>
+<img width="1919" height="1075" alt="image" src="https://github.com/user-attachments/assets/31901ac6-9e91-4deb-b05f-3cecc5dc2791" />
 
-<br/><br/>
-
-<img src="https://github.com/user-attachments/assets/8ef04085-2bd0-48f1-9b95-5157d0ac1a05" width="80%" alt="K0sh AI v2.0"/>
 
 </div>
 
