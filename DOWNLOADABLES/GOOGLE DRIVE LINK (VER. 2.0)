@@ -1,3 +1,5 @@
-SOS: BECAUSE OF SOME CORE ISSUES WITH THE EXECUTABLE VERSION OF THE PROGRAM, IT WILL TAKE SOME TIME TO RESOLVE THE ISSUE. NOW, THE BEST THING YOU COULD DO IS INSTALLING PYCHARM / VSCODE AND RUNNING IT FROM THERE.
-ALSO: IF YOU DO THIS PLEASE CREATE 2 EMPTY .JSON FILES: "k0sh_session.json" AND "userdata.json".
-HERE IS THE (empty for now) GOOGLE DRIVE LINK: https://drive.google.com/drive/folders/1oAah7p0vDbI1H_4IEAJmGGNz02PXHA0T?usp=drive_link
+K0sh Version 2.0 (actually 2.1 because of the new changes) Just released in .exe https://drive.google.com/drive/folders/1oAah7p0vDbI1H_4IEAJmGGNz02PXHA0T?usp=drive_link.
+When you install it please DO THE FOLLOWING:
+
+-Put everything in one folder
+-Run from the .exe, and it will take some time, to install some dependencies + the model K0sh is running on. If you run in any errors, please download the latest version of python.
