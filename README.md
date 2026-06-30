@@ -424,6 +424,6 @@ Full terms in [`LICENCE`](./LICENCE). © 2026 Alex Kotsovolis. All rights reserv
 
 <br/>
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:302b63,50:1e1040,100:04050f&height=140&section=footer&animation=fadeIn" width="100%"/>
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:7c3f00,50:3b1f0f,100:04050f&height=140&section=footer&animation=fadeIn" width="100%"/>
 
 </div>
