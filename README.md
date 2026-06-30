@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:04050f,30:0f0c29,60:1e1040,100:302b63&height=220&section=header&text=K0SH%20AI&fontSize=90&fontColor=8b5cf6&fontAlignY=38&desc=Semantic%20Chat%20%E2%80%A2%20Multi-Game%20Engine%20%E2%80%A2%20Amber%20Terminal&descColor=6366f1&descSize=20&descAlignY=62&animation=fadeIn" width="100%"/>
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:04050f,30:1a1208,60:3b1f0f,100:7c3f00&height=220&section=header&text=K0SH%20AI&fontSize=90&fontColor=f59e0b&fontAlignY=38&desc=Semantic%20Chat%20%E2%80%A2%20Multi-Game%20Engine%20%E2%80%A2%20Amber%20Terminal&descColor=fbbf24&descSize=20&descAlignY=62&animation=fadeIn" width="100%"/>
 
-<br/>
+</div>
 
 <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.8%2B-8b5cf6?style=for-the-badge&logo=python&logoColor=white&labelColor=0f0c29"/></a>
 <a href="https://pytorch.org/"><img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white&labelColor=0f0c29"/></a>
