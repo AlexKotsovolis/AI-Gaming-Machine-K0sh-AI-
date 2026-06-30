@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>K0sh AI · Ember</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div id="app2">
+
+    <!-- ════════════════ LEFT RAIL — vertical wordmark + nav ════════════════ -->
+    <nav id="rail">
+      <div class="rail-mark">K0</div>
+      <button class="rail-btn active" data-tab="chat" title="Chat">💬</button>
+      <button class="rail-btn" data-tab="games" title="Games">🎲</button>
+      <button class="rail-btn" data-tab="profile" title="Profile">🔥</button>
+      <div class="rail-spacer"></div>
+      <button id="history-btn" class="rail-btn" title="History">🕘</button>
+      <button id="leave-btn" class="rail-btn leave" title="Leave">⏻</button>
+    </nav>
+
+    <!-- ════════════════ HISTORY MODAL ════════════════ -->
+    <div id="history-modal" class="modal-overlay" style="display:none;">
+      <div class="modal-box">
+        <div class="modal-header">
+          <span>Chat History</span>
+          <button id="history-close" class="ember-btn">✕</button>
+        </div>
+        <pre id="history-content" class="modal-body"></pre>
+        <div class="modal-footer">
+          <button id="history-erase-btn" class="ember-btn danger">Erase History</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════ MAIN COLUMN ════════════════ -->
+    <main id="main2">
+
+      <!-- Hero header -->
+      <header id="hero">
+        <div class="hero-text">
+          <div class="hero-kicker">YOUR DIGITAL GAME MASTER</div>
+          <h1>K0sh</h1>
+          <p id="hero-sub">Roll the dice. Guess the number. Test your nerve.</p>
+        </div>
+        <div id="hero-orb"></div>
+        <div id="player-pill" style="display:none;">
+          <span id="player-pill-name"></span>
+          <span id="player-pill-score"></span>
+        </div>
+        <div id="game-badge2" style="display:none;"></div>
+      </header>
+
+      <!-- Tab: CHAT -->
+      <section class="tab-pane" id="pane-chat">
+        <div id="messages2"></div>
+
+        <div id="input-bar2">
+          <button id="mic-btn2" type="button" title="Speak your message">🎤</button>
+          <input id="text-input2" type="text" placeholder="Enter your name to begin..." autocomplete="off" />
+          <button id="send-btn2">Send</button>
+        </div>
+      </section>
+
+      <!-- Tab: GAMES -->
+      <section class="tab-pane" id="pane-games" style="display:none;">
+        <div id="game-strip">
+          <div class="game-tile" data-game="GTN">
+            <div class="tile-glyph">🎯</div>
+            <div class="tile-name">Guess The Number</div>
+            <div class="tile-desc">Crack the hidden 0–100 code.</div>
+          </div>
+          <div class="game-tile" data-game="RPS">
+            <div class="tile-glyph">✊</div>
+            <div class="tile-name">Rock · Paper · Scissors</div>
+            <div class="tile-desc">Quick reflex duel. +20 on a win.</div>
+          </div>
+          <div class="game-tile" data-game="BLC">
+            <div class="tile-glyph">🃏</div>
+            <div class="tile-name">Blackjack Dice</div>
+            <div class="tile-desc">Roll close to 21 without busting.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tab: PROFILE -->
+      <section class="tab-pane" id="pane-profile" style="display:none;">
+        <div class="profile-grid">
+          <div class="ember-card">
+            <div class="ember-label">Player</div>
+            <div id="stat-name2" class="ember-title">—</div>
+          </div>
+          <div class="ember-card">
+            <div class="ember-label">Win Streak</div>
+            <div id="win-streak2" class="ember-big">0</div>
+          </div>
+          <div class="ember-card stat-card"><div class="ember-label">Score</div><div id="stat-score2" class="ember-stat">0</div></div>
+          <div class="ember-card stat-card"><div class="ember-label">Games</div><div id="stat-games2" class="ember-stat">0</div></div>
+          <div class="ember-card stat-card"><div class="ember-label">Wins</div><div id="stat-wins2" class="ember-stat ok">0</div></div>
+          <div class="ember-card stat-card"><div class="ember-label">Losses</div><div id="stat-losses2" class="ember-stat bad">0</div></div>
+          <div class="ember-card stat-card"><div class="ember-label">Draws</div><div id="stat-draws2" class="ember-stat">0</div></div>
+          <div class="ember-card stat-card"><div class="ember-label">BLC Wins</div><div id="stat-blcw2" class="ember-stat">0</div></div>
+        </div>
+
+        <div class="ember-label" style="margin:18px 4px 8px;">Achievements</div>
+        <div id="ach-list2"></div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
