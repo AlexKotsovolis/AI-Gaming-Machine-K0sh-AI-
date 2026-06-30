@@ -1,0 +1,6 @@
+K0sh Version 2.2, just released in .exe in google drive: https://drive.google.com/drive/folders/1XaMb7L1nTKi5NSxga1GAKmRS12DzAYkc?usp=sharing  .
+
+When you install it please DO THE FOLLOWING:
+
+-Put everything in one folder
+-Run from the .exe, and it will take some time, to install some dependencies + the model K0sh is running on. If you run in any errors, please download the latest version of python.
