@@ -363,7 +363,7 @@ v0.1   ──  Initial Release  ────────────────
 
 <br/><br/>
 
-> *His name is Cinnamon. He helped me code every single version by sitting on the keyboard at the worst possible moments.*
+> *His name is Cinnamon. He helped me code every single version by sitting on the keyboard at the worst possible moments, as well as giving me ideas!*
 
 </div>
 
