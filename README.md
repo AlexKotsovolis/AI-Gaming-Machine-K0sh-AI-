@@ -254,6 +254,7 @@ echo '{"command":"register","data":{"name":"YourName"}}' | python k0sh_bridge.py
 
 | Version | Codename | Highlights |
 |:---:|:---|:---|
+| `2.1` | + | Added user's history access, which you can delete, and some fixes to the gui + an exit button. Enjoy! |
 | `2.0` | 🚀 GIANT UPDATE | Complete frontend rewrite — tkinter out, React + Tauri in. Cyberpunk dashboard, animated avatar, auto-login, difficulty modal, stats & achievements panel |
 | `0.6.6` | 🔧 Minor Fixes | Core code fixes, BLC difficulty bugs reworked, achievements polished |
 | `0.6.5` | ⚔️ Difficulties | Introduced Easy / Medium / Hard for GTN and BLC, plus QOL improvements |
