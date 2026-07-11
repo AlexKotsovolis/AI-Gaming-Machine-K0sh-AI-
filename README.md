@@ -262,6 +262,7 @@ echo '{"command":"register","data":{"name":"YourName"}}' | python k0sh_bridge.py
 
 | Version | Codename | Highlights |
 |:---:|:---|:---|
+| `2.3` |🪢| Added "Hangman game mode", updated gui (for this purpose) and fixed tiny bugs. |
 | `2.2` |🔥| Reworked the GUI, added an "Amber" theme (🔥) and I added this because the idea was really cool. Enjoy! |
 | `2.1` | + | Added user's history access, which you can delete, and some fixes to the gui + an exit button. Enjoy! |
 | `2.0` | 🚀 GIANT UPDATE | Complete frontend rewrite — tkinter out, React + Tauri in. Cyberpunk dashboard, animated avatar, auto-login, difficulty modal, stats & achievements panel |
