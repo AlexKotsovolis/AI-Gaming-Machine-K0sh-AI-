@@ -1,5 +1,3 @@
-<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/bf6f87df-1d84-4981-aba6-cea338412000" /><div align="center">
-
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:04050f,30:1a1208,60:3b1f0f,100:7c3f00&height=220&section=header&text=K0SH%20AI&fontSize=90&fontColor=f59e0b&fontAlignY=38&desc=Semantic%20Chat%20%E2%80%A2%20Multi-Game%20Engine%20%E2%80%A2%20Amber%20Terminal&descColor=fbbf24&descSize=20&descAlignY=62&animation=fadeIn" width="100%"/>
 
 </div>
