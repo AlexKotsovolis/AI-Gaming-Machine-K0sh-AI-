@@ -232,7 +232,8 @@ echo '{"command":"register","data":{"name":"YourName"}}' | python k0sh_bridge.py
 
 <br/><br/>
 
-<img width="1919" height="1078" alt="image" src="https://github.com/user-attachments/assets/7c48e750-0c99-4698-bb78-e9919b4acc29" />
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/f2d18db6-461b-4cae-85d9-09a0a3cee0b7" />
+
 
 <br/><br/>
 
