@@ -1,4 +1,4 @@
-<div align="center">
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/bf6f87df-1d84-4981-aba6-cea338412000" /><div align="center">
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:04050f,30:1a1208,60:3b1f0f,100:7c3f00&height=220&section=header&text=K0SH%20AI&fontSize=90&fontColor=f59e0b&fontAlignY=38&desc=Semantic%20Chat%20%E2%80%A2%20Multi-Game%20Engine%20%E2%80%A2%20Amber%20Terminal&descColor=fbbf24&descSize=20&descAlignY=62&animation=fadeIn" width="100%"/>
 
@@ -13,7 +13,7 @@
 <br/><br/>
 
 <a href="./LICENCE"><img src="https://img.shields.io/badge/License-K0sh%20Personal%20Use%20v1.0-ec4899?style=for-the-badge&labelColor=0f0c29"/></a>
-<a href="#"><img src="https://img.shields.io/badge/Version-2.2%20%E2%80%94%20ADDONS%20UPDATE-10b981?style=for-the-badge&labelColor=0f0c29"/></a>
+<a href="#"><img src="https://img.shields.io/badge/Version-2.3%20%E2%80%94%20HANGMAN%20UPDATE-10b981?style=for-the-badge&labelColor=0f0c29"/></a>
 <a href="https://github.com/AlexKotsovolis/AI-Gaming-Machine-K0sh-AI-/stargazers"><img src="https://img.shields.io/github/stars/AlexKotsovolis/AI-Gaming-Machine-K0sh-AI-?style=for-the-badge&color=f59e0b&logo=github&labelColor=0f0c29"/></a>
 
 <br/><br/>
