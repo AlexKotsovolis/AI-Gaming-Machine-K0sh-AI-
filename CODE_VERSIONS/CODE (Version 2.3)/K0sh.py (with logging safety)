@@ -1542,58 +1542,45 @@ def _check_achievements(name):
     return unlocked_msgs
 
 
-SESSION_FILE = "k0sh_session.json"  
+SESSION_FILE = "k0sh_session.json"
+
+# Every key that must always exist in a session dict, with its default value.
+# NOTE: "is_logged" (NOT "logged_in") is the key read everywhere else in this
+# file (check_for_user, process_input). Keeping this name consistent is what
+# fixes the "unauthenticated players can start/crash games" bug.
+SESSION_DEFAULTS = {
+    "name": "",
+    "is_logged":          False,
+    "is_playing_easy":    False,
+    "is_playing_medium":  False,
+    "is_playing_hard":    False,
+    "is_playing2":        False,
+    "is_playing3_easy":   False,
+    "is_playing3_medium": False,
+    "is_playing3_hard":   False,
+    "is_playing4":        False,
+    "num":                0,
+    "guesses":            0,
+    "choice":             "Empty",
+    "Black_jack_Score":   0,
+    "Black_jack_bot_Score": 0,
+    "hmn_word":           "",
+    "hmn_lives":          5,
+    "hmn_guessed":        [],
+    "hmn_revealed":       [],
+}
 
 def load_session():
     try:
         with open(SESSION_FILE, "r") as f:
             session = json.load(f)
-        # add any missing keys so old session files still work
-        defaults = {
-            "name": "",
-            "is_playing_easy":    False,
-            "is_playing_medium":  False,
-            "is_playing_hard":    False,
-            "is_playing2":        False,
-            "is_playing3_easy":   False,
-            "is_playing3_medium": False,
-            "is_playing3_hard":   False,
-            "is_playing4":        False,
-            "num":                0,
-            "guesses":            0,
-            "choice":             "Empty",
-            "Black_jack_Score":   0,
-            "Black_jack_bot_Score": 0,
-            "hmn_word":           "",
-            "hmn_lives":          5,
-            "hmn_guessed":        [],
-            "hmn_revealed":       [],
-        }
-        for key, value in defaults.items():
+        # add any missing keys so old / partial session files still work
+        for key, value in SESSION_DEFAULTS.items():
             if key not in session:
                 session[key] = value
         return session
     except (FileNotFoundError, json.JSONDecodeError):
-        return {
-            "name": "",
-            "is_playing_easy":    False,
-            "is_playing_medium":  False,
-            "is_playing_hard":    False,
-            "is_playing2":        False,
-            "is_playing3_easy":   False,
-            "is_playing3_medium": False,
-            "is_playing3_hard":   False,
-            "is_playing4":        False,
-            "num":                0,
-            "guesses":            0,
-            "choice":             "Empty",
-            "Black_jack_Score":   0,
-            "Black_jack_bot_Score": 0,
-            "hmn_word":           "",
-            "hmn_lives":          5,
-            "hmn_guessed":        [],
-            "hmn_revealed":       [],
-        }
+        return dict(SESSION_DEFAULTS)
 
 def save_session(session):
     with open(SESSION_FILE, "w") as f:
@@ -2005,20 +1992,6 @@ def evaluate_results3(session, name, prefix_msg=""):
         msg += "\n" + "\n".join(ach)
     return msg
 
-def check_for_user(name):
-    if name in userdata:
-        return True, f"Welcome back, {name}! Dynamic system node re-established. 💾"
-    elif name.isalpha():
-        userdata[name] = {
-            "Joined": True, "InGameScore": 0, "IsBroke": False,
-            "Games": 0, "Wins": 0, "Losses": 0, "Draws": 0, "Achievements": [],
-            "Level": 0, "BLCW": 0,
-        }
-        _save_userdata()
-        return True, f"Welcome, {name}! New dynamic profile created. 💾"
-    else:
-        return False, "That doesn't look like a name — letters only, please!"
-
 def game_handler4(session, name, plr_txt):
 
     if not session["hmn_word"]:
@@ -2086,42 +2059,97 @@ def game_handler4(session, name, plr_txt):
     return msg
 
 
+def check_for_user(name):
+    session = load_session()
+    session["name"] = name
 
+    if name in userdata:
+        session["is_logged"] = True
+        save_session(session)
+        return True, f"Welcome back, {name}! Dynamic system node re-established. 💾"
+    elif name.isalpha():
+        userdata[name] = {
+            "Joined": True, "InGameScore": 0, "IsBroke": False,
+            "Games": 0, "Wins": 0, "Losses": 0, "Draws": 0, "Achievements": [],
+            "Level": 0, "BLCW": 0,
+        }
+        session["is_logged"] = True
+        save_session(session)
+        _save_userdata()
+        return True, f"Welcome, {name}! New dynamic profile created. 💾"
+    else:
+        session["is_logged"] = False
+        save_session(session)
+        return False, "That doesn't look like a name — letters only, please!"
+
+
+
+GAME_COMMANDS = {
+    "GTN", "GTN/EASY", "GTN/MEDIUM", "GTN/HARD",
+    "RPS",
+    "BLC/EASY", "BLC/MEDIUM", "BLC/HARD",
+    "HMN",
+    "/STATS", "/ACH", "/SYS-SHTDWN",
+}
+
+NOT_LOGGED_IN_MSG = "K0sh: You need to register a name first! Please tell me your name before starting a game."
 
 
 def process_input(name, plr_txt):  # noqa: C901
     session = load_session()
     session["name"] = name
 
-    if session["is_playing_easy"]:
+    is_logged = session.get("is_logged", False)
+
+
+    if not is_logged:
+
+        for flag in ("is_playing_easy", "is_playing_medium", "is_playing_hard",
+                     "is_playing2", "is_playing3_easy", "is_playing3_medium",
+                     "is_playing3_hard", "is_playing4"):
+            session[flag] = False
+
+        command = plr_txt.upper().strip()
+        if command in GAME_COMMANDS:
+            save_session(session)
+            return NOT_LOGGED_IN_MSG
+
+        save_session(session)
+        score, response = get_response(plr_txt)
+        with open("Chat History.txt", "a", encoding="utf-8") as file:
+            file.write(f"\nK0sh replied: {response}\n")
+        return f"[Match confidence: {score * 100:.1f}%]\nK0sh: {response}"
+
+
+    if session.get("is_playing_easy"):
         result = game_handler_easy(session, name, plr_txt)
         save_session(session)
         return result
-    elif session["is_playing_medium"]:
+    elif session.get("is_playing_medium"):
         result = game_handler_medium(session, name, plr_txt)
         save_session(session)
         return result
-    elif session["is_playing_hard"]:
+    elif session.get("is_playing_hard"):
         result = game_handler_hard(session, name, plr_txt)
         save_session(session)
         return result
-    elif session["is_playing2"]:
+    elif session.get("is_playing2"):
         result = game_handler2(session, name, plr_txt)
         save_session(session)
         return result
-    elif session["is_playing3_easy"]:
+    elif session.get("is_playing3_easy"):
         result = game_handler3_easy(session, name, plr_txt)
         save_session(session)
         return result
-    elif session["is_playing3_medium"]:
+    elif session.get("is_playing3_medium"):
         result = game_handler3_medium(session, name, plr_txt)
         save_session(session)
         return result
-    elif session["is_playing3_hard"]:
+    elif session.get("is_playing3_hard"):
         result = game_handler3_hard(session, name, plr_txt)
         save_session(session)
         return result
-    elif session["is_playing4"]:
+    elif session.get("is_playing4"):
         result = game_handler4(session, name, plr_txt)
         save_session(session)
         return result
@@ -2244,10 +2272,10 @@ def process_input(name, plr_txt):  # noqa: C901
         return f"K0sh: Alright {name}! Here are your achievements:\n{achs}\nReply with '/stats' or GTN/RPS/BLC to play!"
 
     if command == "/SYS-SHTDWN":      #SECRET
-        os. system("shutdown /s /t 1")
+        os.system("shutdown /s /t 5")
         return f"I guess you are really brave to do such action {name}. Now you gotta suffer the consequences. Goodbye."
 
-    # ── NLP fallback (same as original) ──────────────────────────────────────
+
     score, response = get_response(plr_txt)
     save_session(session)
 
